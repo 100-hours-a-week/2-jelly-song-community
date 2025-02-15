@@ -19,7 +19,11 @@
     </div>
     <script>includeHTML(function() {
         console.log("HTML includes loaded successfully!");
+
+        let script = document.createElement("script");
+        script.src = "./js/script.js";
+        script.type = "text/javascript";
+        document.body.appendChild(script);
     });</script>
-    <script type="text/javascript" src="./js/script.js"></script>
     </body>
 </html>
