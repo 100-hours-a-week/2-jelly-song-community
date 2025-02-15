@@ -1,0 +1,9 @@
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.validation-font {
+    color: red;
+    font-size: 12px;
+}
