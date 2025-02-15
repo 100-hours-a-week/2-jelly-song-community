@@ -11,39 +11,7 @@
         <header include-html="./layout/header.html"></header>
         <div class="main-container">
             <div class="main-container-body">
-                <div class="login-container">
-                    <div class="login-header">
-                        <h2>로그인</h2>
-                    </div>
-                    <div class="login-form-container">
-                        <form method="get" action="/posts.html" class="login-form">
-                            <div class="email-title-container">
-                                <label for="email">이메일</label>
-                            </div>
-                            <div class="email-form-container">
-                                <input id="email" type="text" name="email" placeholder="이메일을 입력하세요" class="email-form">
-                            </div>
-                            <div class="email-validation-container validation-font">
-                                *올바른 이메일 주소 형식을 입력해주세요
-                            </div>
-                            <div class="password-title-container">
-                                <label for="email">비밀번호</label>
-                            </div>
-                            <div class="password-form-container">
-                                <input id="password" type="password" name="password" placeholder="비밀번호를 입력하세요" class="password-form">
-                            </div>
-                            <div class="password-validation-container validation-font">
-                                *비밀번호를 입력해주세요
-                            </div>
-                            <div class="login-button-container">
-                                <input id="submit" type="submit" value="로그인" class="login-button-disable">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="sign-up-container">
-                        <a href="/sign-up.html">회원가입</a>
-                    </div>
-                </div>
+                <div include-html="./layout/login-container.html"></div>
             </div>
         </div>
     </div>
