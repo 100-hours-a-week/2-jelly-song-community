@@ -9,7 +9,7 @@ $header_profile.addEventListener("click", (e) => {
 })
 
 $update_password_form = document.querySelector(".update-password-form");
-$update_password_button = document.querySelector(".update-password-button-disable");
+$button = document.querySelector(".button-disable");
 $password_form = document.querySelector(".password-form")
 $password_validation_container = document.querySelector(".password-validation-container");
 let $password_confirm_form = document.querySelector(".password-confirm-form");
@@ -46,16 +46,16 @@ $update_password_form.addEventListener("input", (event) => {
     }
 
     if (validation == true) {
-        $update_password_button.classList.remove("update-password-button-disable")
-        $update_password_button.classList.add("update-password-button-enable")
+        $button.classList.remove("button-disable")
+        $button.classList.add("button-enable")
     } else {
-        $update_password_button.classList.remove("update-password-button-enable")
-        $update_password_button.classList.add("update-password-button-disable")
+        $button.classList.remove("button-enable")
+        $button.classList.add("button-disable")
     }
 })
 
 $update_password_form.addEventListener("submit", (event) => {
-    if (!$update_password_button.classList.contains("update-password-button-enable")) {
+    if (!$button.classList.contains("button-enable")) {
         event.preventDefault();
         return false;
     }
