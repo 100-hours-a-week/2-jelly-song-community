@@ -1,0 +1,20 @@
+.profile-upload-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    background-color: lightgray;
+}
+
+#file {
+    display: none;
+}
+
+.plus-font {
+    font-size: 100px;
+    font-weight: lighter;
+    position: relative;
+    bottom: -4px;
+}

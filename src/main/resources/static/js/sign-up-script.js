@@ -1,5 +1,5 @@
 let $fileDOM = document.querySelector("#file");
-let $preview = document.querySelector(".sign-up-profile-upload-button");
+let $preview = document.querySelector(".profile-upload-button");
 let $plus_font = document.querySelector(".plus-font");
 let $profile_validation_container = document.querySelector(".profile-validation-container");
 
@@ -15,11 +15,11 @@ $fileDOM.addEventListener('change', (event) => {
 
         $profile_validation_container.innerHTML = ""
 
-        $sign_up_form.dispatchEvent(new Event("input", { bubbles: true }));
+        $layout_form.dispatchEvent(new Event("input", { bubbles: true }));
     };
 });
 
-let $sign_up_form = document.querySelector(".sign-up-form");
+let $layout_form = document.querySelector(".layout-form");
 let $email_form = document.querySelector(".email-form");
 let email_validation_container = document.querySelector(".email-validation-container");
 
@@ -32,9 +32,9 @@ let $password_confirm_validation_container = document.querySelector(".password-c
 let $nickname_form = document.querySelector(".nickname-form");
 let $nickname_validation_container = document.querySelector(".nickname-validation-container");
 
-let $sign_up_button = document.querySelector(".sign-up-button-disable");
+let $button = document.querySelector(".button-disable");
 
-$sign_up_form.addEventListener("input", (event) => {
+$layout_form.addEventListener("input", (event) => {
     let email_address = $email_form.value;
     let email_regex = /^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/i;
 
@@ -95,16 +95,16 @@ $sign_up_form.addEventListener("input", (event) => {
     }
 
     if (validation == true) {
-        $sign_up_button.classList.remove("sign-up-button-disable")
-        $sign_up_button.classList.add("sign-up-button-enable")
+        $button.classList.remove("button-disable")
+        $button.classList.add("button-enable")
     } else {
-        $sign_up_button.classList.remove("sign-up-button-enable")
-        $sign_up_button.classList.add("sign-up-button-disable")
+        $button.classList.remove("button-enable")
+        $button.classList.add("button-disable")
     }
 })
 
-$sign_up_form.addEventListener("submit", (event) => {
-    if (!$sign_up_button.classList.contains("sign-up-button-enable")) {
+$layout_form.addEventListener("submit", (event) => {
+    if (!$button.classList.contains("button-enable")) {
         event.preventDefault();
     }
 })
