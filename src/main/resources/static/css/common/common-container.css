@@ -24,7 +24,7 @@
 
 .header-profile {
     position: absolute;
-    background-image: url("../images/user-icon-ex.png");
+    background-image: url("../../images/user-icon-ex.png");
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 50%;
