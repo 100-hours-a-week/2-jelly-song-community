@@ -1,0 +1,13 @@
+.button-disable {
+    background-color: #ACA0EB;
+    border-radius: 3px;
+    border: none;
+    color: white;
+}
+
+.button-enable {
+    background-color: #7F6AEE;
+    border-radius: 3px;
+    border: none;
+    color: white;
+}

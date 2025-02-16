@@ -1,13 +1,12 @@
-let $login_form = document.querySelector(".login-form");
 let $email_form = document.querySelector(".email-form");
 let email_validation_container = document.querySelector(".email-validation-container");
 
 let $password_form = document.querySelector(".password-form");
 let $password_validation_container = document.querySelector(".password-validation-container");
 
-let $login_button = document.querySelector(".login-button-disable");
-
-$login_form.addEventListener("submit", (event) => {
+let $login_button = document.querySelector(".button-disable");
+let $layout_form = document.querySelector(".layout-form");
+$layout_form.addEventListener("submit", (event) => {
     let email_address = $email_form.value;
     let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
 
@@ -23,7 +22,7 @@ $login_form.addEventListener("submit", (event) => {
     }
 })
 
-$login_form.addEventListener("input", (event) => {
+$layout_form.addEventListener("input", (event) => {
     let email_address = $email_form.value;
     let email_regex = /^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/i;
 
@@ -50,10 +49,10 @@ $login_form.addEventListener("input", (event) => {
     }
 
     if (validation == true) {
-        $login_button.classList.remove("login-button-disable")
-        $login_button.classList.add("login-button-enable")
+        $login_button.classList.remove("button-disable")
+        $login_button.classList.add("button-enable")
     } else {
-        $login_button.classList.remove("login-button-enable")
-        $login_button.classList.add("login-button-disable")
+        $login_button.classList.remove("button-enable")
+        $login_button.classList.add("button-disable")
     }
 })

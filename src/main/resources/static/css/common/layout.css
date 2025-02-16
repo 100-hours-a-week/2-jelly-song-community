@@ -1,0 +1,35 @@
+.layout-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.layout-form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-title-container {
+    padding: 10px 0px 0px 0px;
+}
+
+.layout-input-container {
+    padding: 10px 0px 10px 0px;
+}
+
+.layout-input {
+    height: 30px;
+    width: 100%;
+}
+
+.layout-validation-container {
+    height: 15px;
+}
