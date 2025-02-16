@@ -1,0 +1,67 @@
+<div class="sign-up-container">
+    <div class="sign-up-header">
+        <h2>회원가입</h2>
+    </div>
+    <div class="sign-up-profile-upload-form-container">
+        <div class="profile-title-container">
+            프로필 사진
+        </div>
+        <div class="profile-validation-container validation-container validation-font">
+            *프로필 사진을 추가해주세요.
+        </div>
+        <div class="sign-up-profile-upload-container">
+            <label for="file">
+                <div class="sign-up-profile-upload-button">
+                    <div class="plus-font">+</div>
+                </div>
+            </label>
+            <input type="file" id="file"/>
+        </div>
+    </div>
+    <div class="sign-up-form-container">
+        <form method="get" action="/login.html" class="sign-up-form">
+            <div class="email-title-container">
+                <label for="email">이메일*</label>
+            </div>
+            <div class="email-form-container">
+                <input id="email" type="text" name="email" placeholder="이메일을 입력하세요" class="email-form">
+            </div>
+            <div class="email-validation-container validation-container validation-font">
+                *이메일을 입력해주세요.
+            </div>
+            <div class="password-title-container">
+                <label for="password">비밀번호*</label>
+            </div>
+            <div class="password-form-container">
+                <input id="password" type="password" name="password" placeholder="비밀번호를 입력하세요" class="password-form">
+            </div>
+            <div class="password-validation-container validation-container validation-font">
+                *비밀번호를 입력해주세요
+            </div>
+            <div class="password-confirm-title-container">
+                <label for="password-confirm">비밀번호 확인*</label>
+            </div>
+            <div class="password-confirm-form-container">
+                <input id="password-confirm" type="password" name="password-confirm" placeholder="비밀번호를 한번 더 입력하세요" class="password-confirm-form">
+            </div>
+            <div class="password-confirm-validation-container validation-container validation-font">
+                *비밀번호를 한번 더 입력해주세요
+            </div>
+            <div class="nickname-title-container">
+                <label for="nickname">닉네임*</label>
+            </div>
+            <div class="nickname-form-container">
+                <input id="nickname" type="text" name="nickname" placeholder="닉네임을 입력하세요" class="nickname-form">
+            </div>
+            <div class="nickname-validation-container validation-container validation-font">
+                *닉네임을 입력해주세요
+            </div>
+            <div class="sign-up-button-container">
+                <input id="submit" type="submit" value="회원가입" class="sign-up-button-disable">
+            </div>
+        </form>
+    </div>
+    <div class="go-to-login-button-container">
+        <a href="/login.html">로그인하러 가기</a>
+    </div>
+</div>

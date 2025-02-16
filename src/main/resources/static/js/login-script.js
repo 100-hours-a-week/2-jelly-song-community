@@ -25,7 +25,7 @@ $login_form.addEventListener("submit", (event) => {
 
 $login_form.addEventListener("input", (event) => {
     let email_address = $email_form.value;
-    let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+    let email_regex = /^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/i;
 
     let password = $password_form.value;
     let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;

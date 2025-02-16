@@ -1,0 +1,132 @@
+.sign-up-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.sign-up-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.sign-up-form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-title-container {
+    padding: 10px 0px 0px 0px;
+}
+
+.email-title-container {
+    padding: 10px 0px 0px 0px;
+}
+
+.email-form-container {
+    padding: 10px 0px 10px 0px;
+}
+
+.password-title-container {
+    padding: 10px 0px 0px 0px;
+}
+
+.password-form-container {
+    padding: 10px 0px 10px 0px;
+}
+
+.password-confirm-title-container {
+    padding: 10px 0px 0px 0px;
+}
+
+.password-confirm-form-container {
+    padding: 10px 0px 10px 0px;
+}
+
+.nickname-title-container {
+    padding: 10px 0px 0px 0px;
+}
+
+.nickname-form-container {
+    padding: 10px 0px 10px 0px;
+}
+
+.sign-up-button-container {
+    padding: 10px 0px 10px 0px;
+}
+
+.go-to-login-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.email-form {
+    height: 30px;
+    width: 100%;
+}
+
+.password-form {
+    height: 30px;
+    width: 100%;
+}
+
+.password-confirm-form {
+    height: 30px;
+    width: 100%;
+}
+
+.nickname-form {
+    height: 30px;
+    width: 100%;
+}
+
+.sign-up-button-disable {
+    width: 100%;
+    background-color: #ACA0EB;
+    height: 30px;
+    border-radius: 3px;
+    border: none;
+    color: white;
+}
+
+.sign-up-button-enable {
+    width: 100%;
+    background-color: #7F6AEE;
+    height: 30px;
+    border-radius: 3px;
+    border: none;
+    color: white;
+}
+
+.validation-container {
+    height: 15px;
+}
+
+.sign-up-profile-upload-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    background-color: lightgray;
+}
+
+#file {
+    display: none;
+}
+
+.sign-up-profile-upload-container {
+    display: flex;
+    justify-content: center;
+}
+
+.plus-font {
+    font-size: 100px;
+    font-weight: lighter;
+    position: relative;
+    bottom: -4px;
+}
