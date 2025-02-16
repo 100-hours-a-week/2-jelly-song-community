@@ -12,7 +12,7 @@ $header_profile.addEventListener("click", (e) => {
 $update_member_form = document.querySelector(".update-member-form");
 $nickname_form = document.querySelector(".nickname-form");
 $nickname_validation_container = document.querySelector(".nickname-validation-container");
-$update_member_button = document.querySelector(".update-member-button-disable");
+$button = document.querySelector(".button-disable");
 $update_member_form.addEventListener("input", (event) => {
     let validation = true;
 
@@ -30,20 +30,19 @@ $update_member_form.addEventListener("input", (event) => {
     }
 
     if (validation == true) {
-        $update_member_button.classList.remove("update-member-button-disable")
-        $update_member_button.classList.add("update-member-button-enable")
+        $button.classList.remove("button-disable")
+        $button.classList.add("button-enable")
     } else {
-        $update_member_button.classList.remove("update-member-button-enable")
-        $update_member_button.classList.add("update-member-button-disable")
+        $button.classList.remove("button-enable")
+        $button.classList.add("button-disable")
     }
 })
 
 $update_member_form.addEventListener("submit", (event) => {
-    if (!$update_member_button.classList.contains("update-member-button-enable")) {
+    if (!$button.classList.contains("button-enable")) {
         event.preventDefault();
         return false;
     }
-
     event.preventDefault();
     tostOn()
 })
