@@ -65,8 +65,6 @@ function activateTost() {
         }
         tostOn()
     })
-
-    preventHrefDropMemberButton();
     function tostOn(){
         tostMessage.classList.add('active');
         setTimeout(function(){
@@ -74,11 +72,6 @@ function activateTost() {
         },1000);
     }
 
-    function preventHrefDropMemberButton() {
-        $drop_member_button.addEventListener("click", (e) => {
-            e.preventDefault();
-        })
-    }
 }
 
 
@@ -97,4 +90,11 @@ function activateModal() {
     confirm_btn.addEventListener('click', function () {
         location.href = "./login.html";
     })
+
+    preventHrefDropMemberButton();
+    function preventHrefDropMemberButton() {
+        $drop_member_button.addEventListener("click", (e) => {
+            e.preventDefault();
+        })
+    }
 }
