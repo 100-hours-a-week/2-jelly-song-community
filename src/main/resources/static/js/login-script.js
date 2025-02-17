@@ -1,3 +1,5 @@
+let $layout_form = document.querySelector(".layout-form");
+
 let $email_form = document.querySelector(".email-form");
 let email_validation_container = document.querySelector(".email-validation-container");
 
@@ -5,29 +7,23 @@ let $password_form = document.querySelector(".password-form");
 let $password_validation_container = document.querySelector(".password-validation-container");
 
 let $login_button = document.querySelector(".button-disable");
-let $layout_form = document.querySelector(".layout-form");
+
+let email_regex = /^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/i;
+let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+
 $layout_form.addEventListener("submit", (event) => {
     let email_address = $email_form.value;
-    let email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
-
     let password = $password_form.value;
-    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 
-    if (!email_regex.test(email_address)) {
-        event.preventDefault();
+    if (email_regex.test(email_address) && passwordRegex.test(password)) {
+        return;
     }
-
-    if (!passwordRegex.test(password)) {
-        event.preventDefault();
-    }
+    event.preventDefault();
 })
 
 $layout_form.addEventListener("input", (event) => {
     let email_address = $email_form.value;
-    let email_regex = /^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/i;
-
     let password = $password_form.value;
-    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 
     let validation = true;
 
