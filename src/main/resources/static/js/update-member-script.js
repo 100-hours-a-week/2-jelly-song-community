@@ -74,11 +74,6 @@ function activateTost() {
 
 }
 
-
-
-
-
-
 function activateModal() {
     modalOpen.addEventListener('click', function () {
         modal.style.display = 'block';
