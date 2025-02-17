@@ -5,7 +5,7 @@ body {
 .total-container{
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #F4F5F7;
 }
 
@@ -51,4 +51,5 @@ body {
     flex-direction: column;
     justify-content: center;
     width: 400px;
+    padding-bottom: 50px;
 }
