@@ -1,8 +1,27 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link href="css/common/common.css" rel="stylesheet" type="text/css" />
+    <link href="css/posts.css" rel="stylesheet" type="text/css" />
+    <script src="./js/includeHTML.js"></script>
+    <title>kakao-bootcamp-community-login</title>
 </head>
 <body>
-<h1> posts.html 파일입니다. </h1>
+<div class="total-container">
+    <header include-html="./layout/header/header-profile.html"></header>
+    <div class="main-container">
+        <div class="main-container-body">
+            <div include-html="./layout/posts-container.html"></div>
+        </div>
+    </div>
+</div>
+<script>includeHTML(function() {
+    console.log("HTML includes loaded successfully!");
+
+    let script = document.createElement("script");
+    script.src = "./js/posts-script.js";
+    script.type = "text/javascript";
+    document.body.appendChild(script);
+});</script>
 </body>
 </html>

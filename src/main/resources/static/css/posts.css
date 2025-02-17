@@ -1,0 +1,81 @@
+.button-disable:hover {
+    background-color: #7F6AEE;
+}
+
+.post-create-button {
+    height: 30px;
+    width: 100px;
+    border-radius: 30px;
+}
+
+.posts-header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 20px;
+}
+
+.posts-header-element {
+    padding: 5px 0px 5px 0px;
+}
+
+.post-preview {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin: 10px 0px 10px 0px
+}
+
+.post-preview-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.post-preview-meta-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.post-preview-meta {
+    display: flex;
+    flex-direction: row;
+}
+
+.post-preview-meta-element {
+    font-size: 12px;
+    margin-right: 20px;
+}
+
+.post-preview-time {
+    font-size: 12px;
+}
+
+.post-preview-top {
+    border-bottom: 1px solid #F4F5F7;
+    padding: 15px 15px 15px 15px;
+}
+
+.post-preview-writer-container {
+    padding: 15px 15px 15px 15px;
+}
+
+.preview-writer {
+    display: flex;
+    flex-direction: row;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.post-preview-title-container {
+    padding-bottom: 10px;
+}
+
+.preview-profile-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    background-color: #F4F5F7;
+    margin-right: 10px;
+}
