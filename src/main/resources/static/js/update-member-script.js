@@ -1,5 +1,5 @@
-let $drop_down = document.querySelector(".drop-down");
 let $header_profile = document.querySelector(".header-profile");
+let $drop_down = document.querySelector(".drop-down");
 
 $header_profile.addEventListener("click", (e) => {
     if ($drop_down.style.display == "flex") {
@@ -39,19 +39,15 @@ $update_member_form.addEventListener("input", (event) => {
 })
 
 $update_member_form.addEventListener("submit", (event) => {
-    if (!$button.classList.contains("button-enable")) {
-        event.preventDefault();
+    event.preventDefault();
+    if ($button.classList.contains("button-disable")) {
         return false;
     }
-    event.preventDefault();
     tostOn()
 })
 
-//1. 토스트 메시지, 버튼요소를 변수에 대입
 let tostMessage = document.getElementById('tost_message');
-let tostBtn = document.getElementById('tost_btn');
 
-//2. 토스트 메시지 노출-사라짐 함수 작성
 function tostOn(){
     tostMessage.classList.add('active');
     setTimeout(function(){
@@ -70,14 +66,10 @@ const modalOpen = document.querySelector('.drop-member-button');
 const modalClose = document.querySelector('.close_btn');
 const confirm_btn = document.querySelector(".confirm_btn");
 
-//열기 버튼을 눌렀을 때 모달팝업이 열림
 modalOpen.addEventListener('click',function(){
-    //display 속성을 block로 변경
     modal.style.display = 'block';
 });
-//닫기 버튼을 눌렀을 때 모달팝업이 닫힘
 modalClose.addEventListener('click',function(){
-    //display 속성을 none으로 변경
     modal.style.display = 'none';
 });
 
