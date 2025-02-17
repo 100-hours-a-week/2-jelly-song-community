@@ -1,5 +1,6 @@
-let $drop_down = document.querySelector(".drop-down");
 let $header_profile = document.querySelector(".header-profile");
+let $drop_down = document.querySelector(".drop-down");
+
 $header_profile.addEventListener("click", (e) => {
     if ($drop_down.style.display == "flex") {
         $drop_down.style.display = "none";
@@ -55,20 +56,15 @@ $update_password_form.addEventListener("input", (event) => {
 })
 
 $update_password_form.addEventListener("submit", (event) => {
+    event.preventDefault();
     if (!$button.classList.contains("button-enable")) {
-        event.preventDefault();
         return false;
     }
-
-    event.preventDefault();
     tostOn()
 })
 
-//1. 토스트 메시지, 버튼요소를 변수에 대입
 let tostMessage = document.getElementById('tost_message');
-let tostBtn = document.getElementById('tost_btn');
 
-//2. 토스트 메시지 노출-사라짐 함수 작성
 function tostOn(){
     tostMessage.classList.add('active');
     setTimeout(function(){
