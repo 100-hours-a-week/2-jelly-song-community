@@ -31,25 +31,42 @@ function preventSubmitIfNotValidate() {
     })
 }
 
+$email_form = document.querySelector(".email-form");
 $post_comment_form_textarea = document.querySelector(".text-area-form");
 $post_comment_form_button = document.querySelector(".button-disable");
-$post_comment_form_textarea.addEventListener("input", () => {
-    if ($post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
+$password_validation_container = document.querySelector(".password-validation-container");
+
+$email_form.addEventListener("input", () => {
+    if ($email_form.value != "" && $post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
         $post_comment_form_button.classList.remove("button-disable")
         $post_comment_form_button.classList.add("button-enable")
-    } else if ($post_comment_form_textarea.value == "" && $post_comment_form_button.classList.contains("button-enable")) {
+        $password_validation_container.innerHTML = ""
+    } else if (($email_form.value == "" || $post_comment_form_textarea.value == "") && $post_comment_form_button.classList.contains("button-enable")) {
         $post_comment_form_button.classList.remove("button-enable")
         $post_comment_form_button.classList.add("button-disable")
+        $password_validation_container.innerHTML = "제목, 내용을 모두 작성해주세요"
+    }
+})
+
+$post_comment_form_textarea.addEventListener("input", () => {
+    if ($email_form.value != "" && $post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
+        $post_comment_form_button.classList.remove("button-disable")
+        $post_comment_form_button.classList.add("button-enable")
+        $password_validation_container.innerHTML = ""
+    } else if (($email_form.value == "" || $post_comment_form_textarea.value == "") && $post_comment_form_button.classList.contains("button-enable")) {
+        $post_comment_form_button.classList.remove("button-enable")
+        $post_comment_form_button.classList.add("button-disable")
+        $password_validation_container.innerHTML = "제목, 내용을 모두 작성해주세요"
     }
 })
 
 haha();
 function haha() {
-    if ($post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
+    if ($email_form.value != "" && $post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
         $post_comment_form_button.classList.remove("button-disable")
         $post_comment_form_button.classList.remove("button-enable")
         $post_comment_form_button.classList.add("button-enable")
-    } else if ($post_comment_form_textarea.value == "" && $post_comment_form_button.classList.contains("button-enable")) {
+    } else if (($email_form.value == "" || $post_comment_form_textarea.value == "") && $post_comment_form_button.classList.contains("button-enable")) {
         $post_comment_form_button.classList.remove("button-disable")
         $post_comment_form_button.classList.remove("button-enable")
         $post_comment_form_button.classList.add("button-disable")
