@@ -11,3 +11,13 @@
     justify-content: right;
     align-items: center;
 }
+
+.align-row-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.align-column-container {
+    display: flex;
+    flex-direction: column;
+}

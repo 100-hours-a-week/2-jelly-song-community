@@ -1,6 +1,6 @@
 let $header_back = document.querySelector(".header-back");
 const postDeleteModal = document.querySelector('.post-modal');
-const postDeleteModalOpen = document.querySelector('.post-delete-button');
+const postDeleteModalOpen = document.querySelector('.delete-button');
 const postDeleteModalClose = document.querySelector('.post-close_btn');
 const postDeleteConfirmBtn = document.querySelector(".post-confirm_btn");
 let $like_button = document.querySelector(".post-meta-likes-disable");
