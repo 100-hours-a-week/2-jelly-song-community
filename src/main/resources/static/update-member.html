@@ -17,6 +17,11 @@
 <script>includeHTML(function() {
     console.log("HTML includes loaded successfully!");
 
+    let commonScript = document.createElement("script");
+    commonScript.src = "./js/common.js";
+    commonScript.type = "text/javascript";
+    document.body.appendChild(commonScript);
+
     let script = document.createElement("script");
     script.src = "./js/update-member.js";
     script.type = "text/javascript";

@@ -1,6 +1,3 @@
-let $header_profile = document.querySelector(".header-profile");
-let $drop_down = document.querySelector(".drop-down");
-
 let $update_member_form = document.querySelector(".update-member-form");
 let $nickname_form = document.querySelector(".nickname-form");
 let $nickname_validation_container = document.querySelector(".nickname-validation-container");
@@ -14,20 +11,9 @@ const modalOpen = document.querySelector('.drop-member-button');
 const modalClose = document.querySelector('.close_btn');
 const confirm_btn = document.querySelector(".confirm_btn");
 
-activateDropDownMenu();
 validateWheneverTyped();
 activateTost();
 activateModal();
-
-function activateDropDownMenu() {
-    $header_profile.addEventListener("click", (e) => {
-        if ($drop_down.style.display == "flex") {
-            $drop_down.style.display = "none";
-        } else {
-            $drop_down.style.display = "flex";
-        }
-    })
-}
 
 
 function validateWheneverTyped() {
