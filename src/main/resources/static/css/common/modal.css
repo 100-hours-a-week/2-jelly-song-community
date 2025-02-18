@@ -2,7 +2,7 @@
 .modal {
     /*팝업 배경*/
     display: none; /*평소에는 보이지 않도록*/
-    position: absolute;
+    position: fixed;
     top:0;
     left: 0;
     width: 100%;
