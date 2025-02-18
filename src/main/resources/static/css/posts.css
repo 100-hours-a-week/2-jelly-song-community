@@ -1,3 +1,11 @@
+.posts-header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 20px;
+}
+
 .button-disable:hover {
     background-color: #7F6AEE;
     cursor: pointer;
@@ -9,14 +17,6 @@
     border-radius: 30px;
 }
 
-.posts-header-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    font-size: 20px;
-}
-
 .posts-header-element {
     padding: 5px 0px 5px 0px;
 }
@@ -26,6 +26,15 @@
     flex-direction: column;
     background-color: white;
     margin: 10px 0px 10px 0px
+}
+
+.post-preview-top {
+    border-bottom: 1px solid #F4F5F7;
+    padding: 15px 15px 15px 15px;
+}
+
+.post-preview-title-container {
+    padding-bottom: 10px;
 }
 
 .post-preview-title {
@@ -53,11 +62,6 @@
     font-size: 12px;
 }
 
-.post-preview-top {
-    border-bottom: 1px solid #F4F5F7;
-    padding: 15px 15px 15px 15px;
-}
-
 .post-preview-writer-container {
     padding: 15px 15px 15px 15px;
 }
@@ -67,10 +71,6 @@
     flex-direction: row;
     font-size: 13px;
     font-weight: bold;
-}
-
-.post-preview-title-container {
-    padding-bottom: 10px;
 }
 
 .preview-profile-image {
