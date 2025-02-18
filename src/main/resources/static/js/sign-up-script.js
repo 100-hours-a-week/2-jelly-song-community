@@ -1,3 +1,5 @@
+let $header_back = document.querySelector(".header-back")
+
 let $fileDOM = document.querySelector("#file");
 let $preview = document.querySelector(".profile-upload-button");
 let $plus_font = document.querySelector(".plus-font");
@@ -18,9 +20,16 @@ let $nickname_validation_container = document.querySelector(".nickname-validatio
 
 let $button = document.querySelector(".button-disable");
 
+activateBackLink();
 uploadProfile();
 validateWheneverTyped();
 preventSubmitIfNotValidate();
+
+function activateBackLink() {
+    $header_back.addEventListener("click", (event) => {
+        location.href = "./login.html";
+    })
+}
 
 function uploadProfile() {
     $fileDOM.addEventListener('change', (event) => {

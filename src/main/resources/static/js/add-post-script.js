@@ -16,7 +16,7 @@ function activateDropDownMenu() {
 let $header_back = document.querySelector(".header-back");
 
 $header_back.addEventListener("click", (event) => {
-    window.location.href = "./post.html";
+    window.location.href = "./posts.html";
 })
 
 let update_post_container_form = document.querySelector(".update-post-container-form");
