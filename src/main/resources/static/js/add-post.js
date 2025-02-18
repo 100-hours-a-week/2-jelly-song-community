@@ -1,14 +1,14 @@
 let $header_back = document.querySelector(".header-back");
-let update_post_container_form = document.querySelector(".update-post-container-form");
+let create_post_container_form = document.querySelector(".create-post-container-form");
 let $button = document.querySelector(".button-disable");
-let $email_form = document.querySelector(".email-form");
+let $title_form = document.querySelector(".title-form");
 let $post_comment_form_textarea = document.querySelector(".text-area-form");
 let $post_comment_form_button = document.querySelector(".button-disable");
-let $password_validation_container = document.querySelector(".password-validation-container");
+let $content_validation_container = document.querySelector(".content-validation-container");
 
 activateHeaderBack();
 preventSubmitIfNotValidate();
-validateEmail();
+validateTitle();
 validateTextArea();
 initializeButtonAttribute();
 
@@ -19,47 +19,47 @@ function activateHeaderBack() {
 }
 
 function preventSubmitIfNotValidate() {
-    update_post_container_form.addEventListener("submit", (event) => {
+    create_post_container_form.addEventListener("submit", (event) => {
         if ($button.classList.contains("button-disable")) {
             event.preventDefault();
         }
     })
 }
 
-function validateEmail() {
-    $email_form.addEventListener("input", () => {
-        if ($email_form.value != "" && $post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
+function validateTitle() {
+    $title_form.addEventListener("input", () => {
+        if ($title_form.value != "" && $post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
             $post_comment_form_button.classList.remove("button-disable")
             $post_comment_form_button.classList.add("button-enable")
-            $password_validation_container.innerHTML = ""
-        } else if (($email_form.value == "" || $post_comment_form_textarea.value == "") && $post_comment_form_button.classList.contains("button-enable")) {
+            $content_validation_container.innerHTML = ""
+        } else if (($title_form.value == "" || $post_comment_form_textarea.value == "") && $post_comment_form_button.classList.contains("button-enable")) {
             $post_comment_form_button.classList.remove("button-enable")
             $post_comment_form_button.classList.add("button-disable")
-            $password_validation_container.innerHTML = "제목, 내용을 모두 작성해주세요"
+            $content_validation_container.innerHTML = "제목, 내용을 모두 작성해주세요"
         }
     })
 }
 
 function validateTextArea() {
     $post_comment_form_textarea.addEventListener("input", () => {
-        if ($email_form.value != "" && $post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
+        if ($title_form.value != "" && $post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
             $post_comment_form_button.classList.remove("button-disable")
             $post_comment_form_button.classList.add("button-enable")
-            $password_validation_container.innerHTML = ""
-        } else if (($email_form.value == "" || $post_comment_form_textarea.value == "") && $post_comment_form_button.classList.contains("button-enable")) {
+            $content_validation_container.innerHTML = ""
+        } else if (($title_form.value == "" || $post_comment_form_textarea.value == "") && $post_comment_form_button.classList.contains("button-enable")) {
             $post_comment_form_button.classList.remove("button-enable")
             $post_comment_form_button.classList.add("button-disable")
-            $password_validation_container.innerHTML = "제목, 내용을 모두 작성해주세요"
+            $content_validation_container.innerHTML = "제목, 내용을 모두 작성해주세요"
         }
     })
 }
 
 function initializeButtonAttribute() {
-    if ($email_form.value != "" && $post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
+    if ($title_form.value != "" && $post_comment_form_textarea.value != "" && $post_comment_form_button.classList.contains("button-disable")) {
         $post_comment_form_button.classList.remove("button-disable")
         $post_comment_form_button.classList.remove("button-enable")
         $post_comment_form_button.classList.add("button-enable")
-    } else if (($email_form.value == "" || $post_comment_form_textarea.value == "") && $post_comment_form_button.classList.contains("button-enable")) {
+    } else if (($title_form.value == "" || $post_comment_form_textarea.value == "") && $post_comment_form_button.classList.contains("button-enable")) {
         $post_comment_form_button.classList.remove("button-disable")
         $post_comment_form_button.classList.remove("button-enable")
         $post_comment_form_button.classList.add("button-disable")

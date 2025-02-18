@@ -3,27 +3,27 @@
         <h2>게시물 작성</h2>
     </div>
     <div class="layout-main-container">
-        <form method="get" action="/posts.html" class="layout-form update-post-container-form">
+        <form method="get" action="/posts.html" class="layout-form create-post-container-form">
             <div class="layout-title-container">
-                <label for="email">제목*</label>
+                <label for="title">제목*</label>
             </div>
             <div class="layout-input-container">
-                <input id="email" type="text" name="email" placeholder="제목을 입력해주세요. (최대 26글자)" maxlength="26" class="email-form layout-input">
+                <input id="title" type="text" name="title" placeholder="제목을 입력해주세요. (최대 26글자)" maxlength="26" class="title-form layout-input">
             </div>
             <div class="layout-title-container">
-                <label for="my-textarea">내용*</label>
+                <label for="content">내용*</label>
             </div>
             <div class="layout-input-container textarea-container">
-                <textarea id="my-textarea" autocomplete="off" autocorrect="off" placeholder="내용을 입력해주세요." autocapitalize="off" spellcheck="false" class="text-area-form password-form layout-input"></textarea>
+                <textarea id="content" autocomplete="off" autocorrect="off" placeholder="내용을 입력해주세요." autocapitalize="off" spellcheck="false" class="text-area-form layout-input"></textarea>
             </div>
-            <div class="password-validation-container layout-validation-container validation-font">
+            <div class="content-validation-container layout-validation-container validation-font">
                 *제목, 내용을 모두 작성해주세요
             </div>
             <div class="layout-title-container">
-                <label for="file2">이미지</label>
+                <label for="create-post-file">이미지</label>
             </div>
-            <input id="file2" type="file" />
-            <div class="login-button-container layout-input-container">
+            <input id="create-post-file" type="file" />
+            <div class="create-button-container layout-input-container">
                 <input id="submit" type="submit" value="완료" class="button-disable layout-input">
             </div>
         </form>
