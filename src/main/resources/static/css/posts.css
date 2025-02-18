@@ -1,5 +1,6 @@
 .button-disable:hover {
     background-color: #7F6AEE;
+    cursor: pointer;
 }
 
 .post-create-button {
