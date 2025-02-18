@@ -6,7 +6,6 @@ let $password_confirm_form = document.querySelector(".password-confirm-form");
 let $password_confirm_validation_container = document.querySelector(".password-confirm-validation-container");
 let tostMessage = document.getElementById('tost_message');
 
-activateDropDownMenu();
 validateWheneverInput();
 activateTost();
 
