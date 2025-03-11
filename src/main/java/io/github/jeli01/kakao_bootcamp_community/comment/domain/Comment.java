@@ -1,5 +1,7 @@
-package io.github.jeli01.kakao_bootcamp_community.domain;
+package io.github.jeli01.kakao_bootcamp_community.comment.domain;
 
+import io.github.jeli01.kakao_bootcamp_community.board.domain.Board;
+import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,19 +11,17 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Entity
-public class Post {
+public class Comment {
     @Id @GeneratedValue
     @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long id;
 
-    @Column(nullable = false, length = 255)
-    private String title;
-
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Column(columnDefinition = "TEXT")
-    private String postImage;
+    @ManyToOne
+    @JoinColumn(name = "board_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Board board;
 
     @ManyToOne
     @JoinColumn(name = "writer_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")

@@ -1,5 +1,7 @@
-package io.github.jeli01.kakao_bootcamp_community.domain;
+package io.github.jeli01.kakao_bootcamp_community.visit.domain;
 
+import io.github.jeli01.kakao_bootcamp_community.board.domain.Board;
+import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,8 +21,8 @@ public class Visit {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "post_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private Post post;
+    @JoinColumn(name = "board_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Board board;
 
     @Column(nullable = false)
     private Long count;

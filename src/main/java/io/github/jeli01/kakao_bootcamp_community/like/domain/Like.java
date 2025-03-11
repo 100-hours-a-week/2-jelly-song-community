@@ -1,5 +1,7 @@
-package io.github.jeli01.kakao_bootcamp_community.domain;
+package io.github.jeli01.kakao_bootcamp_community.like.domain;
 
+import io.github.jeli01.kakao_bootcamp_community.board.domain.Board;
+import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +13,7 @@ import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="likes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "post_id"})})
+@Table(name="likes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "board_id"})})
 public class Like {
     @Id @GeneratedValue
     @Column(columnDefinition = "BIGINT UNSIGNED")
@@ -22,8 +24,8 @@ public class Like {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "post_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private Post post;
+    @JoinColumn(name = "board_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Board board;
 
     @Column(nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createDate;
