@@ -8,4 +8,9 @@ import lombok.Setter;
 public class DeleteLikeResponse {
     private Boolean isSuccess;
     private String message;
+
+    public DeleteLikeResponse() {
+        this.isSuccess = true;
+        this.message = "like delete success";
+    }
 }

@@ -12,13 +12,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name="likes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "board_id"})})
+@Table(name = "likes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "board_id"})})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long id;
 
@@ -32,4 +36,10 @@ public class Like {
 
     @Column(nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createDate;
+
+    public Like(User user, Board board) {
+        this.user = user;
+        this.board = board;
+        this.createDate = LocalDateTime.now();
+    }
 }

@@ -8,4 +8,9 @@ import lombok.Setter;
 public class PostLikeResponse {
     private Boolean isSuccess;
     private String message;
+
+    public PostLikeResponse() {
+        this.isSuccess = true;
+        this.message = "like post success";
+    }
 }
