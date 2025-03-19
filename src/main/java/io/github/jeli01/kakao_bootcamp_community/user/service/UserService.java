@@ -23,8 +23,8 @@ public class UserService {
     private final FileStoreUtils fileStoreUtils;
 
     public void signUp(PostSignUpRequest req) {
-        Boolean existsNickname = userRepository.existsByNickname(req.getNickname());
-        Boolean existsEmail = userRepository.existsByEmail(req.getEmail());
+        Boolean existsNickname = userRepository.existsByNicknameAndDeleteDateIsNull(req.getNickname());
+        Boolean existsEmail = userRepository.existsByEmailAndDeleteDateIsNull(req.getEmail());
 
         if (existsNickname || existsEmail) {
             return;

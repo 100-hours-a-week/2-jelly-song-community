@@ -13,4 +13,5 @@ public interface RefreshRepository extends JpaRepository<RefreshToken, Long> {
 
     @Transactional
     void deleteByExpirationBefore(LocalDateTime currentTime);
+
 }

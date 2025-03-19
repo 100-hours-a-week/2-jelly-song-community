@@ -16,12 +16,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User userData = userRepository.findByEmail(username);
+        User userData = userRepository.findByEmailAndDeleteDateIsNull(username)
+                .orElseThrow(() -> new RuntimeException("User with email " + username + " not found"));
         if (userData == null) {
             throw new UsernameNotFoundException("User not found with email: " + username);
-        }
-        if (userData.getDeleteDate() != null) {
-            throw new UsernameNotFoundException("Deleted User : " + username);
         }
         return new CustomUserDetails(userData);
     }
