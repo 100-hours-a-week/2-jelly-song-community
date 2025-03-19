@@ -2,6 +2,7 @@ package io.github.jeli01.kakao_bootcamp_community.user.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter

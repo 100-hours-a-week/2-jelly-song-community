@@ -6,5 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PostSignUpResponse {
+    private Boolean isSuccess;
     private String message;
+
+    public PostSignUpResponse() {
+        this.isSuccess = true;
+        this.message = "user post success";
+    }
 }
