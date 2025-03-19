@@ -56,7 +56,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.GET, "/boards/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/reissue").permitAll()
-                .anyRequest().authenticated());
+                //.anyRequest().authenticated());
+                .anyRequest().permitAll());
 
         http.sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

@@ -1,4 +1,4 @@
-package io.github.jeli01.kakao_bootcamp_community.board.controller;
+package io.github.jeli01.kakao_bootcamp_community.board.api;
 
 import io.github.jeli01.kakao_bootcamp_community.board.domain.Board;
 import io.github.jeli01.kakao_bootcamp_community.board.dto.request.PostBoardRequest;
@@ -8,7 +8,8 @@ import io.github.jeli01.kakao_bootcamp_community.board.dto.response.GetBoardResp
 import io.github.jeli01.kakao_bootcamp_community.board.dto.response.GetBoardsResponse;
 import io.github.jeli01.kakao_bootcamp_community.board.dto.response.PostBoardResponse;
 import io.github.jeli01.kakao_bootcamp_community.board.dto.response.PutBoardResponse;
-import io.github.jeli01.kakao_bootcamp_community.board.repository.BoardRepository;
+import io.github.jeli01.kakao_bootcamp_community.board.service.BoardService;
+import io.github.jeli01.kakao_bootcamp_community.board.service.webdtoservice.BoardDtoService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,40 +17,57 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-public class BoardController {
-    private final BoardRepository boardRepository;
+@RequestMapping("/boards")
+public class BoardApiController {
+    private final BoardService boardService;
+    private final BoardDtoService boardDtoService;
 
-    @GetMapping("/boards")
+    @GetMapping
     public GetBoardsResponse getBoards() {
-        List<Board> boards = boardRepository.findAll();
-        GetBoardsResponse getBoardsResponse = new GetBoardsResponse();
-        getBoardsResponse.setIsSuccess(true);
-        getBoardsResponse.setMessage("boards get success");
-        getBoardsResponse.setCount(boards.size());
+        List<Board> boards = boardService.getBoards();
+        return boardDtoService.BoardsToDto(boards);
     }
 
-    @GetMapping("/boards/{id}")
-    public GetBoardResponse getBoard(@PathVariable()) {
-        return null;
+    @GetMapping("/{id}")
+    public GetBoardResponse getBoard(@PathVariable("id") Long id) {
+        Board board = boardService.getBoard(id);
+        return boardDtoService.BoardToDto(board);
     }
 
-    @PostMapping("/boards")
-    public PostBoardResponse postBoard(PostBoardRequest postBoardRequest) {
-        return null;
+    @PostMapping
+    public PostBoardResponse postBoard(@RequestParam MultipartFile image, @RequestParam("title") String title,
+                                       @RequestParam("title") String content) {
+        PostBoardRequest postBoardRequest = new PostBoardRequest();
+        postBoardRequest.setImage(image);
+        postBoardRequest.setTitle(title);
+        postBoardRequest.setContent(content);
+        boardService.createBoard(postBoardRequest);
+        return new PostBoardResponse();
     }
 
-    @PutMapping("/boards/{id}")
-    public PutBoardResponse putBoard(PutBoardRequest putBoardRequest) {
-        return null;
+    @PutMapping("/{id}")
+    public PutBoardResponse putBoard(@PathVariable("id") Long id, @RequestParam MultipartFile image,
+                                     @RequestParam("title") String title,
+                                     @RequestParam("content") String content) {
+        PutBoardRequest putBoardRequest = new PutBoardRequest();
+        putBoardRequest.setImage(image);
+        putBoardRequest.setTitle(title);
+        putBoardRequest.setContent(content);
+
+        boardService.updateBoard(id, putBoardRequest);
+        return new PutBoardResponse();
     }
 
-    @DeleteMapping("/boards/{id}")
+    @DeleteMapping("{id}")
     public DeleteBoardResponse deleteBoard(@PathVariable("id") Long id) {
-        boardRepository.deleteById(id);
+        boardService.deleteBoard(id);
         return new DeleteBoardResponse();
     }
 }
