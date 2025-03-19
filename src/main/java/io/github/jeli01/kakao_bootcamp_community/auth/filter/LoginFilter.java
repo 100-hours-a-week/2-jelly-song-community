@@ -88,8 +88,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setCharacterEncoding("UTF-8");
 
         Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("isSuccess", "true");
         responseBody.put("message", "Login successful");
-        responseBody.put("username", username);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonResponse = objectMapper.writeValueAsString(responseBody);
@@ -101,7 +101,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException {
         response.setStatus(401);
-        response.getWriter().print("{\"message\": client error}");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("isSuccess", "false");
+        responseBody.put("message", "unsuccessfulAuthentication");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(responseBody);
+
+        response.getWriter().write(jsonResponse);
     }
 
     private Cookie createCookie(String key, String value) {
