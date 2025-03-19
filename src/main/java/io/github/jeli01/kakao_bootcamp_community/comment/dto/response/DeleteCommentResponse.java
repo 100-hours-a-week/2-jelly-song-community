@@ -5,12 +5,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PutCommentResponse {
+public class DeleteCommentResponse {
     private Boolean isSuccess;
     private String message;
 
-    public PutCommentResponse() {
+    public DeleteCommentResponse() {
         this.isSuccess = true;
-        this.message = "comment post success";
+        this.message = "comment delete success";
     }
 }

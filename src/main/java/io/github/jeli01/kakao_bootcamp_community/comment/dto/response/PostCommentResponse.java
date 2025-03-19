@@ -6,5 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PostCommentResponse {
-    private String content;
+    private Boolean isSuccess;
+    private String message;
+
+    public PostCommentResponse() {
+        this.isSuccess = true;
+        this.message = "comment post success";
+    }
 }

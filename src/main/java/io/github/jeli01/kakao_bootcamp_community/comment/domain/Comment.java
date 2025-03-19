@@ -10,12 +10,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long id;
 
@@ -37,4 +41,23 @@ public class Comment {
     private LocalDateTime updateDate;
 
     private LocalDateTime deleteDate;
+
+    public Comment(String content, Board board, User writer, LocalDateTime createDate, LocalDateTime updateDate,
+                   LocalDateTime deleteDate) {
+        this.content = content;
+        this.board = board;
+        this.writer = writer;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+        this.deleteDate = deleteDate;
+    }
+
+    public void changeContent(String content) {
+        this.content = content;
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public void softDelete() {
+        this.deleteDate = LocalDateTime.now();
+    }
 }
