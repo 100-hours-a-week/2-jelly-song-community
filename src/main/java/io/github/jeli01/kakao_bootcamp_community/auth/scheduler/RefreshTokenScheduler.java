@@ -1,6 +1,6 @@
 package io.github.jeli01.kakao_bootcamp_community.auth.scheduler;
 
-import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshRepository;
+import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshTokenRepository;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class RefreshTokenScheduler {
-    private final RefreshRepository refreshTokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Scheduled(fixedRate = 3600000)
     public void deleteExpiredTokens() {

@@ -6,7 +6,7 @@ import io.github.jeli01.kakao_bootcamp_community.auth.filter.LoginFilter;
 import io.github.jeli01.kakao_bootcamp_community.auth.handler.CustomAccessDeniedHandler;
 import io.github.jeli01.kakao_bootcamp_community.auth.handler.CustomAuthenticationEntryPoint;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
-import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshRepository;
+import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshTokenRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,13 +25,13 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
-    private final RefreshRepository refreshRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil,
-                          RefreshRepository refreshRepository) {
+                          RefreshTokenRepository refreshTokenRepository) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
-        this.refreshRepository = refreshRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @Bean
@@ -62,9 +62,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
-        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
+        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshTokenRepository), LogoutFilter.class);
         http.addFilterAt(
-                new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository),
+                new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshTokenRepository),
                 UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling(exception -> exception
@@ -73,7 +73,6 @@ public class SecurityConfig {
         );
 
         return http.build();
-
     }
 
 }

@@ -18,9 +18,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User userData = userRepository.findByEmailAndDeleteDateIsNull(username)
                 .orElseThrow(() -> new RuntimeException("User with email " + username + " not found"));
+
         if (userData == null) {
             throw new UsernameNotFoundException("User not found with email: " + username);
         }
+        
         return new CustomUserDetails(userData);
     }
 }

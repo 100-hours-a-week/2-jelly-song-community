@@ -27,7 +27,6 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String accessToken = request.getHeader("access");
-        System.out.println("accessToken : " + accessToken);
         if (accessToken == null || accessToken.length() <= 7 || !accessToken.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -44,7 +43,6 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         String category = jwtUtil.getCategory(accessToken);
-
         if (!category.equals("access")) {
             PrintWriter writer = response.getWriter();
             writer.print("invalid access token");

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jeli01.kakao_bootcamp_community.auth.domain.RefreshToken;
 import io.github.jeli01.kakao_bootcamp_community.auth.dto.CustomUserDetails;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
-import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshRepository;
+import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshTokenRepository;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PostLoginRequest;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletInputStream;
@@ -32,13 +32,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
-    private final RefreshRepository refreshRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil,
-                       RefreshRepository refreshRepository) {
+                       RefreshTokenRepository refreshTokenRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        this.refreshRepository = refreshRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @Override
@@ -124,6 +124,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
         LocalDateTime date = LocalDateTime.now().plus(Duration.ofMillis(expiredMs));
         RefreshToken refreshTokenEntity = new RefreshToken(username, refresh, date);
-        refreshRepository.save(refreshTokenEntity);
+        refreshTokenRepository.save(refreshTokenEntity);
     }
 }
