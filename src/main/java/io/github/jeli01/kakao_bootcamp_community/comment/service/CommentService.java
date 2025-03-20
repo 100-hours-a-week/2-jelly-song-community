@@ -25,7 +25,7 @@ public class CommentService {
         User user = userRepository.findByEmailAndDeleteDateIsNull(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        Board board = boardRepository.findById(boardId)
+        Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
         Comment comment = new Comment(

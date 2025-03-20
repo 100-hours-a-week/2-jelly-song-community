@@ -44,13 +44,13 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        User user = userRepository.findById(id)
+        User user = userRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
         user.delete();
     }
 
     public void patchUserBasic(PatchUserBasicRequest patchUserBasicRequest, Long id) {
-        User user = userRepository.findById(id)
+        User user = userRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
 
         String oldImagePath = user.getProfileImage();
@@ -61,7 +61,7 @@ public class UserService {
     }
 
     public PatchPasswordResponse patchUserPassword(PatchPasswordRequest patchPasswordRequest, Long id) {
-        User user = userRepository.findById(id)
+        User user = userRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
         user.changePassword(patchPasswordRequest.getPassword());
         return new PatchPasswordResponse();

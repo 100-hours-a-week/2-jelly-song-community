@@ -49,7 +49,7 @@ public class BoardService {
     }
 
     public void updateBoard(Long id, PutBoardRequest putBoardRequest) {
-        Board board = boardRepository.findById(id)
+        Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -64,7 +64,7 @@ public class BoardService {
     }
 
     public void deleteBoard(Long id) {
-        Board board = boardRepository.findById(id)
+        Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
