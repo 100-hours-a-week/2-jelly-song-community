@@ -71,6 +71,7 @@ function validateWheneverTyped() {
                 validation = false;
             }
         }
+
         function validateEmail() {
             if ($email_form.value == "") {
                 email_validation_container.innerText = "*이메일을 입력해주세요";
@@ -82,6 +83,7 @@ function validateWheneverTyped() {
                 email_validation_container.innerText = "";
             }
         }
+
         function validatePassword() {
             if ($password_form.value == "") {
                 $password_validation_container.innerText = "*비밀번호를 입력해주세요"
@@ -96,6 +98,7 @@ function validateWheneverTyped() {
                 $password_validation_container.innerText = "";
             }
         }
+
         function validatePasswordConfirm() {
             if ($password_confirm_form.value == "") {
                 $password_confirm_validation_container.innerText = "*비밀번호를 한번 더 입력해주세요"
@@ -107,6 +110,7 @@ function validateWheneverTyped() {
                 $password_confirm_validation_container.innerText = "";
             }
         }
+
         function validateNickname() {
             if ($nickname_form.value == "") {
                 $nickname_validation_container.innerText = "*닉네임을 입력해주세요"
@@ -121,6 +125,7 @@ function validateWheneverTyped() {
                 $nickname_validation_container.innerText = "";
             }
         }
+
         function validateButton() {
             if (validation == true) {
                 $button.classList.remove("button-disable")
@@ -134,9 +139,42 @@ function validateWheneverTyped() {
 }
 
 function preventSubmitIfNotValidate() {
-    $layout_form.addEventListener("submit", (event) => {
+    $layout_form.addEventListener("submit", async (event) => {
+        event.preventDefault();
         if ($button.classList.contains("button-disable")) {
-            event.preventDefault();
+            return
+        }
+
+        // FormData 생성하여 multipart/form-data 형식으로 변환
+        const formData = new FormData();
+
+        // (필드명은 서버가 요구하는 대로) "profile_image"
+        if ($fileDOM.files.length > 0) {
+            formData.append("profile_image", $fileDOM.files[0]);
+        }
+        // email, password, nickname
+        formData.append("email", $email_form.value);
+        formData.append("password", $password_form.value);
+        formData.append("nickname", $nickname_form.value);
+
+        try {
+            const response = await fetch("http://localhost:8080/users", {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await response.json();
+            console.log("회원가입 응답:", data);
+
+            if (data.isSuccess === true) {
+                alert(data.message || "회원가입 성공!");
+                window.location.href = "./login.html";
+            } else {
+                alert("회원가입 실패: " + (data.message || "알 수 없는 오류"));
+            }
+        } catch (error) {
+            console.error("회원가입 에러:", error);
+            alert("회원가입 중 서버 오류가 발생했습니다.");
         }
     })
 }
