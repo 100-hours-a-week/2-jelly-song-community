@@ -21,8 +21,8 @@ public class CommentService {
     private final UserRepository userRepository;
 
     public void addComment(Long boardId, String content) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmailAndDeleteDateIsNull(email)
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
@@ -40,8 +40,8 @@ public class CommentService {
     }
 
     public void updateComment(Long commentId, String content) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmailAndDeleteDateIsNull(email)
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Comment comment = commentRepository.findByIdAndDeleteDateIsNull(commentId)
@@ -56,8 +56,8 @@ public class CommentService {
     }
 
     public void deleteComment(Long commentId) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmailAndDeleteDateIsNull(email)
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Comment comment = commentRepository.findByIdAndDeleteDateIsNull(commentId)

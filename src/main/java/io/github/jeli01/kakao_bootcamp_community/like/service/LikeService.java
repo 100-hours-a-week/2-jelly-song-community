@@ -21,8 +21,9 @@ public class LikeService {
     private final UserRepository userRepository;
 
     public void addLike(Long boardId) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmailAndDeleteDateIsNull(email)
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
@@ -38,8 +39,8 @@ public class LikeService {
     }
 
     public void removeLike(Long boardId) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmailAndDeleteDateIsNull(email)
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)

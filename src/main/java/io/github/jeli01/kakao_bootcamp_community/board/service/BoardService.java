@@ -28,8 +28,8 @@ public class BoardService {
     }
 
     public void createBoard(PostBoardRequest postBoardRequest) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User writer = userRepository.findByEmailAndDeleteDateIsNull(email)
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        User writer = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         String fullPath = fileStoreUtils.storeFile(postBoardRequest.getImage());
