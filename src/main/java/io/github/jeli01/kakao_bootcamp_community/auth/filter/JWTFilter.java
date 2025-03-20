@@ -60,7 +60,7 @@ public class JWTFilter extends OncePerRequestFilter {
         Optional<User> userOptional = userRepository.findByIdAndDeleteDateIsNull(parsedId);
         if (userOptional.isEmpty()) {
             PrintWriter writer = response.getWriter();
-            writer.print("no user");
+            writer.print("no user about your accessToken");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
