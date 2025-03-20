@@ -7,6 +7,8 @@ import io.github.jeli01.kakao_bootcamp_community.auth.handler.CustomAccessDenied
 import io.github.jeli01.kakao_bootcamp_community.auth.handler.CustomAuthenticationEntryPoint;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
 import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshTokenRepository;
+import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,17 +24,12 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
-
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil,
-                          RefreshTokenRepository refreshTokenRepository) {
-        this.authenticationConfiguration = authenticationConfiguration;
-        this.jwtUtil = jwtUtil;
-        this.refreshTokenRepository = refreshTokenRepository;
-    }
+    private final UserRepository userRepository;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -62,7 +59,7 @@ public class SecurityConfig {
         http.sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtUtil, userRepository), LoginFilter.class);
         http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshTokenRepository), LogoutFilter.class);
         http.addFilterAt(
                 new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshTokenRepository),

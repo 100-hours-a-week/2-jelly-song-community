@@ -3,6 +3,7 @@ package io.github.jeli01.kakao_bootcamp_community.auth.filter;
 import io.github.jeli01.kakao_bootcamp_community.auth.dto.CustomUserDetails;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
 import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
+import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,9 +20,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
+    private final UserRepository userRepository;
 
-    public JWTFilter(JWTUtil jwtUtil) {
+    public JWTFilter(JWTUtil jwtUtil, UserRepository userRepository) {
         this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -51,10 +55,18 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        String username = jwtUtil.getUsername(accessToken);
-        String role = jwtUtil.getRole(accessToken);
+        String email = jwtUtil.getUsername(accessToken);
 
-        User userEntity = new User(username, "", "", "", role, LocalDateTime.now(), LocalDateTime.now(), null);
+        Optional<User> userOptional = userRepository.findByEmailAndDeleteDateIsNull(email);
+        if (userOptional.isEmpty()) {
+            PrintWriter writer = response.getWriter();
+            writer.print("no user");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        String role = jwtUtil.getRole(accessToken);
+        User userEntity = new User(email, "", "", "", role, LocalDateTime.now(), LocalDateTime.now(), null);
         CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null,
