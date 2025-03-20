@@ -28,7 +28,7 @@ public class RefreshTokenApiController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public ErrorResponse illegalExHandle(IllegalArgumentException e) {
-        return new ErrorResponse(false, 400, e.getMessage());
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @PostMapping("/reissue")
