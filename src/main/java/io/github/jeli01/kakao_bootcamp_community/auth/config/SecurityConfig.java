@@ -56,6 +56,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.GET, "/boards/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/reissue").permitAll()
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated());
 
         http.sessionManagement((session) -> session
