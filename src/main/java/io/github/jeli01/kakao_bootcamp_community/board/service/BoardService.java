@@ -52,8 +52,8 @@ public class BoardService {
         Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!board.getWriter().getEmail().equals(email)) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!board.getWriter().getId().equals(Long.parseLong(userId))) {
             throw new IllegalStateException("You are not the owner of this board");
         }
 
@@ -67,8 +67,8 @@ public class BoardService {
         Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!board.getWriter().getEmail().equals(email)) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!board.getWriter().getId().equals(userId)) {
             throw new IllegalStateException("You are not the owner of this board");
         }
 
