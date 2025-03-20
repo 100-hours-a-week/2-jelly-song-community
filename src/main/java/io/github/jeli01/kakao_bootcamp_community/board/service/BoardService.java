@@ -68,7 +68,7 @@ public class BoardService {
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!board.getWriter().getId().equals(userId)) {
+        if (!board.getWriter().getId().equals(Long.parseLong(userId))) {
             throw new IllegalStateException("You are not the owner of this board");
         }
 
