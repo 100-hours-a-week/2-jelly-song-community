@@ -3,22 +3,20 @@ package io.github.jeli01.kakao_bootcamp_community.util.file;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FileStoreUtils {
-    @Value("${profile.image.file.dir}")
+    @Value("${image.file.dir}")
     private String fileDir;
 
-    public FileStoreUtils(@Value("${profile.image.file.dir}") String fileDir) {
+    public FileStoreUtils(@Value("${image.file.dir}") String fileDir) {
         this.fileDir = fileDir;
     }
 
-    public String storeFile(MultipartFile multipartFile)
-    {
+    public String storeFile(MultipartFile multipartFile) {
         if (multipartFile.isEmpty()) {
             return null;
         }
@@ -36,8 +34,7 @@ public class FileStoreUtils {
         return fullPath;
     }
 
-    public boolean deleteFile(String filePath)
-    {
+    public boolean deleteFile(String filePath) {
         if (filePath == null || filePath.isEmpty()) {
             return false;
         }
