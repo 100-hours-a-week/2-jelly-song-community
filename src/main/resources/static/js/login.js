@@ -15,16 +15,41 @@ preventIfNotValidated();
 validateWheneverTyped();
 
 function preventIfNotValidated() {
-    $layout_form.addEventListener("submit", (event) => {
-        let email_address = $email_form.value;
+    $layout_form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        let email = $email_form.value;
         let password = $password_form.value;
 
-        if (email_regex.test(email_address) && passwordRegex.test(password)) {
-            return;
+        try {
+            const response = await fetch("http://localhost:8080/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({email, password}),
+            });
+
+            const data = await response.json();
+
+            const accessToken = response.headers.get("Authorization");
+            if (accessToken) {
+                localStorage.setItem("accessToken", accessToken);
+            }
+
+            if (data.isSuccess === "true") {
+                alert(data.message || "로그인 성공!");
+                window.location.href = "./posts.html";
+            } else {
+                alert("로그인 실패: " + (data.message || ""));
+            }
+        } catch (error) {
+            alert("로그인 중 오류가 발생했습니다.");
         }
-        event.preventDefault();
     })
 }
+
 function validateWheneverTyped() {
     $layout_form.addEventListener("input", (event) => {
         let email_address = $email_form.value;
