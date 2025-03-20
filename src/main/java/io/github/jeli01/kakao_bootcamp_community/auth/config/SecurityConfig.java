@@ -62,7 +62,8 @@ public class SecurityConfig {
         http.addFilterBefore(new JWTFilter(jwtUtil, userRepository), LoginFilter.class);
         http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshTokenRepository), LogoutFilter.class);
         http.addFilterAt(
-                new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshTokenRepository),
+                new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshTokenRepository,
+                        userRepository),
                 UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling(exception -> exception

@@ -5,7 +5,9 @@ import io.github.jeli01.kakao_bootcamp_community.auth.domain.RefreshToken;
 import io.github.jeli01.kakao_bootcamp_community.auth.dto.CustomUserDetails;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
 import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshTokenRepository;
+import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PostLoginRequest;
+import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.Cookie;
@@ -33,12 +35,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
 
     public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil,
-                       RefreshTokenRepository refreshTokenRepository) {
+                       RefreshTokenRepository refreshTokenRepository, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -55,10 +59,18 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             throw new RuntimeException(e);
         }
 
-        String username = postLoginRequest.getEmail();
+        String email = postLoginRequest.getEmail();
         String password = postLoginRequest.getPassword();
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password,
+        Long id = -1L;
+        User user = userRepository.findByEmailAndDeleteDateIsNull(email).orElseThrow(() -> {
+            throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
+        });
+        if (user != null) {
+            id = user.getId();
+        }
+
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(id, password,
                 null);
 
         return authenticationManager.authenticate(authToken);

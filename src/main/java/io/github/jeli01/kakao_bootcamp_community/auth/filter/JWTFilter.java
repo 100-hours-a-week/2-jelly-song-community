@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,9 +54,10 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        String email = jwtUtil.getUsername(accessToken);
+        String id = jwtUtil.getUsername(accessToken);
+        Long parsedId = Long.parseLong(id);
 
-        Optional<User> userOptional = userRepository.findByEmailAndDeleteDateIsNull(email);
+        Optional<User> userOptional = userRepository.findByIdAndDeleteDateIsNull(parsedId);
         if (userOptional.isEmpty()) {
             PrintWriter writer = response.getWriter();
             writer.print("no user");
@@ -66,7 +66,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         String role = jwtUtil.getRole(accessToken);
-        User userEntity = new User(email, "", "", "", role, LocalDateTime.now(), LocalDateTime.now(), null);
+        User userEntity = new User(parsedId, role);
         CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null,

@@ -17,12 +17,12 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    private String username;
     private String refresh;
     private LocalDateTime expiration;
 
-    public RefreshToken(String email, String refresh, LocalDateTime expiration) {
-        this.email = email;
+    public RefreshToken(String username, String refresh, LocalDateTime expiration) {
+        this.username = username;
         this.refresh = refresh;
         this.expiration = expiration;
     }

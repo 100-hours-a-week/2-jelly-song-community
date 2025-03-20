@@ -100,9 +100,9 @@ public class RefreshTokenApiController {
         return cookie;
     }
 
-    private void saveRefreshToken(String email, String refresh, Long expiredMs) {
+    private void saveRefreshToken(String username, String refresh, Long expiredMs) {
         LocalDateTime date = LocalDateTime.now().plus(Duration.ofMillis(expiredMs));
-        RefreshToken refreshTokenEntity = new RefreshToken(email, refresh, date);
+        RefreshToken refreshTokenEntity = new RefreshToken(username, refresh, date);
         refreshTokenService.save(refreshTokenEntity);
     }
 }

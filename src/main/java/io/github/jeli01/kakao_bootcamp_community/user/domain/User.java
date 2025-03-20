@@ -44,7 +44,6 @@ public class User {
 
     public User(String email, String password, String nickname, String profileImage, String role,
                 LocalDateTime createDate, LocalDateTime updateDate, LocalDateTime deleteDate) {
-        this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -68,5 +67,10 @@ public class User {
 
     public void delete() {
         deleteDate = LocalDateTime.now();
+    }
+
+    public User(Long id, String role) {
+        this.id = id;
+        this.role = role;
     }
 }
