@@ -26,7 +26,7 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String accessToken = request.getHeader("access");
+        String accessToken = request.getHeader("Authorization");
         if (accessToken == null || accessToken.length() <= 7 || !accessToken.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;

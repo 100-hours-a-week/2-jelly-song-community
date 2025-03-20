@@ -48,7 +48,7 @@ public class RefreshTokenApiController {
         refreshTokenService.deleteByRefresh(refresh);
         saveRefreshToken(username, newRefresh, 8640000L);
 
-        response.setHeader("access", newAccess);
+        response.setHeader("Authorization", newAccess);
         response.addCookie(createCookie("refresh", newRefresh));
 
         return new ResponseEntity<>(HttpStatus.OK);

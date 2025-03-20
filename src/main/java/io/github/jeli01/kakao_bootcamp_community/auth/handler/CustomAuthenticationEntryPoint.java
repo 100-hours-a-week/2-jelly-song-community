@@ -19,7 +19,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-
         if (response.getStatus() == HttpServletResponse.SC_INTERNAL_SERVER_ERROR) {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

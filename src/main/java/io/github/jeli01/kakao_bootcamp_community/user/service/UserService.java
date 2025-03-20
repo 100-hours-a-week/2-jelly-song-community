@@ -26,8 +26,12 @@ public class UserService {
         Boolean existsNickname = userRepository.existsByNicknameAndDeleteDateIsNull(req.getNickname());
         Boolean existsEmail = userRepository.existsByEmailAndDeleteDateIsNull(req.getEmail());
 
-        if (existsNickname || existsEmail) {
-            return;
+        if (existsNickname) {
+            throw new IllegalArgumentException("존재하는 닉네임 입니다.");
+        }
+
+        if (existsEmail) {
+            throw new IllegalArgumentException("존재하는 이메일 입니다.");
         }
 
         MultipartFile profileImage = req.getProfileImage();
