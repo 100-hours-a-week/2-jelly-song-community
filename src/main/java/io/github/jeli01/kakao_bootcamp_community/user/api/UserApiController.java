@@ -53,7 +53,6 @@ public class UserApiController {
     public PatchUserBasicResponse patchUserBasic(@RequestParam("profile_image") MultipartFile profileImage,
                                                  @RequestParam("nickname") String nickname,
                                                  @PathVariable("id") Long id) {
-        log.info("UserApiController.patchUserBasic call");
         PatchUserBasicRequest patchUserBasicRequest = new PatchUserBasicRequest();
         patchUserBasicRequest.setProfileImage(profileImage);
         patchUserBasicRequest.setNickname(nickname);
@@ -63,7 +62,6 @@ public class UserApiController {
 
     @DeleteMapping("/users/{id}")
     public DeleteUserResponse deleteUser(@PathVariable("id") Long id) {
-        log.info("UserApiController.deleteUser call");
         userService.deleteUser(id);
         return new DeleteUserResponse();
     }

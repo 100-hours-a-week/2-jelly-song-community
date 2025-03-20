@@ -29,7 +29,7 @@ public class BoardService {
 
     public void createBoard(PostBoardRequest postBoardRequest) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User writer = userRepository.findByEmailAndDeleteDateIsNull(email) // TODO: 현재 로그인한 사용자로 변경 필요
+        User writer = userRepository.findByEmailAndDeleteDateIsNull(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         String fullPath = fileStoreUtils.storeFile(postBoardRequest.getImage());

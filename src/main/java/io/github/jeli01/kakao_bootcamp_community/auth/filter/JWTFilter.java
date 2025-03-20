@@ -33,6 +33,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         accessToken = accessToken.substring(7);
+        System.out.println("accessToken : " + accessToken);
         try {
             jwtUtil.isExpired(accessToken);
         } catch (ExpiredJwtException e) {

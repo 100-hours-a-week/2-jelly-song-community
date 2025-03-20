@@ -28,7 +28,7 @@ public class FileStoreUtils {
         try {
             multipartFile.transferTo(new File(fullPath));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
 
         return fullPath;
