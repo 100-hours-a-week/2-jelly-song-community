@@ -10,11 +10,30 @@ const modal = document.querySelector('.modal');
 const modalOpen = document.querySelector('.drop-member-button');
 const modalClose = document.querySelector('.close_btn');
 const confirm_btn = document.querySelector(".confirm_btn");
+let $fileDOM = document.querySelector("#file");
 
+uploadProfile();
 validateWheneverTyped();
 activateTost();
 activateModal();
 
+function uploadProfile() {
+    $fileDOM.addEventListener('change', (event) => {
+        const reader = new FileReader();
+        reader.readAsDataURL($fileDOM.files[0]);
+        reader.onload = ({target}) => {
+            $preview.style.backgroundImage = `url(${target.result})`
+            $preview.style.backgroundRepeat = "no-repeat"
+            $preview.style.backgroundSize = "cover";
+            $preview.style.backgroundPosition = "center";
+            $plus_font.innerHTML = "";
+
+            $profile_validation_container.innerHTML = ""
+
+            $layout_form.dispatchEvent(new Event("input", {bubbles: true}));
+        };
+    });
+}
 
 function validateWheneverTyped() {
     $update_member_form.addEventListener("input", (event) => {
@@ -51,11 +70,12 @@ function activateTost() {
         }
         tostOn()
     })
-    function tostOn(){
+
+    function tostOn() {
         tostMessage.classList.add('active');
-        setTimeout(function(){
+        setTimeout(function () {
             tostMessage.classList.remove('active');
-        },1000);
+        }, 1000);
     }
 
 }
@@ -73,6 +93,7 @@ function activateModal() {
     })
 
     preventHrefDropMemberButton();
+
     function preventHrefDropMemberButton() {
         $drop_member_button.addEventListener("click", (e) => {
             e.preventDefault();
