@@ -1,10 +1,12 @@
 package io.github.jeli01.kakao_bootcamp_community.user.api;
 
 import io.github.jeli01.kakao_bootcamp_community.exception.response.ErrorResponse;
+import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchPasswordRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchUserBasicRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PostSignUpRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.DeleteUserResponse;
+import io.github.jeli01.kakao_bootcamp_community.user.dto.response.GetUserResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PatchPasswordResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PatchUserBasicResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PostSignUpResponse;
@@ -14,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +43,12 @@ public class UserApiController {
     @ExceptionHandler(MissingServletRequestPartException.class)
     public ErrorResponse handleMissingServletRequestPartException(MissingServletRequestPartException e) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
+
+    @GetMapping("/users/{id}")
+    public GetUserResponse getUser(@PathVariable("id") Long id) {
+        User user = userService.getUser(id);
+        return new GetUserResponse(user);
     }
 
     @PostMapping("/users")

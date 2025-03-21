@@ -22,6 +22,14 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final FileStoreUtils fileStoreUtils;
 
+    public User getUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
+        });
+        return user;
+    }
+
+
     public void signUp(PostSignUpRequest req) {
         Boolean existsNickname = userRepository.existsByNicknameAndDeleteDateIsNull(req.getNickname());
         Boolean existsEmail = userRepository.existsByEmailAndDeleteDateIsNull(req.getEmail());
