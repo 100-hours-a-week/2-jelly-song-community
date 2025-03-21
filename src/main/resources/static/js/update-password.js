@@ -1,3 +1,5 @@
+import {getValidAccessToken, parseJwt} from "./auth.js";
+
 let $update_password_form = document.querySelector(".update-password-form");
 let $button = document.querySelector(".button-disable");
 let $password_form = document.querySelector(".password-form")
@@ -8,7 +10,6 @@ let tostMessage = document.getElementById('tost_message');
 
 validateWheneverInput();
 activateTost();
-
 
 
 function validateWheneverInput() {
@@ -47,6 +48,7 @@ function validateWheneverInput() {
                 $password_confirm_validation_container.innerText = "";
             }
         }
+
         function validateButton() {
             if (validation == true) {
                 $button.classList.remove("button-disable")
@@ -60,11 +62,39 @@ function validateWheneverInput() {
 }
 
 function activateTost() {
-    $update_password_form.addEventListener("submit", (event) => {
+    $update_password_form.addEventListener("submit", async (event) => {
         event.preventDefault();
         if (!$button.classList.contains("button-enable")) {
             return false;
         }
+        try {
+            const token = await getValidAccessToken();
+            if (!token) return;
+            let jwtContent = parseJwt(token);
+
+            const response = await fetch(`http://localhost:8080/users/${jwtContent.username}/password`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    password: $password_form.value
+                })
+            });
+
+            const data = await response.json();
+            if (!data.isSuccess) {
+                console.error("패스워드 변경 실패:");
+                return;
+            }
+
+        } catch (err) {
+            alert("패스워드변경 에러")
+            console.error("게시물 조회 오류:", err);
+        }
+
         tostOn()
 
         function tostOn() {
