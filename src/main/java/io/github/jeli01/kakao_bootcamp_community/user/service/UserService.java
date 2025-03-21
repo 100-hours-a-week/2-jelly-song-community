@@ -63,7 +63,7 @@ public class UserService {
     public PatchPasswordResponse patchUserPassword(PatchPasswordRequest patchPasswordRequest, Long id) {
         User user = userRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
-        user.changePassword(patchPasswordRequest.getPassword());
+        user.changePassword(bCryptPasswordEncoder.encode(patchPasswordRequest.getPassword()));
         return new PatchPasswordResponse();
     }
 }
