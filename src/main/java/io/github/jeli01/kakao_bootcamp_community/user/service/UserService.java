@@ -1,12 +1,12 @@
 package io.github.jeli01.kakao_bootcamp_community.user.service;
 
+import io.github.jeli01.kakao_bootcamp_community.cloud.s3.FileUtils;
 import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchPasswordRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchUserBasicRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PostSignUpRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PatchPasswordResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
-import io.github.jeli01.kakao_bootcamp_community.util.file.FileStoreUtils;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final FileStoreUtils fileStoreUtils;
+    private final FileUtils fileUtils;
 
     public User getUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> {
@@ -43,7 +43,7 @@ public class UserService {
         }
 
         MultipartFile profileImage = req.getProfileImage();
-        String imagePath = fileStoreUtils.storeFile(profileImage);
+        String imagePath = fileUtils.storeFile(profileImage);
 
         User user = new User(req.getEmail(), bCryptPasswordEncoder.encode(req.getPassword()),
                 req.getNickname(), imagePath, "ROLE_USER", LocalDateTime.now(), LocalDateTime.now(), null);
@@ -62,8 +62,10 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
 
         String oldImagePath = user.getProfileImage();
-        fileStoreUtils.deleteFile(oldImagePath);
-        String imagePath = fileStoreUtils.storeFile(patchUserBasicRequest.getProfileImage());
+        fileUtils.deleteFile(oldImagePath);
+        System.out.println("old: " + oldImagePath);
+        String imagePath = fileUtils.storeFile(patchUserBasicRequest.getProfileImage());
+        System.out.println("new:" + imagePath);
 
         user.changeUserBasic(imagePath, patchUserBasicRequest.getNickname());
     }

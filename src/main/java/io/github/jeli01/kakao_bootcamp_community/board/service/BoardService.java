@@ -4,9 +4,9 @@ import io.github.jeli01.kakao_bootcamp_community.board.domain.Board;
 import io.github.jeli01.kakao_bootcamp_community.board.dto.request.PostBoardRequest;
 import io.github.jeli01.kakao_bootcamp_community.board.dto.request.PutBoardRequest;
 import io.github.jeli01.kakao_bootcamp_community.board.repository.BoardRepository;
+import io.github.jeli01.kakao_bootcamp_community.cloud.s3.FileUtils;
 import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
-import io.github.jeli01.kakao_bootcamp_community.util.file.FileStoreUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
-    private final FileStoreUtils fileStoreUtils;
+    private final FileUtils fileUtils;
 
     public List<Board> getBoards() {
         List<Board> all = boardRepository.findAll();
@@ -32,7 +32,7 @@ public class BoardService {
         User writer = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        String fullPath = fileStoreUtils.storeFile(postBoardRequest.getImage());
+        String fullPath = fileUtils.storeFile(postBoardRequest.getImage());
 
         Board board = new Board(
                 postBoardRequest.getTitle(),
@@ -57,7 +57,7 @@ public class BoardService {
             throw new IllegalStateException("You are not the owner of this board");
         }
 
-        String fullPath = fileStoreUtils.storeFile(putBoardRequest.getImage());
+        String fullPath = fileUtils.storeFile(putBoardRequest.getImage());
 
         board.changeBoard(putBoardRequest.getTitle(), putBoardRequest.getContent(), fullPath);
         boardRepository.save(board);
