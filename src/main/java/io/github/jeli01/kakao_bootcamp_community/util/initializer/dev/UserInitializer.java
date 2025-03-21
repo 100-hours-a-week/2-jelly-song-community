@@ -5,6 +5,7 @@ import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,9 @@ public class UserInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${test.image.url}")
+    private String testImageURL;
+
     @Override
     public void run(String... args) throws Exception {
         String testEmail = "test@naver.com";
@@ -23,7 +27,7 @@ public class UserInitializer implements CommandLineRunner {
                 testEmail,
                 passwordEncoder.encode("Test1234!"),
                 "테스트닉네임",
-                "/Users/user/Desktop/image/63b651e7-284e-414b-bb76-8dc6390d7772.png",
+                testImageURL,
                 "ROLE_USER",
                 LocalDateTime.now(),
                 LocalDateTime.now(),
