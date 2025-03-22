@@ -1,3 +1,5 @@
+import {getValidAccessToken, parseJwt} from "./auth.js";
+
 let $header_back = document.querySelector(".header-back");
 const postDeleteModal = document.querySelector('.post-modal');
 const postDeleteModalOpen = document.querySelector('.delete-button');
@@ -13,6 +15,7 @@ const commentModalOpens = document.querySelectorAll('.post-comment-right-delete-
 const commentModalClose = document.querySelector('.comment-close_btn');
 const commentConfirmBtn = document.querySelector(".comment-confirm_btn");
 let post_comment_form = document.querySelector(".post-comment-form");
+let $headerProfile = document.querySelector(".header-profile");
 
 activateHeaderBack();
 activatePostDeleteModal();
@@ -22,11 +25,45 @@ preventSubmitIfNotValidate();
 changeCommentButtonToUpdateButton();
 activateCommentModal();
 
+(async function () {
+    try {
+        const token = await getValidAccessToken();
+        if (!token) return;
+        let jwtContent = parseJwt(token);
+
+        // 1. 유저 정보 조회 API 호출
+        const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+            credentials: "include",
+        });
+
+        const result = await response.json();
+
+        if (!result.isSuccess) {
+            console.error('유저 정보를 가져오지 못했습니다.');
+            return;
+        }
+
+        const {userProfileImageUrl} = result.data;
+
+        if (userProfileImageUrl) {
+            $headerProfile.style.backgroundImage = `url(${userProfileImageUrl})`;
+        }
+
+    } catch (err) {
+        console.error('회원정보 조회 에러:', err);
+    }
+})();
+
 function activateHeaderBack() {
     $header_back.addEventListener("click", (event) => {
         window.location.href = "./posts.html";
     })
 }
+
 function activatePostDeleteModal() {
     postDeleteModalOpen.addEventListener('click', function () {
         postDeleteModal.style.display = 'block';
@@ -93,7 +130,7 @@ function changeCommentButtonToUpdateButton() {
 
 function activateCommentModal() {
     commentModalOpens.forEach(modalOpen => {
-        modalOpen.addEventListener("click",() => {
+        modalOpen.addEventListener("click", () => {
             commentModal.style.display = 'block';
             document.body.style.overflow = 'hidden'
         })
