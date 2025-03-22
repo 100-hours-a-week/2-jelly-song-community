@@ -8,6 +8,7 @@ let $post_comment_form_textarea = document.querySelector(".text-area-form");
 let $post_comment_form_button = document.querySelector(".button-disable");
 let $content_validation_container = document.querySelector(".content-validation-container");
 let $headerProfile = document.querySelector(".header-profile");
+let $create_post_container_form = document.querySelector(".create-post-container-form");
 
 activateHeaderBack();
 preventSubmitIfNotValidate();
@@ -101,3 +102,51 @@ function initializeButtonAttribute() {
         $post_comment_form_button.classList.add("button-disable")
     }
 }
+
+$create_post_container_form.addEventListener("submit", async (event) => {
+    event.preventDefault(); // 기본 폼 동작 막기
+
+    const token = await getValidAccessToken();
+    if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    const title = $title_form.value;
+    const content = $post_comment_form_textarea.value;
+    const imageFile = document.getElementById("create-post-file").files[0];
+
+    if (!title || !content) {
+        alert("제목과 내용을 모두 입력해주세요.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    if (imageFile) {
+        formData.append("image", imageFile);
+    }
+
+    try {
+        const response = await fetch("http://localhost:8080/boards", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+            body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.isSuccess) {
+            alert("게시물이 성공적으로 등록되었습니다!");
+            window.location.href = "/posts.html"; // 게시글 목록으로 이동
+        } else {
+            alert("게시글 등록 실패: " + result.message);
+        }
+    } catch (error) {
+        console.error("게시글 작성 오류:", error);
+        alert("게시글 작성 중 오류가 발생했습니다.");
+    }
+});
