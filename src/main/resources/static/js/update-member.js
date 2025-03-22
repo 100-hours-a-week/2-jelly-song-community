@@ -175,8 +175,33 @@ function activateModal() {
         modal.style.display = 'none';
     });
 
-    confirm_btn.addEventListener('click', function () {
-        location.href = "./login.html";
+    confirm_btn.addEventListener('click', async function () {
+        try {
+            const token = await getValidAccessToken();
+            if (!token) {
+                console.error("토큰이 없습니다.");
+                return;
+            }
+
+            let jwtContent = parseJwt(token);
+
+            const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
+
+            const result = await response.json();
+
+            if (result.isSuccess) {
+                location.href = "./login.html";
+            } else {
+                console.error("회원 탈퇴 실패:", result.message);
+            }
+        } catch (error) {
+            console.error("회원 탈퇴 오류 발생:", error);
+        }
     })
 
     preventHrefDropMemberButton();
