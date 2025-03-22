@@ -36,7 +36,13 @@ public class Board {
     private User writer;
 
     @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private Long visit;
+    private Long visitCount;
+
+    @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Long likeCount;
+
+    @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Long commentCount;
 
     @Column(nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createDate;
@@ -46,13 +52,15 @@ public class Board {
 
     private LocalDateTime deleteDate;
 
-    public Board(String title, String content, String boardImage, User writer, Long visit, LocalDateTime createDate,
-                 LocalDateTime updateDate, LocalDateTime deleteDate) {
+    public Board(String title, String content, String boardImage, User writer, Long visitCount, Long likeCount,
+                 Long commentCount, LocalDateTime createDate, LocalDateTime updateDate, LocalDateTime deleteDate) {
         this.title = title;
         this.content = content;
         this.boardImage = boardImage;
         this.writer = writer;
-        this.visit = visit;
+        this.visitCount = visitCount;
+        this.likeCount = likeCount;
+        this.commentCount = commentCount;
         this.createDate = createDate;
         this.updateDate = updateDate;
         this.deleteDate = deleteDate;
@@ -70,7 +78,27 @@ public class Board {
     }
 
     public void plusVisitCount() {
-        this.visit += 1;
+        this.visitCount += 1;
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public void plusLikeCount() {
+        this.likeCount += 1;
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public void plusCommentCount() {
+        this.commentCount += 1;
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public void minusLikeCount() {
+        this.likeCount -= 1;
+        this.updateDate = LocalDateTime.now();
+    }
+
+    public void minusCommentCount() {
+        this.commentCount -= 1;
         this.updateDate = LocalDateTime.now();
     }
 }

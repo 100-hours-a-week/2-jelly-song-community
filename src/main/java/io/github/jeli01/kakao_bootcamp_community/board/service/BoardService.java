@@ -40,6 +40,8 @@ public class BoardService {
                 fullPath,
                 writer,
                 0L,
+                0L,
+                0L,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 null
@@ -77,7 +79,9 @@ public class BoardService {
     }
 
     public Board getBoard(Long id) {
-        return boardRepository.findByIdAndDeleteDateIsNull(id)
+        Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found or deleted"));
+        board.plusVisitCount();
+        return board;
     }
 }

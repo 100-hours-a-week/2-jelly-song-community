@@ -28,6 +28,7 @@ public class CommentService {
         Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
+        board.minusCommentCount();
         Comment comment = new Comment(
                 content,
                 board,
@@ -62,6 +63,9 @@ public class CommentService {
 
         Comment comment = commentRepository.findByIdAndDeleteDateIsNull(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+
+        Board board = comment.getBoard();
+        board.minusCommentCount();
 
         if (!comment.getWriter().equals(user)) {
             throw new IllegalStateException("You are not the owner of this comment");

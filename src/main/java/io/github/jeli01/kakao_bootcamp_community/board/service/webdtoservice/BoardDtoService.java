@@ -64,7 +64,7 @@ public class BoardDtoService {
 
         Long likeCount = likeRepository.countByBoard(board);
         data.setLike(likeCount);
-        data.setVisitCount(board.getVisit());
+        data.setVisitCount(board.getVisitCount());
 
         Long commentCount = commentRepository.countByBoard(board);
         data.setCommentsCount(commentCount);

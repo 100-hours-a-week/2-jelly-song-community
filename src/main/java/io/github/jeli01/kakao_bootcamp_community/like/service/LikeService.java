@@ -29,6 +29,7 @@ public class LikeService {
         Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
+        board.plusLikeCount();
         Optional<Like> existingLike = likeRepository.findByUserAndBoard(user, board);
         if (existingLike.isPresent()) {
             throw new IllegalStateException("You already liked this post");
@@ -46,6 +47,7 @@ public class LikeService {
         Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
+        board.minusLikeCount();
         Optional<Like> existingLike = likeRepository.findByUserAndBoard(user, board);
         if (existingLike.isEmpty()) {
             throw new IllegalStateException("You have not liked this post");
