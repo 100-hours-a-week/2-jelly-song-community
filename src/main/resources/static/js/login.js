@@ -39,10 +39,10 @@ function preventIfNotValidated() {
             }
 
             if (data.isSuccess === "true") {
-                alert(data.message || "로그인 성공!");
                 window.location.href = "./posts.html";
             } else {
-                alert("로그인 실패: " + (data.message || ""));
+                email_validation_container.innerText = "*아이디 또는 비밀번호를 확인해주세요";
+                $password_validation_container.innerText = "*아이디 또는 비밀번호를 확인해주세요"
             }
         } catch (error) {
             alert("로그인 중 오류가 발생했습니다.");
