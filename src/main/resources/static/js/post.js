@@ -83,7 +83,7 @@ async function fetchAndRenderUserProfile() {
         document.querySelector(".post-header-meta-profile").style.backgroundImage = `url(${post.profileImage})`;
         const profileDiv = document.querySelector(".post-header-meta-profile");
         if (post.boardImage != null) {
-            profileDiv.style.backgroundImage = `url(${post.boardImage})`;
+            profileDiv.style.backgroundImage = `url(${post.profileImage})`;
         }
 
         const bodyImage = document.querySelector(".post-body-image");
@@ -130,6 +130,22 @@ async function fetchAndRenderUserProfile() {
 
         // ✅ 댓글 새로 렌더링 후 버튼들 다시 연결
         reconnectCommentButtons();
+
+        response = await fetch(`http://localhost:8080/likes/boards/${postId}/users/${jwtContent.username}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+
+        result = await response.json();
+
+        console.log(result)
+        if (result.isSuccess && result.data.isLiked) {
+            $like_button.classList.remove("post-meta-likes-disable");
+            $like_button.classList.add("post-meta-likes-enable");
+        }
+
 
     } catch (err) {
         console.error('회원정보 조회 에러:', err);
@@ -189,17 +205,58 @@ function activatePostDeleteModal() {
 }
 
 function changeLikeButtonColor() {
-    $like_button.addEventListener("click", () => {
-        if ($like_button.classList.contains("post-meta-likes-disable")) {
-            $like_button.classList.remove("post-meta-likes-disable")
-            $like_button.classList.add("post-meta-likes-enable")
-            $post_meta_likes_number.innerHTML = parseInt($post_meta_likes_number.innerHTML) + 1
-        } else {
-            $like_button.classList.remove("post-meta-likes-enable")
-            $like_button.classList.add("post-meta-likes-disable")
-            $post_meta_likes_number.innerHTML = parseInt($post_meta_likes_number.innerHTML) - 1
+    $like_button.addEventListener("click", async () => {
+        const token = await getValidAccessToken();
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
         }
-    })
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("id");
+
+        try {
+            let response;
+            if ($like_button.classList.contains("post-meta-likes-disable")) {
+                // 좋아요 등록
+                response = await fetch(`http://localhost:8080/likes/boards/${postId}`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    },
+                });
+
+                const result = await response.json();
+                if (result.isSuccess) {
+                    $like_button.classList.remove("post-meta-likes-disable");
+                    $like_button.classList.add("post-meta-likes-enable");
+                    $post_meta_likes_number.innerText = parseInt($post_meta_likes_number.innerText) + 1;
+                } else {
+                    alert("좋아요 등록 실패: " + result.message);
+                }
+            } else {
+                // 좋아요 취소
+                response = await fetch(`http://localhost:8080/likes/boards/${postId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    },
+                });
+
+                const result = await response.json();
+                if (result.isSuccess) {
+                    $like_button.classList.remove("post-meta-likes-enable");
+                    $like_button.classList.add("post-meta-likes-disable");
+                    $post_meta_likes_number.innerText = parseInt($post_meta_likes_number.innerText) - 1;
+                } else {
+                    alert("좋아요 취소 실패: " + result.message);
+                }
+            }
+        } catch (err) {
+            console.error("좋아요 처리 중 에러:", err);
+            alert("좋아요 처리 중 오류가 발생했습니다.");
+        }
+    });
 }
 
 function activateCommentFormButtonWhenExistsInCommentBox() {

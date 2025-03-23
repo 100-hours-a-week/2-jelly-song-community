@@ -55,4 +55,20 @@ public class LikeService {
 
         likeRepository.deleteByUserAndBoard(user, board);
     }
+
+    public boolean isLiked(Long boardId, Long requestUserId) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+
+        Optional<Like> existingLike = likeRepository.findByUserAndBoard(user, board);
+        if (existingLike.isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
 }
