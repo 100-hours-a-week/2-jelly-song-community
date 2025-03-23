@@ -120,6 +120,14 @@ async function fetchAndRenderUserProfile() {
             commentContainer.appendChild(commentEl);
         });
 
+        if (post.writerId != jwtContent.username) {
+            const deleteButton = document.querySelector(".delete-button");
+            if (deleteButton) deleteButton.style.display = "none";
+
+            const editButton = document.querySelector(".update-button");
+            if (editButton) editButton.style.display = "none";
+        }
+
         // ✅ 댓글 새로 렌더링 후 버튼들 다시 연결
         reconnectCommentButtons();
 

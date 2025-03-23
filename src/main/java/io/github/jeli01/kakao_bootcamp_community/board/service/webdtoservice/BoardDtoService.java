@@ -67,6 +67,7 @@ public class BoardDtoService {
         User writer = board.getWriter();
         String profileImage = writer.getProfileImage();
         data.setProfileImage(profileImage);
+        data.setWriterId(writer.getId());
 
         Long likeCount = likeRepository.countByBoard(board);
         data.setLike(likeCount);
