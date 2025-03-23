@@ -16,6 +16,7 @@ const commentModalClose = document.querySelector('.comment-close_btn');
 const commentConfirmBtn = document.querySelector(".comment-confirm_btn");
 let post_comment_form = document.querySelector(".post-comment-form");
 let $headerProfile = document.querySelector(".header-profile");
+let selectedCommentId = null;
 
 activateHeaderBack();
 activatePostDeleteModal();
@@ -117,8 +118,8 @@ async function fetchAndRenderUserProfile() {
                 ${isMyComment ? `
                 <div class="align-center-container">
                     <div>
-                        <button class="post-comment-right-update-button post-comment-right-button">수정</button>
-                        <button class="post-comment-right-delete-button post-comment-right-button">삭제</button>
+                        <button class="post-comment-right-update-button post-comment-right-button" data-comment-id="${comment.id}">수정</button>
+                        <button class="post-comment-right-delete-button post-comment-right-button" data-comment-id="${comment.id}">삭제</button>
                     </div>
                 </div>` : ''}
             `;
@@ -310,8 +311,45 @@ function activateCommentModal() {
         document.body.style.overflow = ''
     });
 
-    commentConfirmBtn.addEventListener('click', function () {
-        location.href = "./post.html";
+    commentConfirmBtn.addEventListener('click', async function () {
+        if (!selectedCommentId) {
+            alert("댓글 정보를 찾을 수 없습니다.");
+            return;
+        }
+
+        const token = await getValidAccessToken();
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("id");
+
+        try {
+            const response = await fetch(`http://localhost:8080/boards/${postId}/comments/${selectedCommentId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
+
+            const result = await response.json();
+
+            if (result.isSuccess) {
+                alert("댓글이 삭제되었습니다.");
+                location.reload();
+            } else {
+                alert("댓글 삭제에 실패했습니다: " + result.message);
+            }
+        } catch (err) {
+            console.error("댓글 삭제 중 에러:", err);
+            alert("댓글 삭제 중 오류가 발생했습니다.");
+        } finally {
+            commentModal.style.display = 'none';
+            document.body.style.overflow = '';
+            selectedCommentId = null;
+        }
         document.body.style.overflow = ''
     })
 }
@@ -339,6 +377,14 @@ function reconnectCommentButtons() {
                 $post_comment_form_button.classList.remove("button-disable")
                 $post_comment_form_button.classList.add("button-enable")
             }
+        });
+
+        newDeleteButtons.forEach(button => {
+            button.addEventListener("click", (event) => {
+                selectedCommentId = event.currentTarget.getAttribute("data-comment-id");
+                commentModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
         });
     });
 
