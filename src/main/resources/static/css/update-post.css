@@ -37,6 +37,13 @@
     flex-direction: row;
     justify-content: center;
 }
+
 .update-button-container input {
     width: 350px;
+}
+
+.origin-file-name {
+    margin-top: 8px;
+    font-size: 14px;
+    color: gray;
 }

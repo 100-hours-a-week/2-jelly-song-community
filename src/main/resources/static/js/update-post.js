@@ -21,8 +21,7 @@ initializeButtonAttribute();
         if (!token) return;
         let jwtContent = parseJwt(token);
 
-        // 1. 유저 정보 조회 API 호출
-        const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+        let response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -30,7 +29,7 @@ initializeButtonAttribute();
             credentials: "include",
         });
 
-        const result = await response.json();
+        let result = await response.json();
 
         if (!result.isSuccess) {
             console.error('유저 정보를 가져오지 못했습니다.');
@@ -42,6 +41,34 @@ initializeButtonAttribute();
         if (userProfileImageUrl) {
             $headerProfile.style.backgroundImage = `url(${userProfileImageUrl})`;
         }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("id");
+
+        response = await fetch(`http://localhost:8080/boards/${postId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+
+        result = await response.json();
+
+        if (!result.isSuccess) {
+            console.error("게시글을 불러오지 못했습니다.");
+            return;
+        }
+
+        const post = result.data;
+
+        document.querySelector(".title-form").value = post.title;
+        document.querySelector(".textarea-form").value = post.contents;
+
+        const fileInput = document.querySelector("#update-post-image");
+        const fileNameDisplay = document.createElement("div");
+        fileNameDisplay.className = "origin-file-name";
+        fileNameDisplay.innerText = `첨부된 파일: ${post.originImageName ?? "없음"}`;
+        fileInput.parentNode.insertBefore(fileNameDisplay, fileInput.nextSibling);
 
     } catch (err) {
         console.error('회원정보 조회 에러:', err);
@@ -55,9 +82,53 @@ function activateHeaderBack() {
 }
 
 function preventSubmitIfNotValidate() {
-    update_post_container_form.addEventListener("submit", (event) => {
+    update_post_container_form.addEventListener("submit", async (event) => {
+        event.preventDefault();
         if ($button.classList.contains("button-disable")) {
-            event.preventDefault();
+            return
+        }
+
+        const token = await getValidAccessToken();
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("id");
+
+        const title = $title_form.value;
+        const contents = $post_comment_form_textarea.value;
+        const imageFile = document.querySelector("#update-post-image").files[0];
+
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", contents);
+        if (imageFile) {
+            formData.append("image", imageFile);
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/boards/${postId}`, {
+                method: "PUT", // 또는 PATCH
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (result.isSuccess) {
+                alert("게시글이 수정되었습니다.");
+                window.location.href = `./post.html?id=${postId}`;
+            } else {
+                alert("게시글 수정에 실패했습니다: " + result.message);
+            }
+
+        } catch (err) {
+            console.error("게시글 수정 중 에러:", err);
+            alert("게시글 수정 중 오류가 발생했습니다.");
         }
     })
 }

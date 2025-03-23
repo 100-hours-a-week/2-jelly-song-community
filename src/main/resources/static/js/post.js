@@ -488,3 +488,13 @@ function activateCommentSubmit() {
         }
     });
 }
+
+const editButton = document.querySelector(".update-button");
+
+if (editButton) {
+    editButton.addEventListener("click", (e) => {
+        e.preventDefault()
+        const query = window.location.search; // 👉 현재 URL의 ?id=4 같은 쿼리 파라미터
+        window.location.href = `./update-post.html${query}`;
+    });
+}
