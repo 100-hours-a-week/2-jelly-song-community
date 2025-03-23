@@ -73,7 +73,7 @@ public class BoardDtoService {
         data.setLike(likeCount);
         data.setVisitCount(board.getVisitCount());
 
-        Long commentCount = commentRepository.countByBoard(board);
+        Long commentCount = commentRepository.countByBoardAndDeleteDateIsNull(board);
         data.setCommentsCount(commentCount);
 
         List<Comment> commentList = commentRepository.findByBoardIdAndDeleteDateIsNull(board.getId());
@@ -84,6 +84,7 @@ public class BoardDtoService {
             commentDto.setId(comment.getId());
             commentDto.setProfileImage(comment.getWriter().getProfileImage());
             commentDto.setWriter(comment.getWriter().getNickname());
+            commentDto.setWriterId(comment.getWriter().getId());
             commentDto.setCreateDate(comment.getCreateDate());
             commentDto.setContent(comment.getContent());
             comments.add(commentDto);
