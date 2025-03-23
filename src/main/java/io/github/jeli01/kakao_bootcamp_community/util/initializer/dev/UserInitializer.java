@@ -20,6 +20,9 @@ public class UserInitializer implements CommandLineRunner {
     @Value("${test.image.url}")
     private String testImageURL;
 
+    @Value("${test.image.url2}")
+    private String testImageURL2;
+
     @Override
     public void run(String... args) throws Exception {
         String testEmail = "test@naver.com";
@@ -35,5 +38,20 @@ public class UserInitializer implements CommandLineRunner {
         );
         userRepository.save(testUser);
         log.info("테스트 유저 자동 생성 완료: {}", testUser.getEmail());
+
+        String testEmail2 = "test2@naver.com";
+        User testUser2 = new User(
+                testEmail2,
+                passwordEncoder.encode("Test1234!"),
+                "테스트닉네임2",
+                testImageURL2,
+                "ROLE_USER",
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                null
+        );
+        userRepository.save(testUser2);
+        log.info("테스트 유저 자동 생성 완료: {}", testUser2.getEmail());
     }
+
 }
