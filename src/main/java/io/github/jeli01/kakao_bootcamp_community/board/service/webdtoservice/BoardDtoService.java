@@ -6,9 +6,11 @@ import io.github.jeli01.kakao_bootcamp_community.board.dto.response.GetBoardResp
 import io.github.jeli01.kakao_bootcamp_community.board.dto.response.GetBoardResponse.DataInBoard;
 import io.github.jeli01.kakao_bootcamp_community.board.dto.response.GetBoardResponse.DataInBoard.CommentInnerDataInBoard;
 import io.github.jeli01.kakao_bootcamp_community.board.dto.response.GetBoardsResponse;
+import io.github.jeli01.kakao_bootcamp_community.board.repository.BoardRepository;
 import io.github.jeli01.kakao_bootcamp_community.comment.domain.Comment;
 import io.github.jeli01.kakao_bootcamp_community.comment.repository.CommentRepository;
 import io.github.jeli01.kakao_bootcamp_community.like.repository.LikeRepository;
+import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardDtoService {
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
+    private final BoardRepository boardRepository;
 
     public GetBoardsResponse BoardsToDto(List<Board> boardList) {
         GetBoardsResponse getBoardsResponse = new GetBoardsResponse();
@@ -60,6 +63,10 @@ public class BoardDtoService {
 
         data.setCreateDate(board.getCreateDate());
         data.setContents(board.getContent());
+
+        User writer = board.getWriter();
+        String profileImage = writer.getProfileImage();
+        data.setProfileImage(profileImage);
 
         Long likeCount = likeRepository.countByBoard(board);
         data.setLike(likeCount);

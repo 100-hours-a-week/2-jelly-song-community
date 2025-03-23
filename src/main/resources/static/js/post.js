@@ -80,7 +80,7 @@ async function fetchAndRenderUserProfile() {
         document.querySelector(".post-header-meta-writer").innerText = post.writer;
         document.querySelector(".align-row-container .align-center-container").innerText = formatDate(post.createDate);
         document.querySelector(".post-body-main").innerText = post.contents;
-
+        document.querySelector(".post-header-meta-profile").style.backgroundImage = `url(${post.profileImage})`;
         const profileDiv = document.querySelector(".post-header-meta-profile");
         if (post.boardImage != null) {
             profileDiv.style.backgroundImage = `url(${post.boardImage})`;

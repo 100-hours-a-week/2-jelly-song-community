@@ -34,6 +34,7 @@ public class GetBoardResponse {
         private Long id;
         private String title;
         private String boardImage;
+        private String profileImage;
         private String writer;
         private LocalDateTime createDate;
         private String contents;
