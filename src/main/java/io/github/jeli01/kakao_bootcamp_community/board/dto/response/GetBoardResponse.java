@@ -33,7 +33,7 @@ public class GetBoardResponse {
     public static class DataInBoard {
         private Long id;
         private String title;
-        private String profileImage;
+        private String boardImage;
         private String writer;
         private LocalDateTime createDate;
         private String contents;

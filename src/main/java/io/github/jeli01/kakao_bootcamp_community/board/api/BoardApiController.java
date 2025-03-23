@@ -59,7 +59,8 @@ public class BoardApiController {
     }
 
     @PostMapping
-    public PostBoardResponse postBoard(@RequestParam MultipartFile image, @RequestParam("title") String title,
+    public PostBoardResponse postBoard(@RequestParam(required = false) MultipartFile image,
+                                       @RequestParam("title") String title,
                                        @RequestParam("title") String content) {
         PostBoardRequest postBoardRequest = new PostBoardRequest();
         postBoardRequest.setImage(image);

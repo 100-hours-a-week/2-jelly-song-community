@@ -32,7 +32,10 @@ public class BoardService {
         User writer = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        String fullPath = fileUtils.storeFile(postBoardRequest.getImage());
+        String fullPath = null;
+        if (postBoardRequest.getImage() != null) {
+            fullPath = fileUtils.storeFile(postBoardRequest.getImage());
+        }
 
         Board board = new Board(
                 postBoardRequest.getTitle(),
@@ -82,6 +85,7 @@ public class BoardService {
         Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found or deleted"));
         board.plusVisitCount();
+        System.out.println(board.getBoardImage());
         return board;
     }
 }

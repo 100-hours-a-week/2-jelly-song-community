@@ -56,7 +56,7 @@ public class BoardDtoService {
         data.setId(board.getId());
         data.setTitle(board.getTitle());
 
-        data.setProfileImage(board.getWriter().getProfileImage());
+        data.setBoardImage(board.getBoardImage());
         data.setWriter(board.getWriter().getNickname());
 
         data.setCreateDate(board.getCreateDate());
