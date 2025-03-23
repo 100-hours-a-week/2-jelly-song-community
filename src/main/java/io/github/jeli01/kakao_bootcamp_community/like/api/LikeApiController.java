@@ -1,6 +1,6 @@
 package io.github.jeli01.kakao_bootcamp_community.like.api;
 
-import io.github.jeli01.kakao_bootcamp_community.exception.response.ErrorResponse;
+import io.github.jeli01.kakao_bootcamp_community.common.exception.response.ErrorResponse;
 import io.github.jeli01.kakao_bootcamp_community.like.dto.response.DeleteLikeResponse;
 import io.github.jeli01.kakao_bootcamp_community.like.dto.response.PostLikeResponse;
 import io.github.jeli01.kakao_bootcamp_community.like.service.LikeService;

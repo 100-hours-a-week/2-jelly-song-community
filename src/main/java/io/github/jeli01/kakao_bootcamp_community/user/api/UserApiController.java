@@ -1,6 +1,6 @@
 package io.github.jeli01.kakao_bootcamp_community.user.api;
 
-import io.github.jeli01.kakao_bootcamp_community.exception.response.ErrorResponse;
+import io.github.jeli01.kakao_bootcamp_community.common.exception.response.ErrorResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchPasswordRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchUserBasicRequest;
@@ -66,9 +66,10 @@ public class UserApiController {
     }
 
     @PatchMapping("/users/{id}")
-    public PatchUserBasicResponse patchUserBasic(@RequestParam("profile_image") MultipartFile profileImage,
-                                                 @RequestParam("nickname") String nickname,
-                                                 @PathVariable("id") Long id) {
+    public PatchUserBasicResponse patchUserBasic(
+            @RequestParam(value = "profile_image", required = false) MultipartFile profileImage,
+            @RequestParam("nickname") String nickname,
+            @PathVariable("id") Long id) {
         PatchUserBasicRequest patchUserBasicRequest = new PatchUserBasicRequest();
         patchUserBasicRequest.setProfileImage(profileImage);
         patchUserBasicRequest.setNickname(nickname);

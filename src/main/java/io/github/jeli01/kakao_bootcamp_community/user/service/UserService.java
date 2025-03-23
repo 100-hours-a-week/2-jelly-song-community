@@ -61,11 +61,12 @@ public class UserService {
         User user = userRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
 
-        String oldImagePath = user.getProfileImage();
-        fileUtils.deleteFile(oldImagePath);
-        System.out.println("old: " + oldImagePath);
-        String imagePath = fileUtils.storeFile(patchUserBasicRequest.getProfileImage());
-        System.out.println("new:" + imagePath);
+        String imagePath = user.getProfileImage();
+        if (patchUserBasicRequest.getProfileImage() != null) {
+            String oldImagePath = user.getProfileImage();
+            fileUtils.deleteFile(oldImagePath);
+            imagePath = fileUtils.storeFile(patchUserBasicRequest.getProfileImage());
+        }
 
         user.changeUserBasic(imagePath, patchUserBasicRequest.getNickname());
     }

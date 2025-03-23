@@ -10,7 +10,7 @@ import io.github.jeli01.kakao_bootcamp_community.board.dto.response.PostBoardRes
 import io.github.jeli01.kakao_bootcamp_community.board.dto.response.PutBoardResponse;
 import io.github.jeli01.kakao_bootcamp_community.board.service.BoardService;
 import io.github.jeli01.kakao_bootcamp_community.board.service.webdtoservice.BoardDtoService;
-import io.github.jeli01.kakao_bootcamp_community.exception.response.ErrorResponse;
+import io.github.jeli01.kakao_bootcamp_community.common.exception.response.ErrorResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

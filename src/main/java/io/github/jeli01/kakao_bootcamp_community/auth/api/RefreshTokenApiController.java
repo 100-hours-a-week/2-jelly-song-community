@@ -4,7 +4,7 @@ import io.github.jeli01.kakao_bootcamp_community.auth.domain.RefreshToken;
 import io.github.jeli01.kakao_bootcamp_community.auth.dto.response.PostReissueResponse;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
 import io.github.jeli01.kakao_bootcamp_community.auth.service.RefreshTokenService;
-import io.github.jeli01.kakao_bootcamp_community.exception.response.ErrorResponse;
+import io.github.jeli01.kakao_bootcamp_community.common.exception.response.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

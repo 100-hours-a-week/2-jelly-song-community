@@ -6,7 +6,7 @@ import io.github.jeli01.kakao_bootcamp_community.comment.dto.response.DeleteComm
 import io.github.jeli01.kakao_bootcamp_community.comment.dto.response.PostCommentResponse;
 import io.github.jeli01.kakao_bootcamp_community.comment.dto.response.PutCommentResponse;
 import io.github.jeli01.kakao_bootcamp_community.comment.service.CommentService;
-import io.github.jeli01.kakao_bootcamp_community.exception.response.ErrorResponse;
+import io.github.jeli01.kakao_bootcamp_community.common.exception.response.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;

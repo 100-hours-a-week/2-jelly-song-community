@@ -1,4 +1,4 @@
-package io.github.jeli01.kakao_bootcamp_community.exception.response;
+package io.github.jeli01.kakao_bootcamp_community.common.exception.response;
 
 
 import lombok.Getter;

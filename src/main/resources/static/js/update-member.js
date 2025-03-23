@@ -24,9 +24,14 @@ activateTost();
 activateModal();
 
 (async function () {
+    await loadUserInfo();
+})();
+
+async function loadUserInfo() {
     try {
         const token = await getValidAccessToken();
         if (!token) return;
+
         let jwtContent = parseJwt(token);
 
         const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
@@ -38,7 +43,7 @@ activateModal();
         });
 
         const result = await response.json();
-        console.log("result:" + result);
+        console.log("result:", result);
 
         if (!result.isSuccess) {
             console.error('유저 정보를 가져오지 못했습니다.');
@@ -51,7 +56,7 @@ activateModal();
             $nickname_form.value = nickname;
         }
 
-        console.log(`url(${userProfileImageUrl})`)
+        console.log(`url(${userProfileImageUrl})`);
         if (userProfileImageUrl) {
             $preview.style.backgroundImage = `url(${userProfileImageUrl})`;
             $preview.style.backgroundRepeat = "no-repeat";
@@ -66,7 +71,7 @@ activateModal();
     } catch (err) {
         console.error('회원정보 조회 에러:', err);
     }
-})();
+}
 
 function uploadProfile() {
     $fileDOM.addEventListener('change', (event) => {
@@ -150,6 +155,7 @@ function activateTost() {
 
             if (result.isSuccess) {
                 tostOn();
+                await loadUserInfo();
             } else {
                 console.error("업로드 실패:", result.message);
             }
