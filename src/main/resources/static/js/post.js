@@ -144,9 +144,39 @@ function activatePostDeleteModal() {
         document.body.style.overflow = ''
     });
 
-    postDeleteConfirmBtn.addEventListener('click', function () {
-        location.href = "./posts.html";
-        document.body.style.overflow = ''
+    postDeleteConfirmBtn.addEventListener('click', async function () {
+        try {
+            const token = await getValidAccessToken();
+            if (!token) {
+                alert("로그인이 필요합니다.");
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get("id");
+
+            const response = await fetch(`http://localhost:8080/boards/${postId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const result = await response.json();
+
+            if (result.isSuccess) {
+                alert("게시글이 삭제되었습니다.");
+                window.location.href = "./posts.html";
+            } else {
+                alert("게시글 삭제에 실패했습니다: " + result.message);
+            }
+
+        } catch (error) {
+            console.error("게시글 삭제 중 에러:", error);
+            alert("게시글 삭제 중 오류가 발생했습니다.");
+        } finally {
+            document.body.style.overflow = '';
+        }
     })
 }
 
