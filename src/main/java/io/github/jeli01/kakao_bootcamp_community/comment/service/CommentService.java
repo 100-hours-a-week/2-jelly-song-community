@@ -28,7 +28,7 @@ public class CommentService {
         Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
-        board.minusCommentCount();
+        board.plusCommentCount();
         Comment comment = new Comment(
                 content,
                 board,
