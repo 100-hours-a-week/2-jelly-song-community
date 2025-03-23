@@ -23,7 +23,7 @@ public class BoardService {
     private final FileUtils fileUtils;
 
     public List<Board> getBoards() {
-        List<Board> all = boardRepository.findAll();
+        List<Board> all = boardRepository.findAllByDeleteDateIsNull();
         return all;
     }
 
@@ -85,7 +85,6 @@ public class BoardService {
         Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found or deleted"));
         board.plusVisitCount();
-        System.out.println(board.getBoardImage());
         return board;
     }
 }
