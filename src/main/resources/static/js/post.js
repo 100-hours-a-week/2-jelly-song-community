@@ -27,6 +27,7 @@ activateCommentModal();
 (async function () {
     await fetchAndRenderUserProfile();
 })();
+activateCommentSubmit();
 
 async function fetchAndRenderUserProfile() {
     try {
@@ -101,6 +102,9 @@ async function fetchAndRenderUserProfile() {
         post.comments.forEach(comment => {
             const commentEl = document.createElement("div");
             commentEl.className = "post-comment";
+
+            const isMyComment = (comment.writerId == jwtContent.username)
+
             commentEl.innerHTML = `
                 <div>
                     <div class="align-row-container">
@@ -110,12 +114,13 @@ async function fetchAndRenderUserProfile() {
                     </div>
                     <div class="post-comment-main">${comment.content}</div>
                 </div>
+                ${isMyComment ? `
                 <div class="align-center-container">
                     <div>
                         <button class="post-comment-right-update-button post-comment-right-button">수정</button>
                         <button class="post-comment-right-delete-button post-comment-right-button">삭제</button>
                     </div>
-                </div>
+                </div>` : ''}
             `;
             commentContainer.appendChild(commentEl);
         });
@@ -342,5 +347,47 @@ function reconnectCommentButtons() {
             commentModal.style.display = 'block';
             document.body.style.overflow = 'hidden'
         });
+    });
+}
+
+function activateCommentSubmit() {
+    $post_comment_form_button.addEventListener("click", async (event) => {
+        event.preventDefault(); // 기본 폼 제출 막기
+
+        const content = $post_comment_form_textarea.value;
+        if (!content) return;
+
+        const token = await getValidAccessToken();
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("id");
+
+        try {
+            const response = await fetch(`http://localhost:8080/boards/${postId}/comments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({content}),
+            });
+
+            const result = await response.json();
+
+            if (result.isSuccess) {
+                alert("댓글이 등록되었습니다.");
+                location.reload();
+            } else {
+                alert("댓글 등록에 실패했습니다: " + result.message);
+            }
+
+        } catch (err) {
+            console.error("댓글 등록 중 에러:", err);
+            alert("댓글 등록 중 오류가 발생했습니다.");
+        }
     });
 }
