@@ -75,7 +75,7 @@ public class BoardService {
             fullPath = fileUtils.storeFile(putBoardRequest.getImage());
         }
 
-        String originName = null;
+        String originName = board.getBoardImageOriginName();
         if (putBoardRequest.getImage() != null) {
             originName = putBoardRequest.getImage().getOriginalFilename();
         }
