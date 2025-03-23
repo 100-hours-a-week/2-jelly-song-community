@@ -141,6 +141,8 @@
     height: 20px;
     border-radius: 100%;
     background-color: #D9D9D9;
+    background-repeat: no-repeat;
+    background-size: cover;
     margin-right: 10px;
 }
 
