@@ -13,4 +13,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByBoardIdAndDeleteDateIsNull(Long boardId);
 
     Optional<Comment> findByIdAndDeleteDateIsNull(Long id);
+
+    Long countByBoardAndDeleteDateIsNull(Board board);
 }

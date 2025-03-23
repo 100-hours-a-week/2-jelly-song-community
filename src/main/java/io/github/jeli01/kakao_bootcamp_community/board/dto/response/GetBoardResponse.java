@@ -50,6 +50,7 @@ public class GetBoardResponse {
             private Long id;
             private String profileImage;
             private String writer;
+            private Long writerId;
             private LocalDateTime createDate;
             private String content;
         }
