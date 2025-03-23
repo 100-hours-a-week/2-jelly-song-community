@@ -24,15 +24,17 @@ activateCommentFormButtonWhenExistsInCommentBox();
 preventSubmitIfNotValidate();
 changeCommentButtonToUpdateButton();
 activateCommentModal();
-
 (async function () {
+    await fetchAndRenderUserProfile();
+})();
+
+async function fetchAndRenderUserProfile() {
     try {
-        const token = await getValidAccessToken();
+        let token = await getValidAccessToken();
         if (!token) return;
         let jwtContent = parseJwt(token);
 
-        // 1. 유저 정보 조회 API 호출
-        const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+        let response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -40,23 +42,91 @@ activateCommentModal();
             credentials: "include",
         });
 
-        const result = await response.json();
+        let result = await response.json();
 
         if (!result.isSuccess) {
             console.error('유저 정보를 가져오지 못했습니다.');
             return;
         }
 
-        const {userProfileImageUrl} = result.data;
+        let {userProfileImageUrl} = result.data;
 
         if (userProfileImageUrl) {
             $headerProfile.style.backgroundImage = `url(${userProfileImageUrl})`;
         }
 
+        token = await getValidAccessToken();
+        if (!token) return;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get("id");
+
+        response = await fetch(`http://localhost:8080/boards/${postId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        });
+
+        result = await response.json();
+        if (!result.isSuccess) {
+            console.error("게시물 정보를 가져오지 못했습니다.");
+            return;
+        }
+
+        const post = result.data;
+
+        document.querySelector(".post-header-title").innerText = post.title;
+        document.querySelector(".post-header-meta-writer").innerText = post.writer;
+        document.querySelector(".align-row-container .align-center-container").innerText = formatDate(post.createDate);
+        document.querySelector(".post-body-main").innerText = post.contents;
+
+        const profileDiv = document.querySelector(".post-header-meta-profile");
+        if (post.boardImage != null) {
+            profileDiv.style.backgroundImage = `url(${post.boardImage})`;
+        }
+
+        const bodyImage = document.querySelector(".post-body-image");
+        if (post.boardImage) {
+            bodyImage.src = post.boardImage;
+        }
+
+        $post_meta_likes_number.innerText = post.like;
+        document.querySelectorAll(".post-meta-number")[1].innerText = post.visitCount;
+        document.querySelectorAll(".post-meta-number")[2].innerText = post.commentsCount;
+
+        const commentContainer = document.querySelector(".align-column-container");
+        commentContainer.innerHTML = "";
+
+        post.comments.forEach(comment => {
+            const commentEl = document.createElement("div");
+            commentEl.className = "post-comment";
+            commentEl.innerHTML = `
+                <div>
+                    <div class="align-row-container">
+                        <div class="post-comment-meta-profile" style="background-image: url('${comment.profileImage}')"></div>
+                        <div class="post-comment-meta-writer">${comment.writer}</div>
+                        <div class="post-comment-meta-time">${formatDate(comment.createDate)}</div>
+                    </div>
+                    <div class="post-comment-main">${comment.content}</div>
+                </div>
+                <div class="align-center-container">
+                    <div>
+                        <button class="post-comment-right-update-button post-comment-right-button">수정</button>
+                        <button class="post-comment-right-delete-button post-comment-right-button">삭제</button>
+                    </div>
+                </div>
+            `;
+            commentContainer.appendChild(commentEl);
+        });
+
+        // ✅ 댓글 새로 렌더링 후 버튼들 다시 연결
+        reconnectCommentButtons();
+
     } catch (err) {
         console.error('회원정보 조회 에러:', err);
     }
-})();
+}
 
 function activateHeaderBack() {
     $header_back.addEventListener("click", (event) => {
@@ -145,79 +215,6 @@ function activateCommentModal() {
         document.body.style.overflow = ''
     })
 }
-
-(async function fetchAndRenderPost() {
-    try {
-        const token = await getValidAccessToken();
-        if (!token) return;
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get("id");
-
-        const response = await fetch(`http://localhost:8080/boards/${postId}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        });
-
-        const result = await response.json();
-        if (!result.isSuccess) {
-            console.error("게시물 정보를 가져오지 못했습니다.");
-            return;
-        }
-
-        const post = result.data;
-
-        document.querySelector(".post-header-title").innerText = post.title;
-        document.querySelector(".post-header-meta-writer").innerText = post.writer;
-        document.querySelector(".align-row-container .align-center-container").innerText = formatDate(post.createDate);
-        document.querySelector(".post-body-main").innerText = post.contents;
-
-        const profileDiv = document.querySelector(".post-header-meta-profile");
-        profileDiv.style.backgroundImage = `url(${post.boardImage})`;
-
-        const bodyImage = document.querySelector(".post-body-image");
-        if (post.boardImage) {
-            bodyImage.src = post.boardImage;
-        }
-
-        $post_meta_likes_number.innerText = post.like;
-        document.querySelectorAll(".post-meta-number")[1].innerText = post.visitCount;
-        document.querySelectorAll(".post-meta-number")[2].innerText = post.commentsCount;
-
-        const commentContainer = document.querySelector(".align-column-container");
-        commentContainer.innerHTML = "";
-
-        post.comments.forEach(comment => {
-            const commentEl = document.createElement("div");
-            commentEl.className = "post-comment";
-            commentEl.innerHTML = `
-                <div>
-                    <div class="align-row-container">
-                        <div class="post-comment-meta-profile" style="background-image: url('${comment.profileImage}')"></div>
-                        <div class="post-comment-meta-writer">${comment.writer}</div>
-                        <div class="post-comment-meta-time">${formatDate(comment.createDate)}</div>
-                    </div>
-                    <div class="post-comment-main">${comment.content}</div>
-                </div>
-                <div class="align-center-container">
-                    <div>
-                        <button class="post-comment-right-update-button post-comment-right-button">수정</button>
-                        <button class="post-comment-right-delete-button post-comment-right-button">삭제</button>
-                    </div>
-                </div>
-            `;
-            commentContainer.appendChild(commentEl);
-        });
-
-        // ✅ 댓글 새로 렌더링 후 버튼들 다시 연결
-        reconnectCommentButtons();
-
-    } catch (err) {
-        console.error("게시물 조회 에러:", err);
-    }
-})();
 
 function formatDate(dateStr) {
     const date = new Date(dateStr);
