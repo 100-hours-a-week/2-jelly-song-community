@@ -33,10 +33,9 @@ public class BoardDtoService {
             BoardsInnerData boardsInnerData = new BoardsInnerData();
             boardsInnerData.setId(board.getId());
             boardsInnerData.setTitle(board.getTitle());
-            Long likeCount = likeRepository.countByBoard(board);
-            boardsInnerData.setLike(likeCount);
-            Long commentCount = commentRepository.countByBoard(board);
-            boardsInnerData.setCommentsCounts(commentCount);
+            boardsInnerData.setLike(board.getLikeCount());
+            boardsInnerData.setCommentsCounts(board.getCommentCount());
+            boardsInnerData.setVisitCounts(board.getVisitCount());
             boardsInnerData.setCreateDate(board.getCreateDate());
             boardsInnerData.setProfileImage(board.getWriter().getProfileImage());
             boardsInnerData.setWriter(board.getWriter().getNickname());
