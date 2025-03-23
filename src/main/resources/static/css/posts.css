@@ -78,5 +78,7 @@
     height: 30px;
     border-radius: 100%;
     background-color: #F4F5F7;
+    background-repeat: no-repeat;
+    background-size: cover;
     margin-right: 10px;
 }
