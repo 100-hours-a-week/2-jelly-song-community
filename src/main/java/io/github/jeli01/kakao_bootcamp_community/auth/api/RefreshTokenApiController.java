@@ -42,7 +42,7 @@ public class RefreshTokenApiController {
 
         String username = jwtUtil.getUsername(refresh);
         String role = jwtUtil.getRole(refresh);
-        String newAccess = jwtUtil.createJwt("access", username, role, 6000L);
+        String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
         String newRefresh = jwtUtil.createJwt("refresh", username, role, 8640000L);
 
         refreshTokenService.deleteByRefresh(refresh);
