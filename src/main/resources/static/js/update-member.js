@@ -157,7 +157,10 @@ function activateTost() {
                 tostOn();
                 await loadUserInfo();
             } else {
-                console.error("업로드 실패:", result.message);
+                console.log("업로드 실패:", result.message);
+                if (result.message == "닉네임이 중복됩니다.") {
+                    $nickname_validation_container.innerText = "닉네임이 중복됩니다"
+                }
             }
         } catch (error) {
             console.error("업로드 중 오류 발생:", error);

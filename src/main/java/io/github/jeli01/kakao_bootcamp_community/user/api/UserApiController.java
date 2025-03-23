@@ -10,6 +10,7 @@ import io.github.jeli01.kakao_bootcamp_community.user.dto.response.GetUserRespon
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PatchPasswordResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PatchUserBasicResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PostSignUpResponse;
+import io.github.jeli01.kakao_bootcamp_community.user.exception.NicknameDuplicatedException;
 import io.github.jeli01.kakao_bootcamp_community.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,12 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestPartException.class)
     public ErrorResponse handleMissingServletRequestPartException(MissingServletRequestPartException e) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NicknameDuplicatedException.class)
+    public ErrorResponse handleNicknameDuplicatedException(NicknameDuplicatedException e) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 

@@ -6,6 +6,7 @@ import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchPasswordR
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchUserBasicRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PostSignUpRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PatchPasswordResponse;
+import io.github.jeli01.kakao_bootcamp_community.user.exception.NicknameDuplicatedException;
 import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +67,13 @@ public class UserService {
             String oldImagePath = user.getProfileImage();
             fileUtils.deleteFile(oldImagePath);
             imagePath = fileUtils.storeFile(patchUserBasicRequest.getProfileImage());
+        }
+
+        String requestNickname = patchUserBasicRequest.getNickname();
+        String userNickname = user.getNickname();
+        Boolean existsNickname = userRepository.existsByNicknameAndDeleteDateIsNull(requestNickname);
+        if (existsNickname == true && !requestNickname.equals(userNickname)) {
+            throw new NicknameDuplicatedException("닉네임이 중복됩니다.");
         }
 
         user.changeUserBasic(imagePath, patchUserBasicRequest.getNickname());
