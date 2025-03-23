@@ -71,7 +71,7 @@ public class BoardApiController {
     }
 
     @PutMapping("/{id}")
-    public PutBoardResponse putBoard(@PathVariable("id") Long id, @RequestParam MultipartFile image,
+    public PutBoardResponse putBoard(@PathVariable("id") Long id, @RequestParam(required = false) MultipartFile image,
                                      @RequestParam("title") String title,
                                      @RequestParam("content") String content) {
         PutBoardRequest putBoardRequest = new PutBoardRequest();

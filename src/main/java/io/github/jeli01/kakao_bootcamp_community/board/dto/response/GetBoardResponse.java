@@ -39,6 +39,7 @@ public class GetBoardResponse {
         private Long writerId;
         private LocalDateTime createDate;
         private String contents;
+        private String originImageName;
         private Long like;
         private Long visitCount;
         private Long commentsCount;

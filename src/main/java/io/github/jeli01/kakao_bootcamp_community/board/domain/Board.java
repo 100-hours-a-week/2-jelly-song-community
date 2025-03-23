@@ -31,6 +31,9 @@ public class Board {
     @Column(columnDefinition = "TEXT")
     private String boardImage;
 
+    @Column(columnDefinition = "TEXT")
+    private String boardImageOriginName;
+
     @ManyToOne
     @JoinColumn(name = "writer_id", nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private User writer;
@@ -52,11 +55,13 @@ public class Board {
 
     private LocalDateTime deleteDate;
 
-    public Board(String title, String content, String boardImage, User writer, Long visitCount, Long likeCount,
-                 Long commentCount, LocalDateTime createDate, LocalDateTime updateDate, LocalDateTime deleteDate) {
+    public Board(String title, String content, String boardImage, String boardImageOriginName, User writer,
+                 Long visitCount, Long likeCount, Long commentCount, LocalDateTime createDate, LocalDateTime updateDate,
+                 LocalDateTime deleteDate) {
         this.title = title;
         this.content = content;
         this.boardImage = boardImage;
+        this.boardImageOriginName = boardImageOriginName;
         this.writer = writer;
         this.visitCount = visitCount;
         this.likeCount = likeCount;
@@ -66,10 +71,11 @@ public class Board {
         this.deleteDate = deleteDate;
     }
 
-    public void changeBoard(String title, String content, String boardImage) {
+    public void changeBoard(String title, String content, String boardImage, String boardImageOriginName) {
         this.title = title;
         this.content = content;
         this.boardImage = boardImage;
+        this.boardImageOriginName = boardImageOriginName;
         this.updateDate = LocalDateTime.now();
     }
 

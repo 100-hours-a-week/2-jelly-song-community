@@ -37,10 +37,16 @@ public class BoardService {
             fullPath = fileUtils.storeFile(postBoardRequest.getImage());
         }
 
+        String originName = null;
+        if (postBoardRequest.getImage() != null) {
+            originName = postBoardRequest.getImage().getOriginalFilename();
+        }
+
         Board board = new Board(
                 postBoardRequest.getTitle(),
                 postBoardRequest.getContent(),
                 fullPath,
+                originName,
                 writer,
                 0L,
                 0L,
@@ -62,9 +68,20 @@ public class BoardService {
             throw new IllegalStateException("You are not the owner of this board");
         }
 
-        String fullPath = fileUtils.storeFile(putBoardRequest.getImage());
+        String fullPath = board.getBoardImage();
+        if (putBoardRequest.getImage() != null) {
+            String boardImage = board.getBoardImage();
+            fileUtils.deleteFile(boardImage);
+            fullPath = fileUtils.storeFile(putBoardRequest.getImage());
+        }
 
-        board.changeBoard(putBoardRequest.getTitle(), putBoardRequest.getContent(), fullPath);
+        String originName = null;
+        if (putBoardRequest.getImage() != null) {
+            originName = putBoardRequest.getImage().getOriginalFilename();
+        }
+
+        board.changeBoard(putBoardRequest.getTitle(), putBoardRequest.getContent(), fullPath,
+                originName);
         boardRepository.save(board);
     }
 

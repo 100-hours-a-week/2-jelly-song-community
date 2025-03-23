@@ -69,6 +69,8 @@ public class BoardDtoService {
         data.setProfileImage(profileImage);
         data.setWriterId(writer.getId());
 
+        data.setOriginImageName(board.getBoardImageOriginName());
+
         Long likeCount = likeRepository.countByBoard(board);
         data.setLike(likeCount);
         data.setVisitCount(board.getVisitCount());
