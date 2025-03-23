@@ -1,6 +1,7 @@
 package io.github.jeli01.kakao_bootcamp_community.auth.api;
 
 import io.github.jeli01.kakao_bootcamp_community.auth.domain.RefreshToken;
+import io.github.jeli01.kakao_bootcamp_community.auth.dto.response.PostReissueResponse;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
 import io.github.jeli01.kakao_bootcamp_community.auth.service.RefreshTokenService;
 import io.github.jeli01.kakao_bootcamp_community.exception.response.ErrorResponse;
@@ -13,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,7 +32,7 @@ public class RefreshTokenApiController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
+    public PostReissueResponse reissue(HttpServletRequest request, HttpServletResponse response) {
         String refresh = findRefresh(request);
 
         validateRefreshExists(refresh);
@@ -42,7 +42,7 @@ public class RefreshTokenApiController {
 
         String username = jwtUtil.getUsername(refresh);
         String role = jwtUtil.getRole(refresh);
-        String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
+        String newAccess = jwtUtil.createJwt("access", username, role, 6000L);
         String newRefresh = jwtUtil.createJwt("refresh", username, role, 8640000L);
 
         refreshTokenService.deleteByRefresh(refresh);
@@ -51,7 +51,7 @@ public class RefreshTokenApiController {
         response.setHeader("Authorization", newAccess);
         response.addCookie(createCookie("refresh", newRefresh));
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new PostReissueResponse();
     }
 
     private void validateIsInServerStore(String refresh) {
