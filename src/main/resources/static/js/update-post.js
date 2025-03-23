@@ -67,7 +67,7 @@ initializeButtonAttribute();
         const fileInput = document.querySelector("#update-post-image");
         const fileNameDisplay = document.createElement("div");
         fileNameDisplay.className = "origin-file-name";
-        fileNameDisplay.innerText = `첨부된 파일: ${post.originImageName ?? "없음"}`;
+        fileNameDisplay.innerText = `기존 첨부된 파일: ${post.originImageName ?? "없음"}`;
         fileInput.parentNode.insertBefore(fileNameDisplay, fileInput.nextSibling);
 
     } catch (err) {
