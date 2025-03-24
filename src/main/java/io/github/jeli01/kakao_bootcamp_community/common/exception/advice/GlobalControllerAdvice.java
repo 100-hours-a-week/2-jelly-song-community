@@ -15,4 +15,10 @@ public class GlobalControllerAdvice {
     public ErrorResponse illegalExHandle(IllegalArgumentException e) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RuntimeException.class)
+    public ErrorResponse runtimeExHandle(RuntimeException e) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+    }
 }
