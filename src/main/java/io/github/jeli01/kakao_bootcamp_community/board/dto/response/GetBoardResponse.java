@@ -1,6 +1,6 @@
 package io.github.jeli01.kakao_bootcamp_community.board.dto.response;
 
-import io.github.jeli01.kakao_bootcamp_community.util.contant.ErrorMessage;
+import io.github.jeli01.kakao_bootcamp_community.common.contant.ErrorMessage;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;

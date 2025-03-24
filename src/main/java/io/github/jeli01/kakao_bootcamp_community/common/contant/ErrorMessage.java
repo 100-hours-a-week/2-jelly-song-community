@@ -1,4 +1,4 @@
-package io.github.jeli01.kakao_bootcamp_community.util.contant;
+package io.github.jeli01.kakao_bootcamp_community.common.contant;
 
 public class ErrorMessage {
     public static final String CLIENT_ERROR_MESSAGE = "client error";
