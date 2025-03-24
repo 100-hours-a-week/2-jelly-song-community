@@ -6,8 +6,8 @@ import io.github.jeli01.kakao_bootcamp_community.auth.filter.LoginFilter;
 import io.github.jeli01.kakao_bootcamp_community.auth.handler.CustomAccessDeniedHandler;
 import io.github.jeli01.kakao_bootcamp_community.auth.handler.CustomAuthenticationEntryPoint;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
-import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshTokenRepository;
-import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
+import io.github.jeli01.kakao_bootcamp_community.auth.service.RefreshTokenService;
+import io.github.jeli01.kakao_bootcamp_community.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,14 +28,13 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final UserRepository userRepository;
+    private final RefreshTokenService refreshTokenService;
+    private final UserService userService;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -49,26 +48,21 @@ public class SecurityConfig {
         http.httpBasic((auth) -> auth.disable());
 
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers(HttpMethod.GET, "/", "/css/**", "/js/**", "/images/**", "/layout/**", "/**.html")
+                .requestMatchers(HttpMethod.GET,
+                        "/", "/favicon.ico", "/css/**", "/js/**", "/images/**", "/layout/**", "/**.html", "/boards/**")
                 .permitAll()
-                .requestMatchers(HttpMethod.GET, "/favicon.ico").permitAll()
-                .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/logout").permitAll()
-                .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                .requestMatchers(HttpMethod.GET, "/boards/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/reissue").permitAll()
+                .requestMatchers(HttpMethod.POST, "/login", "/logout", "/users", "/reissue").permitAll()
                 .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated());
 
         http.sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(new JWTFilter(jwtUtil, userRepository), LoginFilter.class);
-        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshTokenRepository), LogoutFilter.class);
+        http.addFilterBefore(new JWTFilter(jwtUtil, userService), LoginFilter.class);
+        http.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshTokenService), LogoutFilter.class);
         http.addFilterAt(
-                new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshTokenRepository,
-                        userRepository),
-                UsernamePasswordAuthenticationFilter.class);
+                new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshTokenService,
+                        userService), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling(exception -> exception
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())

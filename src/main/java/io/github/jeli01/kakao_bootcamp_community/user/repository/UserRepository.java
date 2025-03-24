@@ -11,7 +11,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmailAndDeleteDateIsNull(String email);
 
+    Optional<User> findByNicknameAndDeleteDateIsNull(String nickname);
+
     boolean existsByEmailAndDeleteDateIsNull(String email);
 
     Optional<User> findByIdAndDeleteDateIsNull(Long id);
+
+    Boolean existsByIdAndDeleteDateIsNull(Long id);
 }

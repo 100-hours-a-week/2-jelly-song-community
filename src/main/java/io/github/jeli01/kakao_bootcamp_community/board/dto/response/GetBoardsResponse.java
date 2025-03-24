@@ -2,7 +2,6 @@ package io.github.jeli01.kakao_bootcamp_community.board.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.jeli01.kakao_bootcamp_community.board.dto.BoardsInnerData;
-import io.github.jeli01.kakao_bootcamp_community.util.contant.ErrorMessage;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,18 +15,15 @@ public class GetBoardsResponse {
     @JsonProperty("data")
     List<BoardsInnerData> datas;
 
-    public GetBoardsResponse() {
+    public GetBoardsResponse(String message) {
         isSuccess = true;
-        message = "boards get success";
+        this.message = message;
     }
 
-    public void changeClientError() {
-        isSuccess = false;
-        message = ErrorMessage.CLIENT_ERROR_MESSAGE;
-    }
-
-    public void changeServerError() {
-        isSuccess = false;
-        message = ErrorMessage.SERVER_ERROR_MESSAGE;
+    public GetBoardsResponse(String message, Integer count, List<BoardsInnerData> datas) {
+        this.isSuccess = true;
+        this.message = message;
+        this.count = count;
+        this.datas = datas;
     }
 }

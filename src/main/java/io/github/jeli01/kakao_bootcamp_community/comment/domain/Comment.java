@@ -59,5 +59,6 @@ public class Comment {
 
     public void softDelete() {
         this.deleteDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
     }
 }

@@ -19,16 +19,18 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
+        writeUnAuthorized(response);
+    }
+
+    private void writeUnAuthorized(HttpServletResponse response) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-
         Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("isSuccess", "false");
         errorResponse.put("status", "401");
         errorResponse.put("error", "Access Token is missing or invalid.");
-
         PrintWriter writer = response.getWriter();
         writer.write(objectMapper.writeValueAsString(errorResponse));
-        writer.flush();
     }
 }

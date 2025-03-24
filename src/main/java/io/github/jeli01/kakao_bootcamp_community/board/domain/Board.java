@@ -81,6 +81,7 @@ public class Board {
 
     public void softDelete() {
         this.deleteDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
     }
 
     public void plusVisitCount() {

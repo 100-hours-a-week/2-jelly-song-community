@@ -24,27 +24,15 @@ public class UserService {
     private final FileUtils fileUtils;
 
     public User getUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
-        });
-        return user;
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
     }
 
-
     public void signUp(PostSignUpRequest req) {
-        Boolean existsNickname = userRepository.existsByNicknameAndDeleteDateIsNull(req.getNickname());
-        Boolean existsEmail = userRepository.existsByEmailAndDeleteDateIsNull(req.getEmail());
+        validateEmailDuplication(req.getEmail());
+        validateNicknameDuplication(req.getNickname());
 
-        if (existsNickname) {
-            throw new IllegalArgumentException("존재하는 닉네임 입니다.");
-        }
-
-        if (existsEmail) {
-            throw new IllegalArgumentException("존재하는 이메일 입니다.");
-        }
-
-        MultipartFile profileImage = req.getProfileImage();
-        String imagePath = fileUtils.storeFile(profileImage);
+        String imagePath = storeProfileImage(req.getProfileImage());
 
         User user = new User(req.getEmail(), bCryptPasswordEncoder.encode(req.getPassword()),
                 req.getNickname(), imagePath, "ROLE_USER", LocalDateTime.now(), LocalDateTime.now(), null);
@@ -53,30 +41,29 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        User user = userRepository.findByIdAndDeleteDateIsNull(id)
-                .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
+        User user = getActiveUserById(id);
         user.delete();
     }
 
-    public void patchUserBasic(PatchUserBasicRequest patchUserBasicRequest, Long id) {
-        User user = userRepository.findByIdAndDeleteDateIsNull(id)
-                .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
+    public void patchUserBasic(PatchUserBasicRequest request, Long id) {
+        User user = getActiveUserById(id);
 
-        String imagePath = user.getProfileImage();
-        if (patchUserBasicRequest.getProfileImage() != null) {
-            String oldImagePath = user.getProfileImage();
-            fileUtils.deleteFile(oldImagePath);
-            imagePath = fileUtils.storeFile(patchUserBasicRequest.getProfileImage());
+        String newImagePath = user.getProfileImage();
+        if (request.getProfileImage() != null) {
+            fileUtils.deleteFile(user.getProfileImage());
+            newImagePath = storeProfileImage(request.getProfileImage());
         }
 
-        String requestNickname = patchUserBasicRequest.getNickname();
-        String userNickname = user.getNickname();
-        Boolean existsNickname = userRepository.existsByNicknameAndDeleteDateIsNull(requestNickname);
-        if (existsNickname == true && !requestNickname.equals(userNickname)) {
-            throw new NicknameDuplicatedException("닉네임이 중복됩니다.");
+        if (!request.getNickname().equals(user.getNickname())) {
+            validateNicknameDuplication(request.getNickname());
         }
 
-        user.changeUserBasic(imagePath, patchUserBasicRequest.getNickname());
+        user.changeUserBasic(newImagePath, request.getNickname());
+    }
+
+    private User getActiveUserById(Long id) {
+        return userRepository.findByIdAndDeleteDateIsNull(id)
+                .orElseThrow(() -> new IllegalArgumentException("활성화된 유저를 찾을 수 없습니다. ID: " + id));
     }
 
     public PatchPasswordResponse patchUserPassword(PatchPasswordRequest patchPasswordRequest, Long id) {
@@ -84,5 +71,30 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
         user.changePassword(bCryptPasswordEncoder.encode(patchPasswordRequest.getPassword()));
         return new PatchPasswordResponse();
+    }
+
+    private void validateEmailDuplication(String email) {
+        if (userRepository.existsByEmailAndDeleteDateIsNull(email)) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+        }
+    }
+
+    private void validateNicknameDuplication(String nickname) {
+        if (userRepository.existsByNicknameAndDeleteDateIsNull(nickname)) {
+            throw new NicknameDuplicatedException("이미 존재하는 닉네임입니다.");
+        }
+    }
+
+    private String storeProfileImage(MultipartFile profileImage) {
+        return profileImage != null ? fileUtils.storeFile(profileImage) : null;
+    }
+
+    public User findByEmailAndDeleteDateIsNull(String email) {
+        return userRepository.findByEmailAndDeleteDateIsNull(email).orElseThrow(() ->
+                new IllegalArgumentException("no user by exists email"));
+    }
+
+    public Boolean existsByIdAndDeleteDateIsNull(Long id) {
+        return userRepository.existsByIdAndDeleteDateIsNull(id);
     }
 }

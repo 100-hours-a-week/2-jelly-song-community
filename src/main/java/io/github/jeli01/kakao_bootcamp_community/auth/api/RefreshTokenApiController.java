@@ -1,9 +1,9 @@
 package io.github.jeli01.kakao_bootcamp_community.auth.api;
 
 import io.github.jeli01.kakao_bootcamp_community.auth.domain.RefreshToken;
-import io.github.jeli01.kakao_bootcamp_community.auth.dto.response.PostReissueResponse;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
 import io.github.jeli01.kakao_bootcamp_community.auth.service.RefreshTokenService;
+import io.github.jeli01.kakao_bootcamp_community.common.dto.SuccessfulResponse;
 import io.github.jeli01.kakao_bootcamp_community.common.exception.response.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -32,7 +32,7 @@ public class RefreshTokenApiController {
     }
 
     @PostMapping("/reissue")
-    public PostReissueResponse reissue(HttpServletRequest request, HttpServletResponse response) {
+    public SuccessfulResponse reissue(HttpServletRequest request, HttpServletResponse response) {
         String refresh = findRefresh(request);
 
         validateRefreshExists(refresh);
@@ -51,7 +51,7 @@ public class RefreshTokenApiController {
         response.setHeader("Authorization", newAccess);
         response.addCookie(createCookie("refresh", newRefresh));
 
-        return new PostReissueResponse();
+        return new SuccessfulResponse("reissue post success");
     }
 
     private void validateIsInServerStore(String refresh) {

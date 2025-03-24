@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
@@ -23,29 +24,32 @@ public class BoardService {
     private final FileUtils fileUtils;
 
     public List<Board> getBoards() {
-        List<Board> all = boardRepository.findAllByDeleteDateIsNull();
-        return all;
+        return boardRepository.findAllByDeleteDateIsNull();
     }
 
-    public void createBoard(PostBoardRequest postBoardRequest) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        User writer = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    public Board getBoard(Long id) {
+        Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found or deleted"));
+        board.plusVisitCount();
+        return board;
+    }
 
-        String fullPath = null;
-        if (postBoardRequest.getImage() != null) {
-            fullPath = fileUtils.storeFile(postBoardRequest.getImage());
-        }
+    public void createBoard(PostBoardRequest dto) {
+        User writer = getCurrentUser();
 
+        String imageUrl = null;
         String originName = null;
-        if (postBoardRequest.getImage() != null) {
-            originName = postBoardRequest.getImage().getOriginalFilename();
+
+        MultipartFile image = dto.getImage();
+        if (image != null) {
+            imageUrl = fileUtils.storeFile(image);
+            originName = image.getOriginalFilename();
         }
 
         Board board = new Board(
-                postBoardRequest.getTitle(),
-                postBoardRequest.getContent(),
-                fullPath,
+                dto.getTitle(),
+                dto.getContent(),
+                imageUrl,
                 originName,
                 writer,
                 0L,
@@ -59,49 +63,48 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    public void updateBoard(Long id, PutBoardRequest putBoardRequest) {
-        Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+    public void updateBoard(Long id, PutBoardRequest dto) {
+        Board board = getBoardById(id);
+        validateBoardOwner(board);
 
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!board.getWriter().getId().equals(Long.parseLong(userId))) {
-            throw new IllegalStateException("You are not the owner of this board");
-        }
-
-        String fullPath = board.getBoardImage();
-        if (putBoardRequest.getImage() != null) {
-            String boardImage = board.getBoardImage();
-            fileUtils.deleteFile(boardImage);
-            fullPath = fileUtils.storeFile(putBoardRequest.getImage());
-        }
-
+        String imageUrl = board.getBoardImage();
         String originName = board.getBoardImageOriginName();
-        if (putBoardRequest.getImage() != null) {
-            originName = putBoardRequest.getImage().getOriginalFilename();
+
+        MultipartFile image = dto.getImage();
+
+        if (image != null) {
+            fileUtils.deleteFile(board.getBoardImage());
+            imageUrl = fileUtils.storeFile(dto.getImage());
+            originName = dto.getImage().getOriginalFilename();
         }
 
-        board.changeBoard(putBoardRequest.getTitle(), putBoardRequest.getContent(), fullPath,
-                originName);
+        board.changeBoard(dto.getTitle(), dto.getContent(), imageUrl, originName);
         boardRepository.save(board);
     }
 
     public void deleteBoard(Long id) {
-        Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
-
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!board.getWriter().getId().equals(Long.parseLong(userId))) {
-            throw new IllegalStateException("You are not the owner of this board");
-        }
+        Board board = getBoardById(id);
+        validateBoardOwner(board);
 
         board.softDelete();
         boardRepository.save(board);
     }
 
-    public Board getBoard(Long id) {
-        Board board = boardRepository.findByIdAndDeleteDateIsNull(id)
-                .orElseThrow(() -> new IllegalArgumentException("Board not found or deleted"));
-        board.plusVisitCount();
-        return board;
+    private User getCurrentUser() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
+    private Board getBoardById(Long id) {
+        return boardRepository.findByIdAndDeleteDateIsNull(id)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+    }
+
+    private void validateBoardOwner(Board board) {
+        Long currentUserId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (!board.getWriter().getId().equals(currentUserId)) {
+            throw new IllegalStateException("You are not the owner of this board");
+        }
     }
 }

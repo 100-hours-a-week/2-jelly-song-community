@@ -2,6 +2,7 @@ package io.github.jeli01.kakao_bootcamp_community.auth.service;
 
 import io.github.jeli01.kakao_bootcamp_community.auth.domain.RefreshToken;
 import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshTokenRepository;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,5 +23,9 @@ public class RefreshTokenService {
 
     public Boolean existsByRefresh(String refresh) {
         return refreshTokenRepository.existsByRefresh(refresh);
+    }
+
+    public void deleteByExpirationBefore(LocalDateTime currentTime) {
+        refreshTokenRepository.deleteByExpirationBefore(currentTime);
     }
 }

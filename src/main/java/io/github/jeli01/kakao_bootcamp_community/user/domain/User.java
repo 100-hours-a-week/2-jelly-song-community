@@ -67,6 +67,7 @@ public class User {
 
     public void delete() {
         deleteDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now();
     }
 
     public User(Long id, String role) {

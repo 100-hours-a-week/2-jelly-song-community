@@ -11,8 +11,8 @@ import io.github.jeli01.kakao_bootcamp_community.comment.domain.Comment;
 import io.github.jeli01.kakao_bootcamp_community.comment.repository.CommentRepository;
 import io.github.jeli01.kakao_bootcamp_community.like.repository.LikeRepository;
 import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,77 +25,80 @@ public class BoardDtoService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
 
-    public GetBoardsResponse BoardsToDto(List<Board> boardList) {
-        GetBoardsResponse getBoardsResponse = new GetBoardsResponse();
-        getBoardsResponse.setIsSuccess(true);
-        getBoardsResponse.setMessage("get boards success");
-        getBoardsResponse.setCount(boardList.size());
+    public GetBoardsResponse mapBoardsToDto(List<Board> boardList) {
+        List<BoardsInnerData> datas = boardList.stream()
+                .map(this::mapToBoardsInnerData)
+                .collect(Collectors.toList());
 
-        List<BoardsInnerData> list = new ArrayList<>();
-        for (Board board : boardList) {
-            BoardsInnerData boardsInnerData = new BoardsInnerData();
-            boardsInnerData.setId(board.getId());
-            boardsInnerData.setTitle(board.getTitle());
-            boardsInnerData.setLike(board.getLikeCount());
-            boardsInnerData.setCommentsCounts(board.getCommentCount());
-            boardsInnerData.setVisitCounts(board.getVisitCount());
-            boardsInnerData.setCreateDate(board.getCreateDate());
-            boardsInnerData.setProfileImage(board.getWriter().getProfileImage());
-            boardsInnerData.setWriter(board.getWriter().getNickname());
-            list.add(boardsInnerData);
-        }
-
-        getBoardsResponse.setDatas(list);
-        return getBoardsResponse;
+        GetBoardsResponse response = new GetBoardsResponse("get boards success", datas.size(), datas);
+        return response;
     }
 
-    public GetBoardResponse BoardToDto(Board board) {
-        GetBoardResponse getBoardResponse = new GetBoardResponse();
-        getBoardResponse.setIsSuccess(true);
-        getBoardResponse.setMessage("get board success");
-
-        DataInBoard data = new DataInBoard();
-        data.setId(board.getId());
-        data.setTitle(board.getTitle());
-
-        data.setBoardImage(board.getBoardImage());
-        data.setWriter(board.getWriter().getNickname());
-
-        data.setCreateDate(board.getCreateDate());
-        data.setContents(board.getContent());
-
+    private BoardsInnerData mapToBoardsInnerData(Board board) {
         User writer = board.getWriter();
-        String profileImage = writer.getProfileImage();
-        data.setProfileImage(profileImage);
-        data.setWriterId(writer.getId());
 
-        data.setOriginImageName(board.getBoardImageOriginName());
+        BoardsInnerData dto = new BoardsInnerData();
+        dto.setId(board.getId());
+        dto.setTitle(board.getTitle());
+        dto.setLike(board.getLikeCount());
+        dto.setCommentsCounts(board.getCommentCount());
+        dto.setVisitCounts(board.getVisitCount());
+        dto.setCreateDate(board.getCreateDate());
+        dto.setProfileImage(writer.getProfileImage());
+        dto.setWriter(writer.getNickname());
 
-        Long likeCount = likeRepository.countByBoard(board);
-        data.setLike(likeCount);
-        data.setVisitCount(board.getVisitCount());
+        return dto;
+    }
 
-        Long commentCount = commentRepository.countByBoardAndDeleteDateIsNull(board);
-        data.setCommentsCount(commentCount);
+    public GetBoardResponse mapBoardToDto(Board board) {
+        DataInBoard data = mapToDataInBoard(board);
 
-        List<Comment> commentList = commentRepository.findByBoardIdAndDeleteDateIsNull(board.getId());
-        List<CommentInnerDataInBoard> comments = new ArrayList<>();
+        GetBoardResponse response = new GetBoardResponse();
+        response.setIsSuccess(true);
+        response.setMessage("get board success");
+        response.setData(data);
 
-        for (Comment comment : commentList) {
-            CommentInnerDataInBoard commentDto = new CommentInnerDataInBoard();
-            commentDto.setId(comment.getId());
-            commentDto.setProfileImage(comment.getWriter().getProfileImage());
-            commentDto.setWriter(comment.getWriter().getNickname());
-            commentDto.setWriterId(comment.getWriter().getId());
-            commentDto.setCreateDate(comment.getCreateDate());
-            commentDto.setContent(comment.getContent());
-            comments.add(commentDto);
-        }
+        return response;
+    }
 
-        data.setComments(comments);
+    private DataInBoard mapToDataInBoard(Board board) {
+        User writer = board.getWriter();
 
-        getBoardResponse.setData(data);
+        DataInBoard dto = new DataInBoard();
+        dto.setId(board.getId());
+        dto.setTitle(board.getTitle());
+        dto.setBoardImage(board.getBoardImage());
+        dto.setOriginImageName(board.getBoardImageOriginName());
+        dto.setWriter(writer.getNickname());
+        dto.setWriterId(writer.getId());
+        dto.setProfileImage(writer.getProfileImage());
+        dto.setCreateDate(board.getCreateDate());
+        dto.setContents(board.getContent());
 
-        return getBoardResponse;
+        dto.setLike(likeRepository.countByBoard(board));
+        dto.setVisitCount(board.getVisitCount());
+        dto.setCommentsCount(commentRepository.countByBoardAndDeleteDateIsNull(board));
+
+        List<Comment> comments = commentRepository.findByBoardIdAndDeleteDateIsNull(board.getId());
+        dto.setComments(comments.stream()
+                .map(this::mapToCommentDto)
+                .collect(Collectors.toList())
+        );
+
+        return dto;
+    }
+
+    private CommentInnerDataInBoard mapToCommentDto(Comment comment) {
+        User writer = comment.getWriter();
+
+        CommentInnerDataInBoard dto = new CommentInnerDataInBoard();
+        dto.setId(comment.getId());
+        dto.setProfileImage(writer.getProfileImage());
+        dto.setWriter(writer.getNickname());
+        dto.setWriterId(writer.getId());
+        dto.setCreateDate(comment.getCreateDate());
+        dto.setContent(comment.getContent());
+
+        return dto;
     }
 }
