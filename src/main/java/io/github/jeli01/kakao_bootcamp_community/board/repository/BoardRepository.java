@@ -9,4 +9,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Optional<Board> findByIdAndDeleteDateIsNull(Long id);
 
     List<Board> findAllByDeleteDateIsNull();
+
+    List<Board> findByWriterIdAndDeleteDateIsNull(Long id);
+
 }

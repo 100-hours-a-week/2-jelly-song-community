@@ -1,6 +1,12 @@
 package io.github.jeli01.kakao_bootcamp_community.user.service;
 
+import io.github.jeli01.kakao_bootcamp_community.board.domain.Board;
+import io.github.jeli01.kakao_bootcamp_community.board.repository.BoardRepository;
 import io.github.jeli01.kakao_bootcamp_community.cloud.s3.FileUtils;
+import io.github.jeli01.kakao_bootcamp_community.comment.domain.Comment;
+import io.github.jeli01.kakao_bootcamp_community.comment.repository.CommentRepository;
+import io.github.jeli01.kakao_bootcamp_community.like.domain.Like;
+import io.github.jeli01.kakao_bootcamp_community.like.repository.LikeRepository;
 import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchPasswordRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchUserBasicRequest;
@@ -9,6 +15,7 @@ import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PatchPassword
 import io.github.jeli01.kakao_bootcamp_community.user.exception.NicknameDuplicatedException;
 import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +29,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final FileUtils fileUtils;
+    private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
+    private final BoardRepository boardRepository;
 
     public User getUser(Long id) {
         return userRepository.findById(id)
@@ -42,7 +52,54 @@ public class UserService {
 
     public void deleteUser(Long id) {
         User user = getActiveUserById(id);
+
+        cascadeCommentDeleteFromUser(user);
+        cascadeLikeDeleteFromUser(user);
+        cascadeBoardDeleteFromUser(user);
+
         user.delete();
+    }
+
+    private void cascadeBoardDeleteFromUser(User user) {
+        List<Board> boards = boardRepository.findByWriterIdAndDeleteDateIsNull(user.getId());
+        for (Board board : boards) {
+            cacadeCommentDeleteFromBoard(board);
+            cascadeLikeDeleteFromBoard(board);
+
+            board.softDelete();
+        }
+    }
+
+    private void cascadeLikeDeleteFromBoard(Board board) {
+        List<Like> boardLikes = likeRepository.findByBoardAndDeleteDateIsNull(board);
+        for (Like like : boardLikes) {
+            like.softDelete();
+            board.minusLikeCount();
+        }
+    }
+
+    private void cacadeCommentDeleteFromBoard(Board board) {
+        List<Comment> boardComments = commentRepository.findByBoardIdAndDeleteDateIsNull(board.getId());
+        for (Comment comment : boardComments) {
+            comment.softDelete();
+            board.minusCommentCount();
+        }
+    }
+
+    private void cascadeLikeDeleteFromUser(User user) {
+        List<Like> likes = likeRepository.findByUserAndDeleteDateIsNull(user);
+        for (Like like : likes) {
+            like.softDelete();
+            like.getBoard().minusLikeCount();
+        }
+    }
+
+    private void cascadeCommentDeleteFromUser(User user) {
+        List<Comment> comments = commentRepository.findByWriterIdAndDeleteDateIsNull(user.getId());
+        for (Comment comment : comments) {
+            comment.softDelete();
+            comment.getBoard().minusCommentCount();
+        }
     }
 
     public void patchUserBasic(PatchUserBasicRequest request, Long id) {

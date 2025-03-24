@@ -5,6 +5,10 @@ import io.github.jeli01.kakao_bootcamp_community.board.dto.request.PostBoardRequ
 import io.github.jeli01.kakao_bootcamp_community.board.dto.request.PutBoardRequest;
 import io.github.jeli01.kakao_bootcamp_community.board.repository.BoardRepository;
 import io.github.jeli01.kakao_bootcamp_community.cloud.s3.FileUtils;
+import io.github.jeli01.kakao_bootcamp_community.comment.domain.Comment;
+import io.github.jeli01.kakao_bootcamp_community.comment.repository.CommentRepository;
+import io.github.jeli01.kakao_bootcamp_community.like.domain.Like;
+import io.github.jeli01.kakao_bootcamp_community.like.repository.LikeRepository;
 import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import io.github.jeli01.kakao_bootcamp_community.user.repository.UserRepository;
 import java.time.LocalDateTime;
@@ -22,6 +26,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final FileUtils fileUtils;
+    private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
     public List<Board> getBoards() {
         return boardRepository.findAllByDeleteDateIsNull();
@@ -86,8 +92,27 @@ public class BoardService {
         Board board = getBoardById(id);
         validateBoardOwner(board);
 
+        cascadeCommentDeleteFrom(board);
+        cascadeLikeDeleteFrom(board);
+
         board.softDelete();
         boardRepository.save(board);
+    }
+
+    private void cascadeLikeDeleteFrom(Board board) {
+        List<Like> likes = likeRepository.findByBoardAndDeleteDateIsNull(board);
+        for (Like like : likes) {
+            like.softDelete();
+            board.minusLikeCount();
+        }
+    }
+
+    private void cascadeCommentDeleteFrom(Board board) {
+        List<Comment> comments = commentRepository.findByBoardIdAndDeleteDateIsNull(board.getId());
+        for (Comment comment : comments) {
+            comment.softDelete();
+            board.minusCommentCount();
+        }
     }
 
     private User getCurrentUser() {

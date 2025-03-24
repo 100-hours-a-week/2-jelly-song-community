@@ -37,9 +37,16 @@ public class Like {
     @Column(nullable = false, updatable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createDate;
 
+    @Column
+    private LocalDateTime deleteDate;
+
     public Like(User user, Board board) {
         this.user = user;
         this.board = board;
         this.createDate = LocalDateTime.now();
+    }
+
+    public void softDelete() {
+        this.deleteDate = LocalDateTime.now();
     }
 }
