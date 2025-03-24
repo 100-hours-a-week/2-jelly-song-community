@@ -1,15 +1,12 @@
 package io.github.jeli01.kakao_bootcamp_community.user.api;
 
+import io.github.jeli01.kakao_bootcamp_community.common.dto.SuccessfulResponse;
 import io.github.jeli01.kakao_bootcamp_community.common.exception.response.ErrorResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.domain.User;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchPasswordRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PatchUserBasicRequest;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.request.PostSignUpRequest;
-import io.github.jeli01.kakao_bootcamp_community.user.dto.response.DeleteUserResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.dto.response.GetUserResponse;
-import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PatchPasswordResponse;
-import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PatchUserBasicResponse;
-import io.github.jeli01.kakao_bootcamp_community.user.dto.response.PostSignUpResponse;
 import io.github.jeli01.kakao_bootcamp_community.user.exception.NicknameDuplicatedException;
 import io.github.jeli01.kakao_bootcamp_community.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +32,6 @@ public class UserApiController {
     private final UserService userService;
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResponse illegalExHandle(IllegalArgumentException e) {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestPartException.class)
     public ErrorResponse handleMissingServletRequestPartException(MissingServletRequestPartException e) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
@@ -52,48 +43,42 @@ public class UserApiController {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
-    @GetMapping("/users/{id}")
-    public GetUserResponse getUser(@PathVariable("id") Long id) {
-        User user = userService.getUser(id);
+    @GetMapping("/users/{userId}")
+    public GetUserResponse getUser(@PathVariable("userId") Long userId) {
+        User user = userService.getUser(userId);
         return new GetUserResponse(user);
     }
 
     @PostMapping("/users")
-    public PostSignUpResponse signUp(@RequestParam("profile_image") MultipartFile profileImage,
+    public SuccessfulResponse signUp(@RequestParam("profile_image") MultipartFile profileImage,
                                      @RequestParam("email") String email,
                                      @RequestParam("password") String password,
                                      @RequestParam("nickname") String nickname) {
-        PostSignUpRequest postSignUpRequest = new PostSignUpRequest();
-        postSignUpRequest.setProfileImage(profileImage);
-        postSignUpRequest.setEmail(email);
-        postSignUpRequest.setPassword(password);
-        postSignUpRequest.setNickname(nickname);
+        PostSignUpRequest postSignUpRequest = new PostSignUpRequest(profileImage, email, password, nickname);
         userService.signUp(postSignUpRequest);
-        return new PostSignUpResponse();
+        return new SuccessfulResponse("user post success");
     }
 
-    @PatchMapping("/users/{id}")
-    public PatchUserBasicResponse patchUserBasic(
+    @PatchMapping("/users/{userId}")
+    public SuccessfulResponse patchUserBasic(
             @RequestParam(value = "profile_image", required = false) MultipartFile profileImage,
             @RequestParam("nickname") String nickname,
-            @PathVariable("id") Long id) {
-        PatchUserBasicRequest patchUserBasicRequest = new PatchUserBasicRequest();
-        patchUserBasicRequest.setProfileImage(profileImage);
-        patchUserBasicRequest.setNickname(nickname);
-        userService.patchUserBasic(patchUserBasicRequest, id);
-        return new PatchUserBasicResponse();
+            @PathVariable("userId") Long userId) {
+        PatchUserBasicRequest patchUserBasicRequest = new PatchUserBasicRequest(profileImage, nickname);
+        userService.patchUserBasic(patchUserBasicRequest, userId);
+        return new SuccessfulResponse("update user-basic success");
     }
 
-    @DeleteMapping("/users/{id}")
-    public DeleteUserResponse deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
-        return new DeleteUserResponse();
+    @DeleteMapping("/users/{userId}")
+    public SuccessfulResponse deleteUser(@PathVariable("userId") Long userId) {
+        userService.deleteUser(userId);
+        return new SuccessfulResponse("user delete success");
     }
 
-    @PatchMapping("/users/{id}/password")
-    public PatchPasswordResponse patchUserPassword(@RequestBody PatchPasswordRequest patchPasswordRequest,
-                                                   @PathVariable("id") Long id) {
-        userService.patchUserPassword(patchPasswordRequest, id);
-        return new PatchPasswordResponse();
+    @PatchMapping("/users/{userId}/password")
+    public SuccessfulResponse patchUserPassword(@RequestBody PatchPasswordRequest patchPasswordRequest,
+                                                @PathVariable("userId") Long userId) {
+        userService.patchUserPassword(patchPasswordRequest, userId);
+        return new SuccessfulResponse("password update success");
     }
 }

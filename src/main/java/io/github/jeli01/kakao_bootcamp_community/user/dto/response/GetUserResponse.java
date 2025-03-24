@@ -15,10 +15,7 @@ public class GetUserResponse {
         this.isSuccess = true;
         this.message = "user get success";
         String profileImageUrl = user.getProfileImage();
-        Data tempData = new Data();
-        tempData.setUserProfileImageUrl(profileImageUrl);
-        tempData.setNickname(user.getNickname());
-        this.data = tempData;
+        this.data = new Data(profileImageUrl, user.getNickname());
     }
 
     @Getter
@@ -26,5 +23,10 @@ public class GetUserResponse {
     class Data {
         private String userProfileImageUrl;
         private String nickname;
+
+        public Data(String userProfileImageUrl, String nickname) {
+            this.userProfileImageUrl = userProfileImageUrl;
+            this.nickname = nickname;
+        }
     }
 }

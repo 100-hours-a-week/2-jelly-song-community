@@ -1,8 +1,6 @@
-package io.github.jeli01.kakao_bootcamp_community.user.dto.request;
+package io.github.jeli01.kakao_bootcamp_community.auth.dto.request;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class PostLoginRequest {
