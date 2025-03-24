@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
-@Setter
 public class PostSignUpRequest {
     private String email;
     private String password;

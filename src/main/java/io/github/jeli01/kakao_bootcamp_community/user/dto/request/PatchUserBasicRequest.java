@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
-@Setter
 public class PatchUserBasicRequest {
     private String nickname;
     private MultipartFile profileImage;

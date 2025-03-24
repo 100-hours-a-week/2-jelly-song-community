@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class PatchPasswordRequest {
     private String password;
 }
