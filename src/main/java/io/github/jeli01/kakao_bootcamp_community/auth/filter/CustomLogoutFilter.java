@@ -2,7 +2,7 @@ package io.github.jeli01.kakao_bootcamp_community.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
-import io.github.jeli01.kakao_bootcamp_community.auth.repository.RefreshTokenRepository;
+import io.github.jeli01.kakao_bootcamp_community.auth.service.RefreshTokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,11 +18,11 @@ import org.springframework.web.filter.GenericFilterBean;
 
 public class CustomLogoutFilter extends GenericFilterBean {
     private final JWTUtil jwtUtil;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenService refreshTokenService;
 
-    public CustomLogoutFilter(JWTUtil jwtUtil, RefreshTokenRepository refreshTokenRepository) {
+    public CustomLogoutFilter(JWTUtil jwtUtil, RefreshTokenService refreshTokenService) {
         this.jwtUtil = jwtUtil;
-        this.refreshTokenRepository = refreshTokenRepository;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @Override
@@ -60,13 +60,13 @@ public class CustomLogoutFilter extends GenericFilterBean {
             return;
         }
 
-        Boolean isExist = refreshTokenRepository.existsByRefresh(refresh);
+        Boolean isExist = refreshTokenService.existsByRefresh(refresh);
         if (!isExist) {
             makeLogoutFailResponse(response);
             return;
         }
 
-        refreshTokenRepository.deleteByRefresh(refresh);
+        refreshTokenService.deleteByRefresh(refresh);
         removeCookie(response);
         makeSuccessJsonResponse(response);
     }

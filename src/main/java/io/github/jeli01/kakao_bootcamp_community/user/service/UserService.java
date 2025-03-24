@@ -88,4 +88,13 @@ public class UserService {
     private String storeProfileImage(MultipartFile profileImage) {
         return profileImage != null ? fileUtils.storeFile(profileImage) : null;
     }
+
+    public User findByEmailAndDeleteDateIsNull(String email) {
+        return userRepository.findByEmailAndDeleteDateIsNull(email).orElseThrow(() ->
+                new IllegalArgumentException("no user by exists email"));
+    }
+
+    public Boolean existsByIdAndDeleteDateIsNull(Long id) {
+        return userRepository.existsByIdAndDeleteDateIsNull(id);
+    }
 }

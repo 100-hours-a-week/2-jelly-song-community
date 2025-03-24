@@ -19,10 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         User userData = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(username))
                 .orElseThrow(() -> new RuntimeException("User with username " + username + " not found"));
 
-        if (userData == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
-
         return new CustomUserDetails(userData);
     }
 }
