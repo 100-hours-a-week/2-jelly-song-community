@@ -8,12 +8,12 @@ import lombok.Setter;
 @Setter
 public class ErrorResponse {
     private Boolean isSuccess;
-    private Integer statecode;
+    private Integer stateCode;
     private String message;
 
-    public ErrorResponse(Integer statecode, String message) {
+    public ErrorResponse(Integer stateCode, String message) {
         this.isSuccess = false;
-        this.statecode = statecode;
+        this.stateCode = stateCode;
         this.message = message;
     }
 }

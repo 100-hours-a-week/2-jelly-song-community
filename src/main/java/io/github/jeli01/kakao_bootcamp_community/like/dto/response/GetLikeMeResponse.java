@@ -13,14 +13,15 @@ public class GetLikeMeResponse {
     public GetLikeMeResponse(Boolean liked) {
         this.isSuccess = true;
         this.message = "is liked get success";
-        Data data1 = new Data();
-        data1.setIsLiked(liked);
-        data = data1;
+        this.data = new Data(liked);
     }
 
     @Getter
     @Setter
     static class Data {
         private Boolean isLiked;
+        public Data(Boolean isLiked) {
+            this.isLiked = isLiked;
+        }
     }
 }

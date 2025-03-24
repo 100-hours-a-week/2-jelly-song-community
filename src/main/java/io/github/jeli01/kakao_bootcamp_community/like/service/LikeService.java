@@ -21,54 +21,55 @@ public class LikeService {
     private final UserRepository userRepository;
 
     public void addLike(Long boardId) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+        User user = getCurrentUser();
+        Board board = getBoard(boardId);
+        validateUserDidlike(user, board);
 
         board.plusLikeCount();
-        Optional<Like> existingLike = likeRepository.findByUserAndBoard(user, board);
-        if (existingLike.isPresent()) {
-            throw new IllegalStateException("You already liked this post");
-        }
 
         Like like = new Like(user, board);
         likeRepository.save(like);
     }
 
-    public void removeLike(Long boardId) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    private void validateUserDidlike(User user, Board board) {
+        Optional<Like> existingLike = likeRepository.findByUserAndBoard(user, board);
+        if (existingLike.isPresent()) {
+            throw new IllegalStateException("You already liked this post");
+        }
+    }
 
-        Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+    public void removeLike(Long boardId) {
+        User user = getCurrentUser();
+        Board board = getBoard(boardId);
+
+        validateDidNotLike(user, board);
 
         board.minusLikeCount();
+        likeRepository.deleteByUserAndBoard(user, board);
+    }
+
+    private void validateDidNotLike(User user, Board board) {
         Optional<Like> existingLike = likeRepository.findByUserAndBoard(user, board);
         if (existingLike.isEmpty()) {
             throw new IllegalStateException("You have not liked this post");
         }
-
-        likeRepository.deleteByUserAndBoard(user, board);
     }
 
     public boolean isLiked(Long boardId, Long requestUserId) {
+        User user = getCurrentUser();
+        Board board = getBoard(boardId);
+
+        return likeRepository.findByUserAndBoard(user, board).isPresent();
+    }
+
+    private User getCurrentUser() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
+        return userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
 
-        Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
+    private Board getBoard(Long boardId) {
+        return boardRepository.findByIdAndDeleteDateIsNull(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
-
-        Optional<Like> existingLike = likeRepository.findByUserAndBoard(user, board);
-        if (existingLike.isEmpty()) {
-            return false;
-        }
-
-        return true;
     }
 }
