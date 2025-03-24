@@ -21,12 +21,8 @@ public class CommentService {
     private final UserRepository userRepository;
 
     public void addComment(Long boardId, String content) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        Board board = boardRepository.findByIdAndDeleteDateIsNull(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+        User user = getCurrentUser();
+        Board board = getBoard(boardId);
 
         board.plusCommentCount();
         Comment comment = new Comment(
@@ -41,36 +37,45 @@ public class CommentService {
     }
 
     public void updateComment(Long commentId, String content) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = getCurrentUser();
+        Comment comment = getComment(commentId);
 
-        Comment comment = commentRepository.findByIdAndDeleteDateIsNull(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
-
-        if (!comment.getWriter().equals(user)) {
-            throw new IllegalStateException("You are not the owner of this comment");
-        }
+        validateCommentOwner(comment, user);
 
         comment.changeContent(content);
         commentRepository.save(comment);
     }
 
     public void deleteComment(Long commentId) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = getCurrentUser();
+        Comment comment = getComment(commentId);
 
-        Comment comment = commentRepository.findByIdAndDeleteDateIsNull(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+        validateCommentOwner(comment, user);
 
         Board board = comment.getBoard();
         board.minusCommentCount();
+        comment.softDelete();
+    }
 
+    private User getCurrentUser() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByIdAndDeleteDateIsNull(Long.parseLong(userId))
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
+    private Board getBoard(Long boardId) {
+        return boardRepository.findByIdAndDeleteDateIsNull(boardId)
+                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
+    }
+
+    private Comment getComment(Long commentId) {
+        return commentRepository.findByIdAndDeleteDateIsNull(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+    }
+
+    private void validateCommentOwner(Comment comment, User user) {
         if (!comment.getWriter().equals(user)) {
             throw new IllegalStateException("You are not the owner of this comment");
         }
-
-        comment.softDelete();
     }
 }

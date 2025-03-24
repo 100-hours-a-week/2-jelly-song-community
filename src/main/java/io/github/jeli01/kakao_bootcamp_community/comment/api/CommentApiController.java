@@ -2,21 +2,15 @@ package io.github.jeli01.kakao_bootcamp_community.comment.api;
 
 import io.github.jeli01.kakao_bootcamp_community.comment.dto.request.PostCommentRequest;
 import io.github.jeli01.kakao_bootcamp_community.comment.dto.request.PutCommentRequest;
-import io.github.jeli01.kakao_bootcamp_community.comment.dto.response.DeleteCommentResponse;
-import io.github.jeli01.kakao_bootcamp_community.comment.dto.response.PostCommentResponse;
-import io.github.jeli01.kakao_bootcamp_community.comment.dto.response.PutCommentResponse;
 import io.github.jeli01.kakao_bootcamp_community.comment.service.CommentService;
-import io.github.jeli01.kakao_bootcamp_community.common.exception.response.ErrorResponse;
+import io.github.jeli01.kakao_bootcamp_community.common.dto.SuccessfulResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,30 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/boards/{boardId}/comments")
 public class CommentApiController {
     private final CommentService commentService;
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResponse illegalExHandle(IllegalArgumentException e) {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-    }
-
     @PostMapping
-    public PostCommentResponse addComment(@PathVariable("boardId") Long boardId,
+    public SuccessfulResponse addComment(@PathVariable("boardId") Long boardId,
                                           @RequestBody PostCommentRequest request) {
         commentService.addComment(boardId, request.getContent());
-        return new PostCommentResponse();
+        return new SuccessfulResponse("comment post success");
     }
 
     @PutMapping("/{commentId}")
-    public PutCommentResponse updateComment(@PathVariable("commentId") Long commentId,
+    public SuccessfulResponse updateComment(@PathVariable("commentId") Long commentId,
                                             @RequestBody PutCommentRequest request) {
         commentService.updateComment(commentId, request.getContent());
-        return new PutCommentResponse();
+        return new SuccessfulResponse("comment post success");
     }
 
     @DeleteMapping("/{commentId}")
-    public DeleteCommentResponse deleteComment(@PathVariable("commentId") Long commentId) {
+    public SuccessfulResponse deleteComment(@PathVariable("commentId") Long commentId) {
         commentService.deleteComment(commentId);
-        return new DeleteCommentResponse();
+        return new SuccessfulResponse("comment delete success");
     }
 }
