@@ -30,13 +30,13 @@ public class BoardApiController {
     @GetMapping
     public GetBoardsResponse getBoards() {
         List<Board> boards = boardService.getBoards();
-        return boardDtoService.BoardsToDto(boards);
+        return boardDtoService.mapBoardsToDto(boards);
     }
 
     @GetMapping("/{boardId}")
     public GetBoardResponse getBoard(@PathVariable("boardId") Long boardId) {
         Board board = boardService.getBoard(boardId);
-        return boardDtoService.BoardToDto(board);
+        return boardDtoService.mapBoardToDto(board);
     }
 
     @PostMapping

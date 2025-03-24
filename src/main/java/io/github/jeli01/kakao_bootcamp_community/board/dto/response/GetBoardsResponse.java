@@ -15,8 +15,15 @@ public class GetBoardsResponse {
     @JsonProperty("data")
     List<BoardsInnerData> datas;
 
-    public GetBoardsResponse() {
+    public GetBoardsResponse(String message) {
         isSuccess = true;
         this.message = message;
+    }
+
+    public GetBoardsResponse(String message, Integer count, List<BoardsInnerData> datas) {
+        this.isSuccess = true;
+        this.message = message;
+        this.count = count;
+        this.datas = datas;
     }
 }
