@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "./config"
+
 let $header_back = document.querySelector(".header-back")
 
 let $fileDOM = document.querySelector("#file");
@@ -155,7 +157,7 @@ function preventSubmitIfNotValidate() {
         formData.append("nickname", $nickname_form.value);
 
         try {
-            const response = await fetch("http://localhost:8080/users", {
+            const response = await fetch(`${API_BASE_URL}/users`, {
                 method: "POST",
                 body: formData,
             });

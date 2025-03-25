@@ -26,7 +26,7 @@ function isTokenExpired(token) {
 
 async function reissueAccessToken() {
     try {
-        const response = await fetch("http://localhost:8080/reissue", {
+        const response = await fetch(`${API_BASE_URL}/reissue`, {
             method: "POST",
             credentials: "include",
         });

@@ -1,4 +1,5 @@
 import {getValidAccessToken, parseJwt} from "./auth.js";
+import { API_BASE_URL } from "./config"
 
 let $headerProfile = document.querySelector(".header-profile");
 let $postsContainer = document.querySelector(".layout-main-container");
@@ -9,8 +10,7 @@ let $postsContainer = document.querySelector(".layout-main-container");
         if (!token) return;
         let jwtContent = parseJwt(token);
 
-        // 1. 유저 정보 조회 API 호출
-        const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+        const response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -31,8 +31,7 @@ let $postsContainer = document.querySelector(".layout-main-container");
             $headerProfile.style.backgroundImage = `url(${userProfileImageUrl})`;
         }
 
-        // 게시글 목록 불러오기
-        const boardsRes = await fetch("http://localhost:8080/boards", {
+        const boardsRes = await fetch(`${API_BASE_URL}/boards`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -43,7 +42,7 @@ let $postsContainer = document.querySelector(".layout-main-container");
 
         if (boardsResult.isSuccess) {
             const posts = boardsResult.data;
-            $postsContainer.innerHTML = ""; // 기존 더미 제거
+            $postsContainer.innerHTML = "";
 
             posts.forEach(post => {
                 const postHTML = `

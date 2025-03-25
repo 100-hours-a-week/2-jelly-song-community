@@ -1,4 +1,5 @@
 import {getValidAccessToken, parseJwt} from "./auth.js";
+import { API_BASE_URL } from "./config"
 
 let $update_password_form = document.querySelector(".update-password-form");
 let $button = document.querySelector(".button-disable");
@@ -19,7 +20,7 @@ activateTost();
         let jwtContent = parseJwt(token);
 
         // 1. 유저 정보 조회 API 호출
-        const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+        const response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -105,7 +106,7 @@ function activateTost() {
             if (!token) return;
             let jwtContent = parseJwt(token);
 
-            const response = await fetch(`http://localhost:8080/users/${jwtContent.username}/password`, {
+            const response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}/password`, {
                 method: "PATCH",
                 headers: {
                     "Authorization": `Bearer ${token}`,

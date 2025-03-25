@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "./config"
+
 let $header_profile = document.querySelector(".header-profile");
 let $drop_down = document.querySelector(".drop-down");
 const $logoutButton = document.querySelector(".drop-down-logout");
@@ -32,7 +34,7 @@ function activateLogoutDropDownMenu() {
         }
 
         console.log("여기까진 옴1")
-        fetch("http://localhost:8080/logout", {
+        fetch(`${API_BASE_URL}/logout`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",

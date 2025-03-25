@@ -1,4 +1,5 @@
 import {getValidAccessToken, parseJwt} from "./auth.js";
+import { API_BASE_URL } from "./config"
 
 let $header_back = document.querySelector(".header-back");
 let create_post_container_form = document.querySelector(".create-post-container-form");
@@ -23,7 +24,7 @@ initializeButtonAttribute();
         let jwtContent = parseJwt(token);
 
         // 1. 유저 정보 조회 API 호출
-        const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+        const response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -129,7 +130,7 @@ $create_post_container_form.addEventListener("submit", async (event) => {
     }
 
     try {
-        const response = await fetch("http://localhost:8080/boards", {
+        const response = await fetch(`${API_BASE_URL}/boards`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`,

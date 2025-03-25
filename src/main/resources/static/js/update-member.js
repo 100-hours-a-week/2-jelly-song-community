@@ -1,4 +1,5 @@
 import {getValidAccessToken, parseJwt} from "./auth.js";
+import { API_BASE_URL } from "./config"
 
 let $update_member_form = document.querySelector(".update-member-form");
 let $nickname_form = document.querySelector(".nickname-form");
@@ -34,7 +35,7 @@ async function loadUserInfo() {
 
         let jwtContent = parseJwt(token);
 
-        const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+        const response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -143,7 +144,7 @@ function activateTost() {
                 formData.append("profile_image", $fileDOM.files[0]); // 파일 추가
             }
 
-            const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+            const response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}`, {
                 method: "PATCH",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -194,7 +195,7 @@ function activateModal() {
 
             let jwtContent = parseJwt(token);
 
-            const response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+            const response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,

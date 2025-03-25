@@ -1,4 +1,5 @@
 import {getValidAccessToken, parseJwt} from "./auth.js";
+import { API_BASE_URL } from "./config"
 
 let $header_back = document.querySelector(".header-back");
 let update_post_container_form = document.querySelector(".update-post-container-form");
@@ -21,7 +22,7 @@ initializeButtonAttribute();
         if (!token) return;
         let jwtContent = parseJwt(token);
 
-        let response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+        let response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -45,7 +46,7 @@ initializeButtonAttribute();
         const urlParams = new URLSearchParams(window.location.search);
         const postId = urlParams.get("id");
 
-        response = await fetch(`http://localhost:8080/boards/${postId}`, {
+        response = await fetch(`${API_BASE_URL}/boards/${postId}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -109,7 +110,7 @@ function preventSubmitIfNotValidate() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/boards/${postId}`, {
+            const response = await fetch(`${API_BASE_URL}/boards/${postId}`, {
                 method: "PUT", // 또는 PATCH
                 headers: {
                     "Authorization": `Bearer ${token}`,

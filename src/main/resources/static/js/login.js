@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "./config"
+
 let $layout_form = document.querySelector(".layout-form");
 
 let $email_form = document.querySelector(".email-form");
@@ -22,7 +24,7 @@ function preventIfNotValidated() {
         let password = $password_form.value;
 
         try {
-            const response = await fetch("http://localhost:8080/login", {
+            const response = await fetch(`${API_BASE_URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

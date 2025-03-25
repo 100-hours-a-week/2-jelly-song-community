@@ -36,7 +36,7 @@ async function fetchAndRenderUserProfile() {
         if (!token) return;
         let jwtContent = parseJwt(token);
 
-        let response = await fetch(`http://localhost:8080/users/${jwtContent.username}`, {
+        let response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -63,7 +63,7 @@ async function fetchAndRenderUserProfile() {
         const urlParams = new URLSearchParams(window.location.search);
         const postId = urlParams.get("id");
 
-        response = await fetch(`http://localhost:8080/boards/${postId}`, {
+        response = await fetch(`${API_BASE_URL}/boards/${postId}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -134,10 +134,9 @@ async function fetchAndRenderUserProfile() {
             if (editButton) editButton.style.display = "none";
         }
 
-        // ✅ 댓글 새로 렌더링 후 버튼들 다시 연결
         reconnectCommentButtons();
 
-        response = await fetch(`http://localhost:8080/likes/boards/${postId}/users/${jwtContent.username}`, {
+        response = await fetch(`${API_BASE_URL}/likes/boards/${postId}/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -185,7 +184,7 @@ function activatePostDeleteModal() {
             const urlParams = new URLSearchParams(window.location.search);
             const postId = urlParams.get("id");
 
-            const response = await fetch(`http://localhost:8080/boards/${postId}`, {
+            const response = await fetch(`${API_BASE_URL}/boards/${postId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -224,8 +223,7 @@ function changeLikeButtonColor() {
         try {
             let response;
             if ($like_button.classList.contains("post-meta-likes-disable")) {
-                // 좋아요 등록
-                response = await fetch(`http://localhost:8080/likes/boards/${postId}`, {
+                response = await fetch(`${API_BASE_URL}/likes/boards/${postId}`, {
                     method: "POST",
                     headers: {
                         "Authorization": `Bearer ${token}`,
@@ -241,8 +239,7 @@ function changeLikeButtonColor() {
                     alert("좋아요 등록 실패: " + result.message);
                 }
             } else {
-                // 좋아요 취소
-                response = await fetch(`http://localhost:8080/likes/boards/${postId}`, {
+                response = await fetch(`${API_BASE_URL}/likes/boards/${postId}`, {
                     method: "DELETE",
                     headers: {
                         "Authorization": `Bearer ${token}`,
@@ -332,7 +329,7 @@ function activateCommentModal() {
         const postId = urlParams.get("id");
 
         try {
-            const response = await fetch(`http://localhost:8080/boards/${postId}/comments/${selectedCommentId}`, {
+            const response = await fetch(`${API_BASE_URL}/boards/${postId}/comments/${selectedCommentId}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -368,7 +365,6 @@ function pad(n) {
     return n < 10 ? "0" + n : n;
 }
 
-// ✅ 새로 렌더링된 댓글에 이벤트 재연결 함수
 function reconnectCommentButtons() {
     $post_comment_right_update_buttons = document.querySelectorAll(".post-comment-right-update-button");
     const newDeleteButtons = document.querySelectorAll('.post-comment-right-delete-button');
@@ -425,7 +421,7 @@ function activateCommentSubmit() {
             const postId = urlParams.get("id");
 
             try {
-                const response = await fetch(`http://localhost:8080/boards/${postId}/comments`, {
+                const response = await fetch(`${API_BASE_URL}/boards/${postId}/comments`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -461,7 +457,7 @@ function activateCommentSubmit() {
             const postId = urlParams.get("id");
 
             try {
-                const response = await fetch(`http://localhost:8080/boards/${postId}/comments/${selectedCommentId}`, {
+                const response = await fetch(`${API_BASE_URL}/boards/${postId}/comments/${selectedCommentId}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -494,7 +490,7 @@ const editButton = document.querySelector(".update-button");
 if (editButton) {
     editButton.addEventListener("click", (e) => {
         e.preventDefault()
-        const query = window.location.search; // 👉 현재 URL의 ?id=4 같은 쿼리 파라미터
+        const query = window.location.search;
         window.location.href = `./update-post.html${query}`;
     });
 }
