@@ -145,7 +145,6 @@ async function fetchAndRenderUserProfile() {
 
         result = await response.json();
 
-        console.log(result)
         if (result.isSuccess && result.data.isLiked) {
             $like_button.classList.remove("post-meta-likes-disable");
             $like_button.classList.add("post-meta-likes-enable");
@@ -405,7 +404,7 @@ function reconnectCommentButtons() {
 
 function activateCommentSubmit() {
     $post_comment_form_button.addEventListener("click", async (event) => {
-        event.preventDefault(); // 기본 폼 제출 막기
+        event.preventDefault();
 
         if ($post_comment_form_button.value == "댓글 등록") {
             const content = $post_comment_form_textarea.value;

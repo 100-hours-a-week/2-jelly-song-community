@@ -23,7 +23,6 @@ initializeButtonAttribute();
         if (!token) return;
         let jwtContent = parseJwt(token);
 
-        // 1. 유저 정보 조회 API 호출
         const response = await fetch(`${API_BASE_URL}/users/${jwtContent.username}`, {
             method: "GET",
             headers: {
@@ -105,7 +104,7 @@ function initializeButtonAttribute() {
 }
 
 $create_post_container_form.addEventListener("submit", async (event) => {
-    event.preventDefault(); // 기본 폼 동작 막기
+    event.preventDefault();
 
     const token = await getValidAccessToken();
     if (!token) {
@@ -142,7 +141,7 @@ $create_post_container_form.addEventListener("submit", async (event) => {
 
         if (result.isSuccess) {
             alert("게시물이 성공적으로 등록되었습니다!");
-            window.location.href = "/posts.html"; // 게시글 목록으로 이동
+            window.location.href = "/posts.html";
         } else {
             alert("게시글 등록 실패: " + result.message);
         }

@@ -58,5 +58,4 @@ function activateLogoutDropDownMenu() {
                 alert("로그아웃 중 오류가 발생했습니다.");
             });
     })
-    console.log("여기까진 옴2")
 }
