@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "./config.js"
 import {getValidAccessToken, parseJwt} from "./auth.js";
 
 let $header_back = document.querySelector(".header-back");

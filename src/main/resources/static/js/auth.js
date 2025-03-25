@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "./config.js"
 export function parseJwt(token) {
     const base64Url = token.split(".")[1];
     if (!base64Url) return null;
