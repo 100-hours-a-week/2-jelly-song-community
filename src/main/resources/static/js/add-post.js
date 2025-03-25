@@ -1,5 +1,5 @@
 import {getValidAccessToken, parseJwt} from "./auth.js";
-import { API_BASE_URL } from "./config"
+import { API_BASE_URL } from "./config.js"
 
 let $header_back = document.querySelector(".header-back");
 let create_post_container_form = document.querySelector(".create-post-container-form");

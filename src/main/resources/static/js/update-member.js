@@ -1,5 +1,5 @@
 import {getValidAccessToken, parseJwt} from "./auth.js";
-import { API_BASE_URL } from "./config"
+import { API_BASE_URL } from "./config.js"
 
 let $update_member_form = document.querySelector(".update-member-form");
 let $nickname_form = document.querySelector(".nickname-form");

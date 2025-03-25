@@ -1,5 +1,5 @@
 import {getValidAccessToken, parseJwt} from "./auth.js";
-import { API_BASE_URL } from "./config"
+import { API_BASE_URL } from "./config.js"
 
 let $update_password_form = document.querySelector(".update-password-form");
 let $button = document.querySelector(".button-disable");

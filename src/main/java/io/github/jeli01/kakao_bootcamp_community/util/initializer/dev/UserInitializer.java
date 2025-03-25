@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-@Profile("initialize")
+@Profile("dev-initialize")
 public class UserInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -54,15 +54,18 @@ public class UserInitializer implements CommandLineRunner {
     }
 
     private void validateExistsNicknameEqualsUser(User user) {
-        userRepository.findByNicknameAndDeleteDateIsNull(user.getNickname()).orElseThrow(() -> {
+        Boolean exists = userRepository.existsByNicknameAndDeleteDateIsNull(user.getNickname());
+        if (exists) {
             throw new ExistsTestUserException("이미 존재하는 닉네임입니다.");
-        });
+        }
     }
 
     private void validateExistsEmailEqualsUser(User user) {
-        userRepository.findByEmailAndDeleteDateIsNull(user.getEmail()).orElseThrow(() -> {
+        boolean exists = userRepository.existsByEmailAndDeleteDateIsNull(user.getEmail());
+        if (exists) {
             throw new ExistsTestUserException("이미 존재하는 이메일입니다.");
-        });
+        }
+
     }
 
 }

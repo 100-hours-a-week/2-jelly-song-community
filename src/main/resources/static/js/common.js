@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./config"
+import { API_BASE_URL } from "./config.js"
 
 let $header_profile = document.querySelector(".header-profile");
 let $drop_down = document.querySelector(".drop-down");

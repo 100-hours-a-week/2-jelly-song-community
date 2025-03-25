@@ -37,4 +37,6 @@ out/
 .vscode/
 src/main/resources/application.properties
 src/main/resources/application-dev.properties
-src/main/resources/application-initialize.properties
+src/main/resources/application-dev-initialize.properties
+src/main/resources/application-prod.properties
+src/main/resources/application-prod-initialize.properties

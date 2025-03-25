@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "./config"
+import { API_BASE_URL } from "./config.js"
 
 let $layout_form = document.querySelector(".layout-form");
 

@@ -1,5 +1,5 @@
 import {getValidAccessToken, parseJwt} from "./auth.js";
-import { API_BASE_URL } from "./config"
+import { API_BASE_URL } from "./config.js"
 
 let $headerProfile = document.querySelector(".header-profile");
 let $postsContainer = document.querySelector(".layout-main-container");
