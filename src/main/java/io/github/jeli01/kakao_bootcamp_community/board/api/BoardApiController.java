@@ -42,7 +42,7 @@ public class BoardApiController {
     @PostMapping
     public SuccessfulResponse postBoard(@RequestParam(required = false) MultipartFile image,
                                         @RequestParam("title") String title,
-                                        @RequestParam("title") String content) {
+                                        @RequestParam("content") String content) {
         PostBoardRequest postBoardRequest = new PostBoardRequest(title, content, image);
         boardService.createBoard(postBoardRequest);
         return new SuccessfulResponse("board create success");
