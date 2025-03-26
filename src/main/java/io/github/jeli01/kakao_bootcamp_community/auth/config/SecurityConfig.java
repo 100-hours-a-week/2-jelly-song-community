@@ -8,6 +8,9 @@ import io.github.jeli01.kakao_bootcamp_community.auth.handler.CustomAuthenticati
 import io.github.jeli01.kakao_bootcamp_community.auth.jwt.JWTUtil;
 import io.github.jeli01.kakao_bootcamp_community.auth.service.RefreshTokenService;
 import io.github.jeli01.kakao_bootcamp_community.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +23,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -62,6 +67,24 @@ public class SecurityConfig {
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
         );
+
+        http.cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+            @Override
+            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                CorsConfiguration configuration = new CorsConfiguration();
+
+                configuration.setAllowedOriginPatterns(List.of("*"));
+                configuration.setAllowedMethods(Collections.singletonList("*"));
+                configuration.setAllowCredentials(true);
+                configuration.setAllowedHeaders(Collections.singletonList("*"));
+                configuration.setMaxAge(3600L);
+
+                configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                return configuration;
+            }
+        })));
 
         return http.build();
     }
