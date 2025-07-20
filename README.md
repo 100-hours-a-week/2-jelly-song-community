@@ -58,7 +58,7 @@ public class Board {
     private Long likeCount; 
     
     public void plusLikeCount() {
-        this.likeCount += 1;
+        this.likeCount += 1; 
         this.updateDate = LocalDateTime.now();
     }
     
