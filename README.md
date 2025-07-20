@@ -70,7 +70,7 @@ public class Board {
 ```
 
 **데이터 무결성 보장**: 좋아요 생성/삭제 시 트랜잭션 기반 동기화
-```java
+```java 
 @Service
 @Transactional
 public class LikeService {
