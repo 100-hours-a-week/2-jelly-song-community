@@ -19,7 +19,9 @@ jobs:
           java-version: 21
 
       - name: application.yml 파일 만들기
-        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.yml
+        run: |
+          mkdir -p ./src/main/resources
+          echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
 
       - name: 테스트 및 빌드하기
         run: ./gradlew clean build
