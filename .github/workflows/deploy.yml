@@ -54,6 +54,6 @@ jobs:
       - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
         run: aws deploy create-deployment
           --application-name dev-talk-server
-          --deployment-config-name odeDeployDefault.OneAtATime
+          --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name production
           --s3-location bucket=jelly-dev-talk-production-bucket,bundleType=tgz,key=$GITHUB_SHA.tar.gz
