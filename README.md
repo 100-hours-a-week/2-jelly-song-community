@@ -55,7 +55,7 @@ public void deleteExpiredTokens() {
 @Entity
 public class Board {
     @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
-    private Long likeCount; 
+    private Long likeCount;  
     
     public void plusLikeCount() {
         this.likeCount += 1;
