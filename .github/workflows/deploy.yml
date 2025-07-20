@@ -55,5 +55,5 @@ jobs:
         run: aws deploy create-deployment
           --application-name dev-talk-server
           --deployment-config-name odeDeployDefault.OneAtATime
-          --deployment-group-name Production
+          --deployment-group-name production
           --s3-location bucket=jelly-dev-talk-production-bucket,bundleType=tgz,key=$GITHUB_SHA.tar.gz
