@@ -49,11 +49,11 @@ jobs:
         run: tar -czvf $GITHUB_SHA.tar.gz appspec.yml scripts
 
       - name: S3에 프로젝트 폴더 업로드하기
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://dev-talk-server/$GITHUB_SHA.tar.gz
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tar.gz s3://jelly-dev-talk-production-bucket/$GITHUB_SHA.tar.gz
 
       - name: Code Deploy를 활용해 EC2에 프로젝트 코드 배포
         run: aws deploy create-deployment
           --application-name dev-talk-server
           --deployment-config-name odeDeployDefault.OneAtATime
           --deployment-group-name Production
-          --s3-location bucket=dev-talk-server,bundleType=tgz,key=$GITHUB_SHA.tar.gz
+          --s3-location bucket=jelly-dev-talk-production-bucket,bundleType=tgz,key=$GITHUB_SHA.tar.gz
