@@ -12,6 +12,9 @@ permissions:
 
 hooks:
   ApplicationStart:
+    - location: scripts/start-cloudwatch-agent.sh
+      timeout: 60
+      runas: root
     - location: scripts/start-server.sh
       timeout: 60
       runas: ubuntu
