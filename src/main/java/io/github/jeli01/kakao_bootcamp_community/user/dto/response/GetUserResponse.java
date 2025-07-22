@@ -14,17 +14,18 @@ public class GetUserResponse {
     public GetUserResponse(User user) {
         this.isSuccess = true;
         this.message = "user get success";
-        String profileImageUrl = user.getProfileImage();
-        this.data = new Data(profileImageUrl, user.getNickname());
+        this.data = new Data(user.getEmail(), user.getProfileImage(), user.getNickname());
     }
 
     @Getter
     @Setter
     class Data {
+        private String email;
         private String userProfileImageUrl;
         private String nickname;
 
-        public Data(String userProfileImageUrl, String nickname) {
+        public Data(String email, String userProfileImageUrl, String nickname) {
+            this.email = email;
             this.userProfileImageUrl = userProfileImageUrl;
             this.nickname = nickname;
         }
