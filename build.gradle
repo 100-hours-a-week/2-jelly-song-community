@@ -27,6 +27,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
     runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation "ca.pjer:logback-awslogs-appender:1.6.0"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
