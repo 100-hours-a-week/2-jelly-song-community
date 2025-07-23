@@ -1,5 +1,5 @@
 <configuration>
-    <appender name="CLOUDWATCH" class="ca.pjer.logbackawslogs.AwsLogsAppender">
+    <appender name="CLOUDWATCH" class="ca.pjer.logback.AwsLogsAppender">
         <logGroupName>my-spring-app-group</logGroupName>
         <logStreamName>${HOSTNAME}-spring.log</logStreamName>
         <region>ap-northeast-2</region>
