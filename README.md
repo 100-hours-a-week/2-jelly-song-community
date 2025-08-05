@@ -158,7 +158,7 @@ src/main/java/io/github/jeli01/kakao_bootcamp_community/
 └── 🛠️ common/         # 공통 컴포넌트
 ```
 
-## ✅ 구현 완료 기능
+## ✅ 기능 요약
 
 ### 🔐 인증/인가
 - [x] JWT 기반 로그인 (Access Token + Refresh Token)
@@ -191,24 +191,3 @@ src/main/java/io/github/jeli01/kakao_bootcamp_community/
 - **문제**: 수동 배포의 비효율성과 오류 가능성
 - **해결**: GitHub Actions + AWS 기반 CI/CD
 - **결과**: 안정적이고 확장 가능한 배포 환경
-
-## 📊 해결된 이슈
-
-- [x] **보안**: 서버 에러 401 응답 개선
-- [x] **API**: 로그아웃/로그인 응답 JSON 통일화
-- [x] **개발 편의성**: 포스트맨 액세스 토큰 자동 공유
-
-
-## 📈 성과 및 학습
-
-### 🎯 핵심 성과
-1. **보안**: RTR 도입으로 JWT 보안성 향상
-2. **성능**: 반정규화로 DB 쿼리 성능 최적화
-3. **운영**: CI/CD 파이프라인으로 배포 자동화
-
-### 📚 기술 학습
-- Spring Boot 3.x + Spring Security 6.x 실무 적용
-- JWT 기반 인증 시스템 구현
-- 데이터베이스 정규화/반정규화 전략 수립
-- AWS 기반 클라우드 인프라 설계 및 운영
-- Docker 컨테이너화 및 CI/CD 파이프라인 구축
