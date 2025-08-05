@@ -8,13 +8,13 @@
 
 ## 관련 블로그 글
 
-[<개인 프로젝트> HTML을 재사용 가능하게 만들기](https://aole.tistory.com/52)
+1. [<개인 프로젝트> HTML을 재사용 가능하게 만들기](https://aole.tistory.com/52)
 
-[웹 개발 - HTML부터 REST API까지](https://aole.tistory.com/55)
+2. [웹 개발 - HTML부터 REST API까지](https://aole.tistory.com/55)
 
-[ERD 설계 - NULL과 정규화 사이의 고민들](https://aole.tistory.com/61)
+3. [ERD 설계 - NULL과 정규화 사이의 고민들](https://aole.tistory.com/61)
  
-[프로젝트 회고 - 멘토링 피드백을 통한 성장 과정](https://aole.tistory.com/83)
+4. [프로젝트 회고 - 멘토링 피드백을 통한 성장 과정](https://aole.tistory.com/83)
 
 
 ## 📖 프로젝트 개요
