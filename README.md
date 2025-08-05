@@ -143,23 +143,6 @@ src/main/java/io/github/jeli01/kakao_bootcamp_community/
 └── 🛠️ common/         # 공통 컴포넌트
 ```
 
-## ✅ 기능 요약
-
-### 🔐 인증/인가
-- [x] JWT 기반 로그인 (Access Token + Refresh Token)
-- [x] Refresh Token Rotation 구현
-- [x] 회원가입, 정보수정, 탈퇴, 비밀번호 변경
-- [x] 만료 토큰 자동 정리 스케줄링
-
-### 📝 게시판
-- [x] 게시물 CRUD (생성, 조회, 수정, 삭제)
-- [x] 조회수 증가
-- [x] 성능 최적화 (반정규화 적용)
-
-### 💬 소셜 기능
-- [x] 댓글 CRUD
-- [x] 좋아요/취소
-
 ## 🔧 기술적 도전과 해결
 
 ### 1. 보안 강화
