@@ -141,7 +141,7 @@ public class LikeService {
 
 ## 🏗️ 시스템 아키텍처
 
-<img width="736" height="980" alt="image" src="https://github.com/user-attachments/assets/3497df5a-fef1-476d-9799-f39e5a445c87" />
+<img src="https://github.com/user-attachments/assets/3497df5a-fef1-476d-9799-f39e5a445c87" alt="image" width="600" />
 
 
 ### 📁 프로젝트 구조
