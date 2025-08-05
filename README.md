@@ -53,21 +53,6 @@ DevTalk은 이런 문제의식에서 출발했습니다:
 - **담당 역할**: 풀스택 개발
 - **GitHub**: https://github.com/100-hours-a-week/2-jelly-song-community
 
-## 🛠️ 기술 스택
-
-### Backend
-- **Language**: Java 21
-- **Framework**: Spring Boot 3.4.2
-- **Security**: Spring Security + JWT 
-- **ORM**: Spring Data JPA
-- **Build Tool**: Gradle
-
-### Infrastructure
-- **Cloud**: AWS (EC2, RDS, ELB, ECR, CloudFront, CodeDeploy, CloudWatch)
-- **Container**: Docker
-- **CI/CD**: GitHub Actions
-- **Storage**: AWS S3
-
 ## 🏗️ 주요 기능 및 기술적 성과
 
 ### 🔐 1. 보안성을 고려한 JWT 인증 시스템
