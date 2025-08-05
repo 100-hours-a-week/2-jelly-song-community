@@ -122,17 +122,16 @@ public class LikeService {
 }
 ```
 
-**성과**: JOIN 쿼리 제거로 게시물 목록 조회 성능 대폭 향상
+**성과**: JOIN 쿼리 제거로 게시물 목록 조회 성능 향상
 
 ### 🚀 3. CI/CD 파이프라인 구축
 
-**기술 스택**: GitHub Actions + Docker + AWS (S3, ECR, CodeDeploy)
+**기술 스택**: GitHub Actions + Docker + AWS (S3, ECR, CodeDeploy, CloudWatch)
 
 **주요 구성요소:**
 - **Docker 컨테이너화**: 환경 일관성 보장
-- **ECR 이미지 관리**: 중앙 집중식 이미지 저장소
-- **S3 파일 배포**: 고성능 정적 리소스 제공
 - **CodeDeploy 자동화**: 무중단 배포 구현
+- **Cloud Watch 모니터링**: 오류 시 개발자가 인지
 
 **성과:**
 - 배포 자동화로 인적 오류 제거
@@ -169,19 +168,19 @@ src/main/java/io/github/jeli01/kakao_bootcamp_community/
 
 ### 📝 게시판
 - [x] 게시물 CRUD (생성, 조회, 수정, 삭제)
-- [x] 조회수 자동 증가
+- [x] 조회수 증가
 - [x] 성능 최적화 (반정규화 적용)
 
 ### 💬 소셜 기능
 - [x] 댓글 CRUD
-- [x] 좋아요/취소 (트랜잭션 기반 동기화)
+- [x] 좋아요/취소
 
 ## 🔧 기술적 도전과 해결
 
 ### 1. 보안 강화
 - **문제**: 일반적인 JWT의 보안 취약점
 - **해결**: RTR + 토큰별 차별화 저장 전략
-- **결과**: XSS/CSRF 공격 원천 차단
+- **결과**: XSS/CSRF 공격 차단
 
 ### 2. 성능 최적화
 - **문제**: 게시물 목록 조회 시 JOIN 쿼리 부하
@@ -199,19 +198,17 @@ src/main/java/io/github/jeli01/kakao_bootcamp_community/
 - [x] **API**: 로그아웃/로그인 응답 JSON 통일화
 - [x] **개발 편의성**: 포스트맨 액세스 토큰 자동 공유
 
-## 🔄 진행 중인 작업
 
 ## 📈 성과 및 학습
 
 ### 🎯 핵심 성과
-1. **보안**: RTR 도입으로 JWT 보안성 대폭 향상
+1. **보안**: RTR 도입으로 JWT 보안성 향상
 2. **성능**: 반정규화로 DB 쿼리 성능 최적화
 3. **운영**: CI/CD 파이프라인으로 배포 자동화
-4. **확장성**: AWS 기반 클라우드 아키텍처 구축
 
 ### 📚 기술 학습
 - Spring Boot 3.x + Spring Security 6.x 실무 적용
-- JWT 기반 인증 시스템 심화 구현
+- JWT 기반 인증 시스템 구현
 - 데이터베이스 정규화/반정규화 전략 수립
 - AWS 기반 클라우드 인프라 설계 및 운영
 - Docker 컨테이너화 및 CI/CD 파이프라인 구축
