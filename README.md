@@ -6,6 +6,16 @@
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://adoptopenjdk.net/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.2-brightgreen.svg)](https://spring.io/projects/spring-boot)
 
+## 관련 블로그 글
+
+1. [프로젝트 회고 - 멘토링 피드백을 통한 성장 과정](https://aole.tistory.com/83)
+
+2. [ERD 설계 - NULL과 정규화 사이의 고민들](https://aole.tistory.com/61)
+
+3. [웹 개발 - HTML부터 REST API까지](https://aole.tistory.com/55)
+
+4. [<개인 프로젝트> HTML을 재사용 가능하게 만들기](https://aole.tistory.com/52)
+
 ## 📖 프로젝트 개요
 
 - **서비스 설명**: IT 개발자들에게 소통 공간을 제공하는 커뮤니티 서비스
