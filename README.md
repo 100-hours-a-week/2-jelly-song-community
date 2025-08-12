@@ -79,6 +79,8 @@ src/main/java/io/github/jeli01/kakao_bootcamp_community/
 - Access Token (로컬스토리지) + Refresh Token (HttpOnly 쿠키) 차별화 저장
 - 스케줄링 기반 만료 토큰 자동 정리로 메모리 최적화
 
+---
+
 ### 📊 2. 성능 최적화를 위한 선택적 반정규화
 
 **문제 상황**: 게시물 목록 조회 시 좋아요 수를 위한 반복적인 JOIN 쿼리로 DB 부하 발생
@@ -120,6 +122,8 @@ public class LikeService {
 
 
 **성과**: JOIN 쿼리 제거로 게시물 목록 조회 성능 향상
+
+---
 
 ### 🚀 3. CI/CD 파이프라인 구축
 
