@@ -53,17 +53,26 @@ DevTalk은 이런 문제의식에서 출발했습니다:
 - **담당 역할**: 풀스택 개발
 - **GitHub**: https://github.com/100-hours-a-week/2-jelly-song-community
 
+## 🏗️ 시스템 아키텍처
+
+<img width="684" height="952" alt="image" src="https://github.com/user-attachments/assets/a86779e8-dd46-4911-9c5d-74dc78296c5d" />
+
+
+### 📁 프로젝트 구조
+```
+src/main/java/io/github/jeli01/kakao_bootcamp_community/
+├── 🔐 auth/           # JWT 인증 & RTR
+├── 📝 board/          # 게시판 (반정규화 적용)
+├── 💬 comment/        # 댓글 시스템
+├── ❤️ like/           # 좋아요 (트랜잭션 관리)
+├── 👤 user/           # 사용자 관리
+├── ☁️ cloud/          # AWS 연동
+└── 🛠️ common/         # 공통 컴포넌트
+```
+
 ## 🏗️ 주요 기능 및 기술적 성과
 
 ### 🔐 1. 보안성을 고려한 JWT 인증 시스템
-
-**Refresh Token Rotation (RTR) 구현**
-```java
-@Scheduled(fixedRate = 3600000)
-public void deleteExpiredTokens() {
-    refreshTokenService.deleteByExpirationBefore(LocalDateTime.now());
-}
-```
 
 **핵심 특징:**
 - RTR 방식으로 토큰 탈취 시 피해 범위 최소화
@@ -107,6 +116,9 @@ public class LikeService {
 }
 ```
 
+**고려사항** : ddd를 이용한 원자적 처리도 고려하였지만, 연관관계 주인을 변경하거나 양방향 매핑을 도입할 경우 유지보수성이 저하될 위험이 있어 트랜잭션 기반 접근 방식을 채택
+
+
 **성과**: JOIN 쿼리 제거로 게시물 목록 조회 성능 향상
 
 ### 🚀 3. CI/CD 파이프라인 구축
@@ -116,46 +128,9 @@ public class LikeService {
 **주요 구성요소:**
 - **Docker 컨테이너화**: 환경 일관성 보장
 - **CodeDeploy 자동화**: 무중단 배포 구현
-- **Cloud Watch 모니터링**: 오류 시 개발자가 인지
+- **Cloud Watch 모니터링**: 오류 시 알림으로 개발자가 인지
 
 **성과:**
 - 배포 자동화로 인적 오류 제거
 - 트래픽 급증 시 빠른 확장 가능
 - 안정적인 서비스 운영 환경 구축
-
-## 🏗️ 시스템 아키텍처
-
-<img width="684" height="952" alt="image" src="https://github.com/user-attachments/assets/a86779e8-dd46-4911-9c5d-74dc78296c5d" />
-
-
-### 📁 프로젝트 구조
-```
-src/main/java/io/github/jeli01/kakao_bootcamp_community/
-├── 🔐 auth/           # JWT 인증 & RTR
-│   ├── jwt/          # JWT 유틸리티
-│   ├── scheduler/    # 토큰 정리 스케줄러
-│   └── service/      # 인증 서비스
-├── 📝 board/          # 게시판 (반정규화 적용)
-├── 💬 comment/        # 댓글 시스템
-├── ❤️ like/           # 좋아요 (트랜잭션 관리)
-├── 👤 user/           # 사용자 관리
-├── ☁️ cloud/          # AWS 연동
-└── 🛠️ common/         # 공통 컴포넌트
-```
-
-## 🔧 기술적 도전과 해결
-
-### 1. 보안 강화
-- **문제**: 일반적인 JWT의 보안 취약점
-- **해결**: RTR + 토큰별 차별화 저장 전략
-- **결과**: XSS/CSRF 공격 차단
-
-### 2. 성능 최적화
-- **문제**: 게시물 목록 조회 시 JOIN 쿼리 부하
-- **해결**: 선택적 반정규화 + 트랜잭션 동기화
-- **결과**: 쿼리 성능 대폭 향상
-
-### 3. 배포 자동화
-- **문제**: 수동 배포의 비효율성과 오류 가능성
-- **해결**: GitHub Actions + AWS 기반 CI/CD
-- **결과**: 안정적이고 확장 가능한 배포 환경
