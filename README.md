@@ -53,11 +53,6 @@ DevTalk은 이런 문제의식에서 출발했습니다:
 - **담당 역할**: 풀스택 개발
 - **GitHub**: https://github.com/100-hours-a-week/2-jelly-song-community
 
-## 🏗️ 시스템 아키텍처
-
-<img width="684" height="952" alt="image" src="https://github.com/user-attachments/assets/a86779e8-dd46-4911-9c5d-74dc78296c5d" />
-
-
 ### 📁 프로젝트 구조
 ```
 src/main/java/io/github/jeli01/kakao_bootcamp_community/
@@ -138,3 +133,8 @@ public class LikeService {
 - 배포 자동화로 인적 오류 제거
 - 트래픽 급증 시 빠른 확장 가능
 - 안정적인 서비스 운영 환경 구축
+
+
+## 🏗️ 클라우드 아키텍처
+
+<img width="684" height="952" alt="image" src="https://github.com/user-attachments/assets/a86779e8-dd46-4911-9c5d-74dc78296c5d" />
