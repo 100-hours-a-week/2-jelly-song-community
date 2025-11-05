@@ -1,4 +1,4 @@
-# 💬 DevTalk - 개발자 커뮤니티 플랫폼
+# 💬 DevTalk - 개발자 커뮤니티 플랫폼 (BE)
 <img src="https://github.com/user-attachments/assets/c1f078b0-45e8-4ccc-a8f0-95834fbd4de9" alt="DevTalk 로고" width="300"/>
 
 > **카카오테크 부트캠프 판교 2기 - 개인 프로젝트**
@@ -8,6 +8,10 @@
 > *지식은 공유될 때 더 빛이 납니다.*
 
 ---
+
+## 📚 프론트엔드 링크
+
+- **프론트엔드**: https://github.com/100-hours-a-week/2-jelly-song-community-FE
 
 ## 📌 프로젝트 개요
 
@@ -138,7 +142,3 @@ public class LikeService {
 ## 🏗️ 클라우드 아키텍처
 
 <img width="684" height="952" alt="image" src="https://github.com/user-attachments/assets/a86779e8-dd46-4911-9c5d-74dc78296c5d" />
-
-## 📚 프론트엔드 링크
-
-- **프론트엔드**: https://github.com/100-hours-a-week/2-jelly-song-community-FE
