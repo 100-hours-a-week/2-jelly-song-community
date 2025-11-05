@@ -1,4 +1,4 @@
-# 💬 DevTalk - 개발자 커뮤니티 플랫폼 (BE)
+# 💬 DevTalk - 개발자 커뮤니티 플랫폼
 <img src="https://github.com/user-attachments/assets/c1f078b0-45e8-4ccc-a8f0-95834fbd4de9" alt="DevTalk 로고" width="300"/>
 
 > **카카오테크 부트캠프 판교 2기 - 개인 프로젝트**
