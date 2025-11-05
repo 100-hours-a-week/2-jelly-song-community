@@ -9,10 +9,6 @@
 
 ---
 
-## 📚 프론트엔드 링크
-
-- **프론트엔드**: https://github.com/100-hours-a-week/2-jelly-song-community-FE
-
 ## 📌 프로젝트 개요
 
 **DevTalk**는 개발자들이 **진짜 필요한 소통**을 할 수 있는 커뮤니티 플랫폼입니다.  
@@ -142,3 +138,7 @@ public class LikeService {
 ## 🏗️ 클라우드 아키텍처
 
 <img width="684" height="952" alt="image" src="https://github.com/user-attachments/assets/a86779e8-dd46-4911-9c5d-74dc78296c5d" />
+
+## 📚 프론트엔드 링크
+
+- **프론트엔드**: https://github.com/100-hours-a-week/2-jelly-song-community-FE
